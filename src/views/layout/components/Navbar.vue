@@ -12,7 +12,12 @@
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/editPassword">
           <el-dropdown-item>
-            修改密码
+            修改后台密码
+          </el-dropdown-item>
+        </router-link>
+        <router-link class="inlineBlock" to="/editBookCasePassword">
+          <el-dropdown-item>
+            修改书柜密码
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>

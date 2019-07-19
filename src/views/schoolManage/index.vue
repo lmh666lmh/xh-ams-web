@@ -5,9 +5,9 @@
       <el-button size="small" class="back" @click="back()">返回</el-button>
     </el-row>
     <el-tabs v-model="activeName" class="tab-container" @tab-click="handleClick">
+      <el-tab-pane label="学生家长管理" name="third"><router-view v-if="activeName == 'third'"/></el-tab-pane>
       <el-tab-pane label="年级管理" name="first"><router-view v-if="activeName == 'first'"/></el-tab-pane>
       <el-tab-pane label="班级管理" name="second"><router-view v-if="activeName == 'second'"/></el-tab-pane>
-      <el-tab-pane label="学生家长管理" name="third"><router-view v-if="activeName == 'third'"/></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     return {
       schoolName: '',
       schoolId: '',
-      activeName: 'first'
+      activeName: 'third'
     }
   },
   created() {
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      let path = '/schoolManage/index/grade'
+      let path = '/schoolManage/index/studentParent'
       if (tab) {
         if (tab.name === 'first') {
           path = '/schoolManage/index/grade'

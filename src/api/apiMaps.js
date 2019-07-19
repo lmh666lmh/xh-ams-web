@@ -40,7 +40,9 @@ export const SYSTEM = {
     // 用户信息
     INFO: path('/agent'),
     // 修改密码
-    CHANGEPASSWORD: path('/agent/resetPwd')
+    CHANGEPASSWORD: path('/agent/resetPwd'),
+    // 修改书柜密码
+    CHANGEBOOKCASEPASSWORD: path('/agent/resetBookcasePwd')
   },
   // 首页统计数据
   INDEX: path('/school/list'),
@@ -157,5 +159,15 @@ export const SYSTEM = {
       // 批量导入学生
       IMPORTSTUDENT: path('/student/import')
     }
+  },
+  BORROWRECORD: {
+    // 查询学校/账号
+    SEARCHSCHOOL: path('/school/search/combo'),
+    // 查询书籍
+    SEARCHBOOKS: path('/book/template/search/combo'),
+    // 查询学生
+    SEARCHSTUDENT: path('/student/search/combo'),
+    // 借阅记录列表
+    LIST: path('/book/borrowed/page')
   }
 }

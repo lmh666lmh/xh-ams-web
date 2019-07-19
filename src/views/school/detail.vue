@@ -58,10 +58,10 @@
 import { api } from '@/api/index'
 
 export default {
-  name: 'Detail',
+  name: 'SchoolDetail',
   data() {
     const checkPhone = (rule, value, callback) => {
-      const regPhone = /^1[3|4|5|7|8][0-9]\d{4,8}$/
+      const regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{4,8}$/
       if (value === '') {
         callback(new Error('此项必填'))
       } else {
@@ -73,12 +73,12 @@ export default {
       }
     }
     const checkPwd = (rule, value, callback) => {
-      const regPhone = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
+      const regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
         if (this.isChangePwd) {
-          if (!regPhone.test(value)) {
+          if (!regPwd.test(value)) {
             callback(new Error('密码为6-16位数字+字母组合'))
           } else {
             callback()

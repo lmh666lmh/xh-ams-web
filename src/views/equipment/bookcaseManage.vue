@@ -45,8 +45,7 @@
         </el-table-column>
         <el-table-column label="状态" width="100" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.bookcaseStatus == 0" type="text" size="small" @click="routeTo('/school', scope.row.bookcaseId, 'bookcase')" >{{ scope.row.bookcaseStatusStr }}</el-button>
-            <span v-if="scope.row.bookcaseStatus == 1" style="font-size: 12px;">{{ scope.row.bookcaseStatusStr }}</span>
+            <span style="font-size: 12px;">{{ scope.row.bookcaseStatusStr }}</span>
           </template>
         </el-table-column>
         <!--<el-table-column label="操作" width="100" align="center">

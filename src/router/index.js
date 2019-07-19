@@ -70,7 +70,20 @@ export const asyncRouterMap = [
         path: '',
         name: 'EditPassword',
         component: () => import('@/views/editPassword'),
-        meta: { title: '修改密码' }
+        meta: { title: '修改后台密码' }
+      }
+    ]
+  },
+  {
+    path: '/editBookCasePassword',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'EditBookCasePassword',
+        component: () => import('@/views/editBookCasePassword'),
+        meta: { title: '修改书柜密码' }
       }
     ]
   },
@@ -92,16 +105,16 @@ export const asyncRouterMap = [
     component: Layout,
     name: 'School',
     redirect: '/school/index',
-    meta: { title: '学校管理', icon: 'example' },
+    meta: { title: '学校列表', icon: 'example' },
     children: [
       {
         path: 'index',
-        name: '',
+        name: 'SchoolList',
         component: () => import('@/views/school/index')
       },
       {
         path: 'detail',
-        name: 'Detail',
+        name: 'SchoolDetail',
         component: () => import('@/views/school/detail'),
         hidden: true,
         meta: { title: '学校信息' }
@@ -172,6 +185,41 @@ export const asyncRouterMap = [
         component: () => import('@/views/equipment/detail'),
         hidden: true,
         meta: { title: '书柜详情' }
+      }
+    ]
+  },
+  {
+    path: '/borrowingRecords',
+    component: Layout,
+    name: 'BorrowingRecords',
+    redirect: '/borrowingRecords/index',
+    meta: { title: '借阅记录', icon: 'example' },
+    children: [
+      {
+        path: 'index',
+        name: '',
+        component: () => import('@/views/borrowingRecords/index')
+      },
+      {
+        path: 'personalDetail',
+        name: 'PersonalDetail',
+        component: () => import('@/views/borrowingRecords/personalDetail'),
+        hidden: true,
+        meta: { title: '个人借阅记录' }
+      },
+      {
+        path: 'cabinetNumDetail',
+        name: 'CabinetNumDetail',
+        component: () => import('@/views/borrowingRecords/cabinetNumDetail'),
+        hidden: true,
+        meta: { title: '柜号借阅记录' }
+      },
+      {
+        path: 'bookDetail',
+        name: 'BookDetail',
+        component: () => import('@/views/borrowingRecords/bookDetail'),
+        hidden: true,
+        meta: { title: '书籍借阅记录' }
       }
     ]
   },

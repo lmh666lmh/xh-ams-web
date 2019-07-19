@@ -10,7 +10,7 @@
       <el-form-item label="确认新密码" style="width: 300px;" prop="confirmNewPwd">
         <el-input v-model="form.confirmNewPwd" type="password"/>
       </el-form-item>
-      <div class="tips">建议密码长度为8-16个，包含数字、大小写字母和符号</div>
+      <div class="tips">建议密码长度为6-16个，包含数字、大小写字母和符号</div>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
         <el-button @click="back">返回</el-button>
@@ -27,11 +27,11 @@ export default {
   name: 'EditPassword',
   data() {
     const password = (rule, value, callback) => {
-      const regPhone = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
+      const regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-        if (!regPhone.test(value)) {
+        if (!regPwd.test(value)) {
           callback(new Error('密码为6-16位数字+字母组合'))
         } else {
           callback()
@@ -82,7 +82,8 @@ export default {
           this.form.oldPwd = this.$getCode(this.form.oldPwd)
           this.form.newPwd = this.$getCode(this.form.newPwd)
           this.form.confirmNewPwd = this.$getCode(this.form.confirmNewPwd)
-          api.changePassword({ ...this.form, ...{ agentId: this.agentId }}).then(response => {
+          // agentId = this.agentId
+          api.changePassword({ ...this.form }).then(response => {
             if (response.code === 10000) {
               this.$message({
                 message: '密码修改成功！',

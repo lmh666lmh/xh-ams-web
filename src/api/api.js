@@ -58,6 +58,7 @@ export default {
   getDictionary(params, callback) {
     return API.getDirect(SYSTEM.DICTIONARY, params, callback)
   },
+  /** ================================================   用户相关 =====================================================*/
   /**
    * @method: login
    * @description: 登录接口
@@ -66,7 +67,6 @@ export default {
    * @param {Object} params {agentAccount:'账号',pwd:'加密密码'}
    * @return{Object} 成功与否
    */
-  /** ================================================   用户相关 =====================================================*/
   login(params, callback) {
     return API.post(SYSTEM.USER.LOGIN, params, callback)
   },
@@ -86,11 +86,22 @@ export default {
    * @description: 更改密码
    * @author: ProudBin
    * @update: 2019-06-04
-   * @param {Object} params {agentId:'当前代理商ID',oldPwd:'旧密码（加密）',newPwd:'新密码（加密）',confirmNewPwd:'确认新密码（加密）'}
+   * @param {Object} params {oldPwd:'旧密码（加密）',newPwd:'新密码（加密）',confirmNewPwd:'确认新密码（加密）'}
    * @return{Object} 返回用户当前角色信息以及权限
    */
   changePassword(params, callback) {
     return API.put(SYSTEM.USER.CHANGEPASSWORD, params, callback)
+  },
+  /**
+   * @method: changeBookCasePassword
+   * @description: 更改密码
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} params {oldPwd:'旧密码（加密）',newPwd:'新密码（加密）',confirmNewPwd:'确认新密码（加密）'}
+   * @return{Object} 返回成功与否
+   */
+  changeBookCasePassword(params, callback) {
+    return API.put(SYSTEM.USER.CHANGEBOOKCASEPASSWORD, params, callback)
   },
 
   // 首页统计
@@ -562,5 +573,50 @@ export default {
    */
   getParentDetail(params, callback) {
     return API.get(SYSTEM.SCHOOLMANAGE.STUDENTPARENT.DETAILPARENT, params, callback)
+  },
+  /** ================================================  借阅记录 ======================================================*/
+  /**
+   * @method: getSearchSchool
+   * @description: 借阅记录 => 学校名称搜索
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} {searchKey:'搜索关键字'}
+   * @return{Object} 家长详情信息
+   */
+  getSearchSchool(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.SEARCHSCHOOL, params, callback)
+  },
+  /**
+   * @method: getSearchBooks
+   * @description: 借阅记录 => 书籍搜索
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} {searchKey:'搜索关键字'}
+   * @return{Object} 家长详情信息
+   */
+  getSearchBooks(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.SEARCHBOOKS, params, callback)
+  },
+  /**
+   * @method: getSearchStudent
+   * @description: 借阅记录 => 学生搜索
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} {searchKey:'搜索关键字'}
+   * @return{Object} 家长详情信息
+   */
+  getSearchStudent(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.SEARCHSTUDENT, params, callback)
+  },
+  /**
+   * @method: getBorrowRecordList
+   * @description: 借阅记录 => 列表
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} {searchKey:'搜索关键字'}
+   * @return{Object} 家长详情信息
+   */
+  getBorrowRecordList(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.LIST, params, callback)
   }
 }

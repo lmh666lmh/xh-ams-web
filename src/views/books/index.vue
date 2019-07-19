@@ -55,7 +55,6 @@
           </template>
         </el-table-column>
         <el-table-column label="作者" align="center" prop="bookAuthor"/>
-        <el-table-column label="年龄段" align="center" prop="ageRange"/>
         <el-table-column label="书籍类目" align="center" prop="bookCategoryName"/>
         <el-table-column label="借阅次数" align="center" prop="borrowTotal"/>
         <el-table-column label="热门指数" align="center" prop="averageScoreStr"/>
