@@ -13,5 +13,4 @@ npm run build
 
 # Build for production and view the bundle analyzer report
 npm run build --report
-测试合并
 ```
