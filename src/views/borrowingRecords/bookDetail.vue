@@ -65,6 +65,7 @@
             <span>{{ scope.row.gradeName }} - {{ scope.row.className }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="借阅状态" align="center" prop="bookStatusStr"/>
         <el-table-column label="柜号-借" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.bookcaseRow }}{{ scope.row.bookcaseColumn >= 10 ? scope.row.bookcaseColumn : '0' + scope.row.bookcaseColumn }}</span>
