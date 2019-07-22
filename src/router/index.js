@@ -208,9 +208,9 @@ export const asyncRouterMap = [
         meta: { title: '个人借阅记录' }
       },
       {
-        path: 'cabinetNumDetail',
-        name: 'CabinetNumDetail',
-        component: () => import('@/views/borrowingRecords/cabinetNumDetail'),
+        path: 'bookcaseNumDetail',
+        name: 'BookcaseNumDetail',
+        component: () => import('@/views/borrowingRecords/bookcaseNumDetail'),
         hidden: true,
         meta: { title: '柜号借阅记录' }
       },

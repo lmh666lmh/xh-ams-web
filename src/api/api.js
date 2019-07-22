@@ -581,7 +581,7 @@ export default {
    * @author: ProudBin
    * @update: 2019-06-04
    * @param {Object} {searchKey:'搜索关键字'}
-   * @return{Object} 家长详情信息
+   * @return{Object}
    */
   getSearchSchool(params, callback) {
     return API.get(SYSTEM.BORROWRECORD.SEARCHSCHOOL, params, callback)
@@ -592,7 +592,7 @@ export default {
    * @author: ProudBin
    * @update: 2019-06-04
    * @param {Object} {searchKey:'搜索关键字'}
-   * @return{Object} 家长详情信息
+   * @return{Object}
    */
   getSearchBooks(params, callback) {
     return API.get(SYSTEM.BORROWRECORD.SEARCHBOOKS, params, callback)
@@ -603,7 +603,7 @@ export default {
    * @author: ProudBin
    * @update: 2019-06-04
    * @param {Object} {searchKey:'搜索关键字'}
-   * @return{Object} 家长详情信息
+   * @return{Object}
    */
   getSearchStudent(params, callback) {
     return API.get(SYSTEM.BORROWRECORD.SEARCHSTUDENT, params, callback)
@@ -614,9 +614,42 @@ export default {
    * @author: ProudBin
    * @update: 2019-06-04
    * @param {Object} {searchKey:'搜索关键字'}
-   * @return{Object} 家长详情信息
+   * @return{Object}
    */
   getBorrowRecordList(params, callback) {
     return API.get(SYSTEM.BORROWRECORD.LIST, params, callback)
+  },
+  /**
+   * @method: getPersonalList
+   * @description: 借阅记录 => 个人借阅记录列表
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getPersonalBorrowList(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.PERSONABORROWLLIST, params, callback)
+  },
+  /**
+   * @method: getBookBorrowList
+   * @description: 借阅记录 => 书籍借阅记录
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBookBorrowList(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.BOOKBORROWLLIST, params, callback)
+  },
+  /**
+   * @method: getBookcaseNumBorrowList
+   * @description: 借阅记录 => 柜号借阅记录
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBookcaseNumBorrowList(params, callback) {
+    return API.get(SYSTEM.BORROWRECORD.BOOKCASENUMBORROWLLIST, params, callback)
   }
 }

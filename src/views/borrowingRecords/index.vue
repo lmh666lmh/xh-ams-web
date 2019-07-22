@@ -99,29 +99,25 @@
         <el-table-column label="学生姓名" align="center" prop="studentName" width="120"/>
         <el-table-column label="借阅书籍" align="center" width="200">
           <template slot-scope="scope">
-            <!--<p v-for="item in scope.row.bookList" :key="item.bookRfId" class="bookDetail" @click="routeTo('/borrowingRecords/bookDetail' + '?bookRfid=' + item.bookRfId)">《{{ item.bookName }}》</p>-->
-            <p v-for="item in scope.row.bookList" :key="item.bookRfId" class="bookDetail">《{{ item.bookName }}》</p>
+            <p v-for="item in scope.row.bookList" :key="item.bookTemplateId" class="bookDetail" @click="routeTo('/borrowingRecords/bookDetail' + '?bookTemplateId=' + item.bookTemplateId + '&schoolId=' + scope.row.schoolId)">《{{ item.bookName }}》</p>
           </template>
         </el-table-column>
         <el-table-column label="借阅状态" align="center" prop="bookStatusStr"/>
         <el-table-column label="柜号-借" align="center">
           <template slot-scope="scope">
-            <!--<el-button type="text" size="small" @click="routeTo('/borrowingRecords/cabinetNumDetail' + '?row=' + scope.row.bookcaseRow + '&colum' + scope.row.bookcaseColumn)" >{{ scope.row.bookcaseRow }}{{ scope.row.bookcaseColumn >= 10 ? scope.row.bookcaseColumn : '0' + scope.row.bookcaseColumn }}</el-button>-->
-            <el-button type="text" size="small">{{ scope.row.bookcaseRow }}{{ scope.row.bookcaseColumn >= 10 ? scope.row.bookcaseColumn : '0' + scope.row.bookcaseColumn }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/borrowingRecords/bookcaseNumDetail?row=' + scope.row.bookcaseRow + '&colum=' + scope.row.bookcaseColumn + '&bookcaseId=' + scope.row.bookcaseId + '&schoolId=' + scope.row.schoolId )" >{{ scope.row.bookcaseRow }}{{ scope.row.bookcaseColumn >= 10 ? scope.row.bookcaseColumn : '0' + scope.row.bookcaseColumn }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="柜号-还" align="center">
           <template slot-scope="scope">
-            <!--<el-button v-if="scope.row.returnBookcaseRow != 0" type="text" size="small" @click="routeTo('/borrowingRecords/cabinetNumDetail', scope.row.schoolId)" >{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</el-button>-->
-            <el-button v-if="scope.row.returnBookcaseRow != 0" type="text" size="small">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</el-button>
+            <el-button v-if="scope.row.returnBookcaseRow != 0" type="text" size="small" @click="routeTo('/borrowingRecords/bookcaseNumDetail?row=' + scope.row.returnBookcaseRow + '&colum=' + scope.row.returnBookcaseColumn + '&bookcaseId=' + scope.row.bookcaseId + '&schoolId=' + scope.row.schoolId )" >{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn >= 10 ? scope.row.returnBookcaseColumn : '0' + scope.row.returnBookcaseColumn }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="借书时间" align="center" prop="createTime" width="200"/>
         <el-table-column label="还书时间" align="center" prop="returnTime" width="200"/>
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
-            <!--<el-button type="text" size="small" @click="routeTo('/borrowingRecords/PersonalDetail', scope.row.studentId)">个人借阅记录</el-button>-->
-            <el-button type="text" size="small">个人借阅记录</el-button>
+            <el-button type="text" size="small" @click="routeTo('/borrowingRecords/personalDetail?studentId=' + scope.row.studentId,)">个人借阅记录</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -199,11 +195,7 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
-    cellDialogStyle({ row, column, rowIndex, columnIndex }) {
-      return 'padding:10px 0'
-    },
     computeDate() {
-      console.log(this.time)
       if (this.time) {
         this.formInline.createTime = this.time[0]
         this.formInline.returnTime = this.time[1]
@@ -369,7 +361,7 @@ export default {
   .my-autocomplete .highlighted .addr {
     color: #ddd;
   }
-  .bookDetail {
+  .borrowing-container .bookDetail {
     color: #409EFF;
     cursor: pointer;
     margin: 5px 0;

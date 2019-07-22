@@ -172,6 +172,12 @@ export const SYSTEM = {
     // 查询学生
     SEARCHSTUDENT: path('/student/search/combo'),
     // 借阅记录列表
-    LIST: path('/book/borrowed/page')
+    LIST: path('/book/borrowed/page'),
+    // 个人借阅记录
+    PERSONABORROWLLIST: path('/book/borrowed/student/page'),
+    // 书籍借阅记录
+    BOOKBORROWLLIST: path('/book/borrowed/book/page'),
+    // 柜号借阅记录
+    BOOKCASENUMBORROWLLIST: path('/book/borrowed/grid/page')
   }
 }

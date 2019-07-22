@@ -1,8 +1,9 @@
 <template>
-  <div class="borrowing-container">
+  <div class="bookcase-num-container">
     <div class="info-container">
       <span><span class="info-title">当前学校：</span>{{ school }}</span>
-      <span><span class="info-title">当前查询书籍：</span>《 {{ bookName }} 》</span>
+      <span><span class="info-title">当前书柜编号：</span>{{ bookcase }}</span>
+      <span><span class="info-title">当前查询柜号：</span>{{ bookcaseNum }}</span>
       <el-button type="primary" size="small" @click="back">返回</el-button>
     </div>
     <div class="search-container">
@@ -21,16 +22,7 @@
             </template>
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="借阅状态">
-          <el-select v-model="formInline.bookcaseStatus" placeholder="请选择">
-            <el-option
-              v-for="item in stateOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="借还时间">
+        <el-form-item label="借还操作时间">
           <el-date-picker
             v-model="time"
             type="daterange"
@@ -65,18 +57,22 @@
             <span>{{ scope.row.gradeName }} - {{ scope.row.className }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="柜号-借" align="center">
+        <el-table-column label="借阅书籍" align="center" width="200">
           <template slot-scope="scope">
-            <span>{{ scope.row.bookcaseRow }}{{ scope.row.bookcaseColumn >= 10 ? scope.row.bookcaseColumn : '0' + scope.row.bookcaseColumn }}</span>
+            <p v-for="item in scope.row.bookList" :key="item.bookTemplateId" class="bookDetail" @click="routeTo('/borrowingRecords/bookDetail' + '?bookTemplateId=' + item.bookTemplateId + '&schoolId=' + scope.row.schoolId)">《{{ item.bookName }}》</p>
           </template>
         </el-table-column>
-        <el-table-column label="柜号-还" align="center">
+        <el-table-column label="操作类型" align="center" prop="brTypeStr"/>
+        <el-table-column label="借/还书时间" align="center" prop="areaName" width="200">
           <template slot-scope="scope">
-            <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</span>
+            <p v-if="scope.row.brType == 1">{{ scope.row.createTime }}</p>
+            <p v-else-if="scope.row.brType == 2">{{ scope.row.returnTime }}</p>
+            <div v-else>
+              <p>借：{{ scope.row.createTime }}</p>
+              <p>还：{{ scope.row.returnTime }}</p>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="借书时间" align="center" prop="createTime"/>
-        <el-table-column label="还书时间" align="center" prop="returnTime"/>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/borrowingRecords/personalDetail?studentId=' + scope.row.studentId,)">个人借阅记录</el-button>
@@ -93,7 +89,7 @@ import Pagination from '@/components/Pagination'
 import { api } from '@/api/index'
 
 export default {
-  name: 'BookDetail',
+  name: 'BookcaseNumDetail',
   components: {
     Pagination
   },
@@ -103,34 +99,29 @@ export default {
       listLoading: true,
       total: 0,
       school: null,
-      bookName: null,
+      bookcase: null,
+      bookcaseNum: null,
       studentName: '',
       time: '',
       formInline: {
-        bookTemplateId: '',
+        bookcaseId: '',
         schoolId: '',
+        bookcaseRow: '',
+        bookcaseColumn: '',
         studentId: '',
         bookStatus: '',
         createTime: '',
         returnTime: '',
         pageNum: 1,
         pageSize: 10
-      },
-      stateOptions: [{
-        value: '',
-        label: '请选择'
-      }, {
-        value: '2',
-        label: '再借'
-      }, {
-        value: '1',
-        label: '已还'
-      }]
+      }
     }
   },
   created() {
-    this.formInline.bookTemplateId = this.$route.query.bookTemplateId
+    this.formInline.bookcaseId = this.$route.query.bookcaseId
     this.formInline.schoolId = this.$route.query.schoolId
+    this.formInline.bookcaseRow = this.$route.query.row
+    this.formInline.bookcaseColumn = this.$route.query.colum
     this.fetchData()
   },
   methods: {
@@ -145,14 +136,20 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getBookBorrowList(this.formInline).then(response => {
+      api.getBookcaseNumBorrowList(this.formInline).then(response => {
         this.total = response.data.page.total
         this.list = response.data.page.list
         this.school = response.data.schoolName + '/' + response.data.schoolAccount
-        this.bookName = response.data.bookName
+        this.bookcase = response.data.bookcaseNum
+        this.bookcaseNum = response.data.bookcaseRow.toString() + (response.data.bookcaseColumn >= 10 ? response.data.bookcaseColumn : '0' + response.data.bookcaseColumn)
         this.listLoading = false
       }).catch(() => {
         this.listLoading = false
+      })
+    },
+    routeTo(path) {
+      this.$router.push({
+        path: path
       })
     },
     computeDate() {
@@ -163,11 +160,6 @@ export default {
         this.formInline.createTime = ''
         this.formInline.returnTime = ''
       }
-    },
-    routeTo(path) {
-      this.$router.push({
-        path: path
-      })
     },
     searchStudent(queryString, callback) {
       this.formInline.studentId = ''
@@ -198,6 +190,7 @@ export default {
       }
     },
     searchStudentSelect(item) {
+      console.log(item)
       this.formInline.studentId = item.studentId
     },
     back() {
@@ -208,16 +201,16 @@ export default {
 </script>
 
 <style>
-  .borrowing-container{
+  .bookcase-num-container{
     margin: 20px;
   }
-  .borrowing-container .info-container{
+  .bookcase-num-container .info-container{
     margin-bottom: 20px;
   }
-  .borrowing-container .info-container>span{
+  .bookcase-num-container .info-container>span{
     margin-right: 50px;
   }
-  .borrowing-container .info-container .info-title{
+  .bookcase-num-container .info-container .info-title{
     color: #fcd000;
   }
   .el-date-editor {
@@ -225,5 +218,11 @@ export default {
   }
   .el-range-separator {
     padding: 0 !important;
+  }
+  .bookcase-num-container .bookDetail{
+    margin: 5px 0;
+  }
+  .bookcase-num-container p{
+    margin: 0;
   }
 </style>

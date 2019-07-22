@@ -10,7 +10,7 @@
     "build": "node build/build.js",
     "build:report": "npm_config_report=true npm run build",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run lint",
+    "test": "webpack-dev-server --inline --progress --config build/webpack.test.conf.js",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
