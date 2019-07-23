@@ -164,7 +164,6 @@ export const asyncRouterMap = [
     path: '/equipment',
     component: Layout,
     name: 'Equipment',
-    redirect: '/equipment/bookcaseManage',
     meta: { title: '设备管理', icon: 'example' },
     children: [
       {
@@ -224,6 +223,26 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/system',
+    component: Layout,
+    name: 'System',
+    meta: { title: '系统维护', icon: 'example' },
+    children: [
+      {
+        path: 'borrowingAnomalous',
+        name: 'Borrowing',
+        component: () => import('@/views/system/borrowingAnomalous'),
+        meta: { title: '借阅异常' }
+      },
+      {
+        path: 'equipmentAnomalous',
+        name: 'EquipmentAnomalous',
+        component: () => import('@/views/system/equipmentAnomalous'),
+        meta: { title: '设备异常' }
+      }
+    ]
+  },
+  {
     path: '/books',
     component: Layout,
     hidden: true,
@@ -237,9 +256,9 @@ export const asyncRouterMap = [
         component: () => import('@/views/books/index')
       },
       {
-        path: 'addBooks',
-        name: 'AddBooks',
-        component: () => import('@/views/books/addBooks'),
+        path: 'editBook',
+        name: 'EditBook',
+        component: () => import('@/views/books/editBook'),
         hidden: true,
         meta: { title: '书籍信息' }
       },
@@ -249,13 +268,6 @@ export const asyncRouterMap = [
         component: () => import('@/views/books/booksNumber'),
         hidden: true,
         meta: { title: '入库数量' }
-      },
-      {
-        path: 'booksStatus',
-        name: 'BooksStatus',
-        component: () => import('@/views/books/booksStatus'),
-        hidden: true,
-        meta: { title: '书籍状态' }
       }
     ]
   },

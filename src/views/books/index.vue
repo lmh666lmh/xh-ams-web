@@ -31,7 +31,7 @@
       </el-form>
     </div>
     <!--<div class="operation-container">
-    <el-button type="success" size="small" class="el-icon-circle-plus" @click="routeTo('/books/addBooks')">新增书籍</el-button>
+    <el-button type="success" size="small" class="el-icon-circle-plus" @click="routeTo('/books/editBook?type=add')">新增书籍</el-button>
     <el-button type="success" size="small" class="el-icon-download">导入</el-button>
     <el-button type="success" size="small" class="el-icon-download">模版下载</el-button>
     </div>-->
@@ -51,7 +51,7 @@
         </el-table-column>
         <el-table-column label="书名" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/books/addBooks?type=detail', scope.row.bookTemplateId)" >{{ scope.row.bookName }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/books/editBook?type=detail', scope.row.bookTemplateId)" >{{ scope.row.bookName }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="作者" align="center" prop="bookAuthor"/>

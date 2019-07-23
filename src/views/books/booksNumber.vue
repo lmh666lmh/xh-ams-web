@@ -1,7 +1,7 @@
 <template>
   <div class="edit-container">
     <el-row :gutter="20" style="margin-top: 10px;">
-      <el-col :span="5"><span class="title">书名：</span>{{ bookName }}</el-col>
+      <el-col :span="5"><span class="title">书名：</span>《 {{ bookName }} 》</el-col>
     </el-row>
     <div style="margin-left: -10px;margin-top: 20px;">
       <el-button size="small" style="margin-left: 10px;" @click="cancel">返回</el-button>

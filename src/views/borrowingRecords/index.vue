@@ -73,7 +73,7 @@
       <!--<el-button v-if="active === 'all'" type="primary" size="small" @click="switchList('all')">全部</el-button>-->
       <!--<el-button v-else size="small" @click="switchList('all')">全部</el-button>-->
       <!--</el-button-group>-->
-      <!--<el-button type="success" size="small" class="el-icon-download" @click="down('/excelTemplate/导入学校模板.xlsx')">导出借阅记录</el-button>-->
+      <el-button type="success" size="small" class="el-icon-download" @click="down('/excelTemplate/导入学校模板.xlsx')">导出借阅记录</el-button>
     </div>
     <div class="list">
       <el-table
