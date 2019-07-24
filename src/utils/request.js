@@ -180,9 +180,7 @@ const API = {
   },
   upload(url, params, callback) {
     return new Promise((resolve, reject) => {
-      service.get(url, {
-        params: params
-      }).then((response) => {
+      service.post(url, params, { headers: { 'Content-Type': 'multipart/form' }}).then((response) => {
         if (response.code === 10000) {
           callback && callback(response)
           resolve(response)
@@ -195,6 +193,7 @@ const API = {
     })
   },
   download(url, params, callback) {
+    // window.open(url + params, '_target')
     window.location.href = url + params
   }
 }

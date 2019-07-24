@@ -126,6 +126,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex'
 import { api } from '@/api/index'
 
 export default {
@@ -168,6 +169,11 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'agentId'
+    ])
   },
   created() {
     this.fetchData()
@@ -214,13 +220,8 @@ export default {
       })
     },
     down() {
-      api.exportBorrowRecord(this.formInline).then(res => {
-        // const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })
-        // const objectUrl = URL.createObjectURL(blob)
-        // window.location.href = objectUrl
-      }).catch((err) => {
-        console.log(err)
-      })
+      const param = '?schoolId=' + this.formInline.schoolId + '&studentId=' + this.formInline.studentId + '&bookTemplateId=' + this.formInline.bookTemplateId + '&bookStatus=' + this.formInline.bookStatus + '&createTime=' + this.formInline.createTime + '&returnTime=' + this.formInline.createTime + '&agentId=' + this.agentId
+      api.exportBorrowRecord(param)
     },
     searchSchool(queryString, callback) {
       this.formInline.schoolId = ''

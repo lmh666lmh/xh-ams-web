@@ -661,6 +661,6 @@ export default {
    * @return{Object}
    */
   exportBorrowRecord(params, callback) {
-    return API.upload(SYSTEM.BORROWRECORD.EXPORTBORROWRECORD, params, callback)
+    return API.download(SYSTEM.BORROWRECORD.EXPORTBORROWRECORD, params, callback)
   }
 }
