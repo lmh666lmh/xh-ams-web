@@ -166,7 +166,7 @@ export default {
         label: '请选择'
       }, {
         value: '2',
-        label: '再借'
+        label: '在借'
       }, {
         value: '1',
         label: '已还'
