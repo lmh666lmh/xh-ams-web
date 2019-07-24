@@ -226,6 +226,7 @@ export const asyncRouterMap = [
     path: '/system',
     component: Layout,
     name: 'System',
+    hidden: true,
     meta: { title: '系统维护', icon: 'example' },
     children: [
       {
