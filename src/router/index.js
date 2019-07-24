@@ -230,7 +230,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'borrowingAnomalous',
-        name: 'Borrowing',
+        name: 'BorrowingAnomalous',
         component: () => import('@/views/system/borrowingAnomalous'),
         meta: { title: '借阅异常' }
       },

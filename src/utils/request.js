@@ -180,7 +180,9 @@ const API = {
   },
   upload(url, params, callback) {
     return new Promise((resolve, reject) => {
-      service.post(url, params, { headers: { 'Content-Type': 'multipart/form' }}).then((response) => {
+      service.get(url, {
+        params: params
+      }).then((response) => {
         if (response.code === 10000) {
           callback && callback(response)
           resolve(response)

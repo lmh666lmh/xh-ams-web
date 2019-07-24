@@ -651,5 +651,16 @@ export default {
    */
   getBookcaseNumBorrowList(params, callback) {
     return API.get(SYSTEM.BORROWRECORD.BOOKCASENUMBORROWLLIST, params, callback)
+  },
+  /**
+   * @method: exportBorrowRecord
+   * @description: 借阅记录 => 导出借阅记录
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  exportBorrowRecord(params, callback) {
+    return API.upload(SYSTEM.BORROWRECORD.EXPORTBORROWRECORD, params, callback)
   }
 }

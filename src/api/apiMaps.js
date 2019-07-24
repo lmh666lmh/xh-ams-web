@@ -178,6 +178,8 @@ export const SYSTEM = {
     // 书籍借阅记录
     BOOKBORROWLLIST: path('/book/borrowed/book/page'),
     // 柜号借阅记录
-    BOOKCASENUMBORROWLLIST: path('/book/borrowed/grid/page')
+    BOOKCASENUMBORROWLLIST: path('/book/borrowed/grid/page'),
+    // 导出借阅记录
+    EXPORTBORROWRECORD: path('/book/borrowed/export')
   }
 }

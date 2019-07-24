@@ -67,13 +67,7 @@
       </el-form>
     </div>
     <div class="operation-container">
-      <!--<el-button-group style="margin-right: 20px;">-->
-      <!--<el-button v-if="active === 'unNormal'" type="primary" size="small" @click="switchList('unNormal')">异常</el-button>-->
-      <!--<el-button v-else size="small" @click="switchList('unNormal')">异常</el-button>-->
-      <!--<el-button v-if="active === 'all'" type="primary" size="small" @click="switchList('all')">全部</el-button>-->
-      <!--<el-button v-else size="small" @click="switchList('all')">全部</el-button>-->
-      <!--</el-button-group>-->
-      <el-button type="success" size="small" class="el-icon-download" @click="down('/excelTemplate/导入学校模板.xlsx')">导出借阅记录</el-button>
+      <el-button type="success" size="small" class="el-icon-download" @click="down()">导出借阅记录</el-button>
     </div>
     <div class="list">
       <el-table
@@ -219,16 +213,23 @@ export default {
         path: path
       })
     },
-    down(url) {
-      api.download(url)
+    down() {
+      api.exportBorrowRecord(this.formInline).then(res => {
+        // const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })
+        // const objectUrl = URL.createObjectURL(blob)
+        // window.location.href = objectUrl
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     searchSchool(queryString, callback) {
       this.formInline.schoolId = ''
-      if (!queryString) {
+      const searchKey = queryString.trim()
+      if (!searchKey) {
         callback([])
       } else {
         api.getSearchSchool({
-          searchKey: queryString
+          searchKey: searchKey
         }).then(res => {
           if (res.code === 10000) {
             const array = []
@@ -253,11 +254,12 @@ export default {
     },
     searchStudent(queryString, callback) {
       this.formInline.studentId = ''
-      if (!queryString) {
+      const searchKey = queryString.trim()
+      if (!searchKey) {
         callback([])
       } else {
         api.getSearchStudent({
-          searchKey: queryString
+          searchKey: searchKey
         }).then(res => {
           if (res.code === 10000) {
             const array = []
@@ -281,11 +283,12 @@ export default {
     },
     searchBooks(queryString, callback) {
       this.formInline.bookTemplateId = ''
-      if (!queryString) {
+      const searchKey = queryString.trim()
+      if (!searchKey) {
         callback([])
       } else {
         api.getSearchBooks({
-          searchKey: queryString
+          searchKey: searchKey
         }).then(res => {
           if (res.code === 10000) {
             const array = []
