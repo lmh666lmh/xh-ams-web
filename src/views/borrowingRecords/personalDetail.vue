@@ -11,6 +11,8 @@
           <el-autocomplete
             v-model="bookName"
             :fetch-suggestions="searchBooks"
+            :debounce="700"
+            :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
             @select="searchBooksSelect">
@@ -29,6 +31,7 @@
         <el-form-item label="借/还书时间">
           <el-date-picker
             v-model="time"
+            :picker-options="pickerOptions"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -123,7 +126,12 @@ export default {
       }, {
         value: '1',
         label: '已还'
-      }]
+      }],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e6 // 如果没有后面的-8.64e6就是不可以选择今天的
+        }
+      }
     }
   },
   created() {
@@ -231,6 +239,8 @@ export default {
     width: 260px !important;
   }
   .el-range-separator {
+    display: inline-block !important;
+    width: 20px !important;
     padding: 0 !important;
   }
   .personal-record-container .bookDetail {

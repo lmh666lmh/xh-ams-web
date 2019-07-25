@@ -308,6 +308,8 @@ export default {
     width: 260px !important;
   }
   .el-range-separator {
+    display: inline-block !important;
+    width: 20px !important;
     padding: 0 !important;
   }
   .my-autocomplete li {

@@ -6,6 +6,8 @@
           <el-autocomplete
             v-model="schoolName"
             :fetch-suggestions="searchSchool"
+            :debounce="700"
+            :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
             @select="searchSchoolSelect">
@@ -21,6 +23,8 @@
           <el-autocomplete
             v-model="studentName"
             :fetch-suggestions="searchStudent"
+            :debounce="700"
+            :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
             @select="searchStudentSelect">
@@ -35,6 +39,8 @@
           <el-autocomplete
             v-model="bookName"
             :fetch-suggestions="searchBooks"
+            :debounce="700"
+            :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
             @select="searchBooksSelect">
@@ -50,10 +56,11 @@
               :value="item.value" />
           </el-select>
         </el-form-item>
-        <br>
         <el-form-item label="借还时间">
           <el-date-picker
             v-model="time"
+            :picker-options="pickerOptions"
+            unlink-panels
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -166,7 +173,32 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now() - 8.64e6 // 如果没有后面的-8.64e6就是不可以选择今天的
-        }
+        },
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
       }
     }
   },
@@ -220,7 +252,7 @@ export default {
       })
     },
     down() {
-      const param = '?schoolId=' + this.formInline.schoolId + '&studentId=' + this.formInline.studentId + '&bookTemplateId=' + this.formInline.bookTemplateId + '&bookStatus=' + this.formInline.bookStatus + '&createTime=' + this.formInline.createTime + '&returnTime=' + this.formInline.createTime + '&agentId=' + this.agentId
+      const param = '?schoolId=' + this.formInline.schoolId + '&studentId=' + this.formInline.studentId + '&bookTemplateId=' + this.formInline.bookTemplateId + '&bookStatus=' + this.formInline.bookStatus + '&createTime=' + this.formInline.createTime + '&returnTime=' + this.formInline.returnTime + '&agentId=' + this.agentId
       api.exportBorrowRecord(param)
     },
     searchSchool(queryString, callback) {
@@ -346,8 +378,11 @@ export default {
     width: 260px !important;
   }
   .el-range-separator {
+    display: inline-block !important;
+    width: 20px !important;
     padding: 0 !important;
   }
+
   .my-autocomplete li {
     line-height: normal;
     padding: 7px;
