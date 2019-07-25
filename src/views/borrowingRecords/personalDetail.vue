@@ -44,9 +44,6 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="operation-container">
-      <el-button type="success" size="small" class="el-icon-download" @click="down('/excelTemplate/导入学校模板.xlsx')">导出借阅记录</el-button>
-    </div>
     <div class="list">
       <el-table
         v-loading="listLoading"

@@ -127,6 +127,7 @@
     <div class="tips">
       <p>注：1、点击【借阅书籍】下的书籍，可查看该书籍下的所有学生借阅记录；</p>
       <p style="text-indent: 1.5rem;">2、点击【柜号】下的书柜号，可查看该柜号下的所有学生借阅记录；</p>
+      <p style="text-indent: 1.5rem;">3、借阅记录默认导出近一个月，最长导出区间为一个月</p>
     </div>
   </div>
 </template>
@@ -149,7 +150,7 @@ export default {
       schoolName: '',
       studentName: '',
       bookName: '',
-      time: '',
+      time: [],
       formInline: {
         schoolId: '',
         studentId: '',
@@ -208,12 +209,17 @@ export default {
     ])
   },
   created() {
+    const end = new Date()
+    const start = new Date()
+    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+    this.time = [start, end]
+    this.formInline.createTime = this.formDate(start)
+    this.formInline.returnTime = this.formDate(end)
     this.fetchData()
   },
   methods: {
     onSubmit() {
       this.formInline.pageNum = 1
-      console.log(this.schoolName)
       if (!this.schoolName) {
         this.formInline.schoolId = ''
       }
@@ -252,7 +258,31 @@ export default {
         path: path
       })
     },
+    formDate(Date) {
+      const year = Date.getFullYear()
+      let month = Date.getMonth() + 1
+      let strDate = Date.getDate()
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = '0' + strDate
+      }
+      return year + '-' + month + '-' + strDate
+    },
+    dateDiff(sDate1, sDate2) {
+      const date1 = sDate1.split('-')
+      const oDate1 = new Date(date1[1] + '-' + date1[2] + '-' + date1[0]) // 转换为xx-xx-xxxx格式
+      const date2 = sDate2.split('-')
+      const oDate2 = new Date(date2[1] + '-' + date2[2] + '-' + date2[0])
+      const iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24)
+      return iDays
+    },
     down() {
+      if (this.formInline.returnTime && this.formInline.createTime && this.dateDiff(this.formInline.returnTime, this.formInline.createTime) > 30) {
+        this.$message.error('导出区间时间最长为一个月，请重新选择借还时间')
+        return false
+      }
       const param = '?schoolId=' + this.formInline.schoolId + '&studentId=' + this.formInline.studentId + '&bookTemplateId=' + this.formInline.bookTemplateId + '&bookStatus=' + this.formInline.bookStatus + '&createTime=' + this.formInline.createTime + '&returnTime=' + this.formInline.returnTime + '&agentId=' + this.agentId
       api.exportBorrowRecord(param)
     },
