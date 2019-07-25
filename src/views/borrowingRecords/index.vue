@@ -212,6 +212,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.formInline.pageNum = 1
       console.log(this.schoolName)
       if (!this.schoolName) {
         this.formInline.schoolId = ''

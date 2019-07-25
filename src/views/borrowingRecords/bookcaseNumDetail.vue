@@ -134,6 +134,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.formInline.pageNum = 1
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {

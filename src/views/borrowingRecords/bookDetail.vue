@@ -24,7 +24,7 @@
           </el-autocomplete>
         </el-form-item>
         <el-form-item label="借阅状态">
-          <el-select v-model="formInline.bookcaseStatus" placeholder="请选择">
+          <el-select v-model="formInline.bookStatus" placeholder="请选择">
             <el-option
               v-for="item in stateOptions"
               :key="item.value"
@@ -144,6 +144,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.formInline.pageNum = 1
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
