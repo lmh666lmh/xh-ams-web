@@ -73,7 +73,7 @@
         </el-table-column>
         <el-table-column label="柜号-还" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</span>
+            <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn >= 10 ? scope.row.returnBookcaseColumn : '0' + scope.row.returnBookcaseColumn }}</span>
           </template>
         </el-table-column>
         <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
