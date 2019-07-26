@@ -17,6 +17,7 @@ function resolve(dir) {
 }
 
 const env = require('../config/prod.env')
+const Version = new Date().getTime()
 
 // For NamedChunksPlugin
 const seen = new Set()
@@ -34,8 +35,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash:8].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash:8].js')
+    filename: utils.assetsPath('js/[name].[chunkhash:8].'+ Version +'.js'),
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash:8].'+ Version +'.js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
