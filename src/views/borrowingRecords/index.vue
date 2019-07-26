@@ -7,6 +7,7 @@
             v-model="schoolName"
             :fetch-suggestions="searchSchool"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -24,6 +25,7 @@
             v-model="studentName"
             :fetch-suggestions="searchStudent"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -40,6 +42,7 @@
             v-model="bookName"
             :fetch-suggestions="searchBooks"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -114,8 +117,8 @@
             <el-button v-if="scope.row.returnBookcaseRow != 0" type="text" size="small" @click="routeTo('/borrowingRecords/bookcaseNumDetail?row=' + scope.row.returnBookcaseRow + '&colum=' + scope.row.returnBookcaseColumn + '&bookcaseId=' + scope.row.bookcaseId + '&schoolId=' + scope.row.schoolId )" >{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn >= 10 ? scope.row.returnBookcaseColumn : '0' + scope.row.returnBookcaseColumn }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="借书时间" align="center" prop="createTime" width="200"/>
-        <el-table-column label="还书时间" align="center" prop="returnTime" width="200"/>
+        <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
+        <el-table-column label="还书时间" align="center" prop="returnTime" width="180"/>
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/borrowingRecords/personalDetail?studentId=' + scope.row.studentId,)">个人借阅记录</el-button>
@@ -215,6 +218,9 @@ export default {
     this.time = [start, end]
     this.formInline.createTime = this.formDate(start)
     this.formInline.returnTime = this.formDate(end)
+    this.fetchData()
+  },
+  activated() {
     this.fetchData()
   },
   methods: {
@@ -397,7 +403,7 @@ export default {
     margin-bottom: 20px;
   }
   .borrowing-container .tips {
-    color: #ccc;
+    color: #888;
     font-size: 12px;
     margin-top: 10px;
   }

@@ -12,6 +12,7 @@
             v-model="studentName"
             :fetch-suggestions="searchStudent"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -79,8 +80,8 @@
             <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="借书时间" align="center" prop="createTime"/>
-        <el-table-column label="还书时间" align="center" prop="returnTime"/>
+        <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
+        <el-table-column label="还书时间" align="center" prop="returnTime" width="180"/>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/borrowingRecords/personalDetail?studentId=' + scope.row.studentId,)">个人借阅记录</el-button>
@@ -228,7 +229,7 @@ export default {
     margin-right: 50px;
   }
   .borrowing-container .info-container .info-title{
-    color: #fcd000;
+    color: #92c439;
   }
   .el-date-editor {
     width: 260px !important;

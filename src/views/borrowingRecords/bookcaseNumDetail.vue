@@ -13,6 +13,7 @@
             v-model="studentName"
             :fetch-suggestions="searchStudent"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -66,7 +67,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作类型" align="center" prop="brTypeStr"/>
-        <el-table-column label="借/还书时间" align="center" prop="areaName" width="200">
+        <el-table-column label="借/还书时间" align="center" prop="areaName" width="180">
           <template slot-scope="scope">
             <p v-if="scope.row.brType == 1">{{ scope.row.createTime }}</p>
             <p v-else-if="scope.row.brType == 2">{{ scope.row.returnTime }}</p>
@@ -220,7 +221,7 @@ export default {
     margin-right: 50px;
   }
   .bookcase-num-container .info-container .info-title{
-    color: #fcd000;
+    color: #92c439;
   }
   .el-date-editor {
     width: 260px !important;

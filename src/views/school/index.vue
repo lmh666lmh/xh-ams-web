@@ -269,6 +269,7 @@ export default {
       return `${value * 100}`
     },
     onSubmit() {
+      this.formInline.pageNum = 1
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {

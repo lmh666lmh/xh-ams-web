@@ -611,6 +611,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.formInline.pageNum = 1
       this.fetchData()
     },
     onSubmitBatchRecharge() {

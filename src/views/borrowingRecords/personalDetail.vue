@@ -12,6 +12,7 @@
             v-model="bookName"
             :fetch-suggestions="searchBooks"
             :debounce="700"
+            :clearable="true"
             :trigger-on-focus="false"
             popper-class="my-autocomplete"
             placeholder="请填写"
@@ -75,8 +76,8 @@
             <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="借书时间" align="center" prop="createTime" width="200"/>
-        <el-table-column label="还书时间" align="center" prop="returnTime" width="200"/>
+        <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
+        <el-table-column label="还书时间" align="center" prop="returnTime" width="180"/>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
@@ -223,10 +224,10 @@ export default {
     margin-right: 50px;
   }
   .personal-record-container .info-container .info-title{
-    color: #fcd000;
+    color: #92c439;
   }
   .personal-record-container .tips {
-    color: #ccc;
+    color: #888;
     font-size: 12px;
   }
   .personal-record-container .tips p{
