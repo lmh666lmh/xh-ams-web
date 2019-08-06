@@ -166,11 +166,11 @@ export const SYSTEM = {
   },
   BORROWRECORD: {
     // 查询学校/账号
-    SEARCHSCHOOL: path('/school/search/combo'),
+    SEARCHSCHOOL: path('/combo/search/school'),
     // 查询书籍
-    SEARCHBOOKS: path('/book/template/search/combo'),
+    SEARCHBOOKS: path('/combo/search/book/template'),
     // 查询学生
-    SEARCHSTUDENT: path('/student/search/combo'),
+    SEARCHSTUDENT: path('/combo/search/student'),
     // 借阅记录列表
     LIST: path('/book/borrowed/page'),
     // 个人借阅记录
