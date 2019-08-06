@@ -203,8 +203,8 @@ export default {
         schoolId: '',
         studentId: '',
         studentStatus: '0',
-        createTime: '',
-        returnTime: '',
+        beginCreateTime: '',
+        endCreateTime: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -272,11 +272,11 @@ export default {
     },
     computeDate() {
       if (this.time) {
-        this.formInline.createTime = this.time[0]
-        this.formInline.returnTime = this.time[1]
+        this.formInline.beginCreateTime = this.time[0]
+        this.formInline.endCreateTime = this.time[1]
       } else {
-        this.formInline.createTime = ''
-        this.formInline.returnTime = ''
+        this.formInline.beginCreateTime = ''
+        this.formInline.endCreateTime = ''
       }
     },
     fetchData() {
