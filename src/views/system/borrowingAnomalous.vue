@@ -140,7 +140,12 @@
           </template>
         </el-table-column>
         <el-table-column property="bookStatusNeedStr" label="借阅类型" align="center"/>
-        <el-table-column property="bookStatusRealStr" label="书籍状态" align="center"/>
+        <el-table-column label="书籍状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.bookStatusRealStr === '未取走' || scope.row.bookStatusRealStr =='未归还' " style="color: red;">{{ scope.row.bookStatusRealStr }}</span>
+            <span v-else>{{ scope.row.bookStatusRealStr }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="处理方式1" width="220" align="center">
           <template slot-scope="scope">
             <span>1、联系家长说明异常情况，预约时间到学校现场处理；</span><br>
