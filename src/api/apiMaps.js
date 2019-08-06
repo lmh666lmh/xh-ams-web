@@ -181,5 +181,13 @@ export const SYSTEM = {
     BOOKCASENUMBORROWLLIST: path('/book/borrowed/grid/page'),
     // 导出借阅记录
     EXPORTBORROWRECORD: path('/book/borrowed/export')
+  },
+  SYSTEMANOMALOUS: {
+    // 系统维护-借阅异常列表
+    BORROWLIST: path('/borrowed/error/page'),
+    // 系统维护-借阅异常-详情查看
+    BORROWLISTDETAIL: path('/borrowed/error/detail'),
+    // 系统维护-借阅异常-开启/关闭家长自助处理
+    SELFHELP: path('/borrowed/error/selfHelp')
   }
 }

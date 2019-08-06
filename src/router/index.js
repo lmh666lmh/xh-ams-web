@@ -226,7 +226,6 @@ export const asyncRouterMap = [
     path: '/system',
     component: Layout,
     name: 'System',
-    hidden: true,
     meta: { title: '系统维护', icon: 'example' },
     children: [
       {
@@ -238,6 +237,7 @@ export const asyncRouterMap = [
       {
         path: 'equipmentAnomalous',
         name: 'EquipmentAnomalous',
+        hidden: true,
         component: () => import('@/views/system/equipmentAnomalous'),
         meta: { title: '设备异常' }
       }

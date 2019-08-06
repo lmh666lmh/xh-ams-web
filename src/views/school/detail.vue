@@ -1,6 +1,6 @@
 <template>
   <div class="edit-container">
-    <el-form ref="form" :model="formInline" :rules="rules" :disabled="disabled" label-width="80px" size="small">
+    <el-form ref="form" :model="formInline" :rules="rules" :disabled="disabled" label-width="100px" size="small">
       <el-form-item label="学校名称" prop="schoolName">
         <el-input v-model="formInline.schoolName" maxlength="25"/>
       </el-form-item>
@@ -15,6 +15,12 @@
       </el-form-item>
       <el-form-item label="联系方式" prop="leaderPhone">
         <el-input v-model="formInline.leaderPhone" maxlength="11"/>
+      </el-form-item>
+      <el-form-item label="对接老师姓名">
+        <el-input v-model="formInline.icTeacherName" maxlength="100"/>
+      </el-form-item>
+      <el-form-item label="对接老师电话" prop="icTeacherPhone">
+        <el-input v-model="formInline.icTeacherPhone" maxlength="11"/>
       </el-form-item>
       <el-form-item label="城市区域">
         <el-select v-model="formInline.provinceId" style="width: 130px;" @change="getCity(formInline.provinceId)">
@@ -102,6 +108,8 @@ export default {
         pwd: '',
         leaderName: '',
         leaderPhone: '',
+        icTeacherName: '',
+        icTeacherPhone: '',
         provinceId: '',
         provinceName: '',
         cityId: '',
@@ -128,6 +136,9 @@ export default {
         ],
         leaderPhone: [
           { required: true, validator: checkPhone, trigger: 'blur' }
+        ],
+        icTeacherPhone: [
+          { required: false, validator: checkPhone, trigger: 'blur' }
         ]
       }
     }
@@ -310,7 +321,7 @@ export default {
 
 <style scoped>
 .edit-container{
-  width: 500px;
+  width: 520px;
   padding: 10px;
 }
 </style>

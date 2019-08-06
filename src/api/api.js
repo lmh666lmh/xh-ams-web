@@ -662,5 +662,39 @@ export default {
    */
   exportBorrowRecord(params, callback) {
     return API.download(SYSTEM.BORROWRECORD.EXPORTBORROWRECORD, params, callback)
+  },
+  /** ================================================  系统维护 ======================================================*/
+  /**
+   * @method: getBorrowAnomalousList
+   * @description: 系统维护 => 借阅异常列表信息
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBorrowAnomalousList(params, callback) {
+    return API.get(SYSTEM.SYSTEMANOMALOUS.BORROWLIST, params, callback)
+  },
+  /**
+   * @method: getBorrowAnomalousListDetail
+   * @description: 系统维护 => 借阅异常列表信息-异常详情查看
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBorrowAnomalousListDetail(params, callback) {
+    return API.get(SYSTEM.SYSTEMANOMALOUS.BORROWLISTDETAIL, params, callback)
+  },
+  /**
+   * @method: borrowAnomalousSelfHelp
+   * @description: 系统维护 => 借阅异常列表信息-开启/关闭家长自助处理
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  borrowAnomalousSelfHelp(params, callback) {
+    return API.post(SYSTEM.SYSTEMANOMALOUS.SELFHELP, params, callback)
   }
 }

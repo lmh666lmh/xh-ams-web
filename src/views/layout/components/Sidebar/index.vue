@@ -9,7 +9,7 @@
       :collapse-transition="false"
       :unique-opened="true"
       mode="vertical"
-    >
+      @select="changeTimeStamp()">
       <div style="height: 50px;background-image: url(/static/image/logo.png);">亲禾教育</div>
       <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path"/>
     </el-menu>
@@ -33,6 +33,11 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  methods: {
+    changeTimeStamp() {
+      console.log('点击了菜单')
     }
   }
 }
