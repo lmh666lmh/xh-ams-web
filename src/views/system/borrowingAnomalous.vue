@@ -94,7 +94,7 @@
         </el-table-column>
         <el-table-column label="学生姓名" align="center" prop="studentName" width="120"/>
         <el-table-column label="学生状态" align="center" prop="studentStatusStr"/>
-        <el-table-column label="异常类型" align="center" prop="brTypeStr"/>
+        <el-table-column label="操作类型" align="center" prop="brTypeStr"/>
         <el-table-column label="异常时间" align="center" prop="createTime" width="200"/>
         <el-table-column label="异常处理时间" align="center" prop="processTime" width="200"/>
         <el-table-column label="操作" width="180" align="center">
