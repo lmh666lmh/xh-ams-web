@@ -103,7 +103,7 @@
         </el-table-column>
         <el-table-column label="异常时间" align="center" prop="createTime" width="200"/>
         <el-table-column label="异常处理时间" align="center" prop="processTime" width="200"/>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="showDialog(scope.row.batchId, scope.row.brTypeStr, scope.row.processStatus)">异常详情</el-button>
           </template>
