@@ -85,24 +85,24 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="学校名称" align="center" prop="schoolName" width="120"/>
-        <el-table-column label="学校账号" align="center" prop="schoolAccount" width="120"/>
+        <el-table-column label="学校名称" align="center" prop="schoolName"/>
+        <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
         <el-table-column label="年级-班级" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.gradeName }} - {{ scope.row.className }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="学生姓名" align="center" prop="studentName" width="150"/>
-        <el-table-column label="学生状态" align="center" prop="studentStatusStr" width="100"/>
-        <el-table-column label="操作类型" align="center" prop="brTypeStr" width="100"/>
-        <el-table-column label="柜门状态" align="center" width="100">
+        <el-table-column label="学生姓名" align="center" prop="studentName"/>
+        <el-table-column label="学生状态" align="center" prop="studentStatusStr"/>
+        <el-table-column label="操作类型" align="center" prop="brTypeStr"/>
+        <el-table-column label="柜门状态" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.gridStatusStr === '打开'" style="color: red;">{{ scope.row.gridStatusStr }}</span>
             <span v-else>{{ scope.row.gridStatusStr }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="异常时间" align="center" prop="createTime" width="200"/>
-        <el-table-column label="异常处理时间" align="center" prop="processTime" width="200"/>
+        <el-table-column label="异常时间" align="center" prop="createTime"/>
+        <el-table-column label="异常处理时间" align="center" prop="processTime"/>
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="showDialog(scope.row.batchId, scope.row.brTypeStr, scope.row.processStatus)">异常详情</el-button>
