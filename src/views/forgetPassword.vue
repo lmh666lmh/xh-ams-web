@@ -39,7 +39,7 @@ export default {
   name: 'ForgetPassword',
   data() {
     const phone = (rule, value, callback) => {
-      const regPhone = /^1[3|4|5|6|7|8|9][0-9]\d{4,8}$/
+      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (value === '') {
         callback(new Error('请填写手机号码'))
       } else {
