@@ -118,7 +118,7 @@
         <el-col :span="16"><div>家长联系方式：{{ dialogData.parentPhone }}（{{ dialogData.familyRelationName }}）</div></el-col>
       </el-row>
       <el-row class="info">
-        <el-col :span="8"><div>所属学校：{{ dialogData.schoolName }}/{{ dialogData.schoolAccount }}</div></el-col>
+        <el-col :span="8"><div>所属学校：{{ dialogData.schoolName }}</div></el-col>
         <el-col v-if="dialogData.teacherPhone" :span="16"><div>学校对接人员：{{ dialogData.teacherPhone }}（{{ dialogData.teacherName }}）</div></el-col>
         <el-col v-else :span="16"><div>学校对接人员：<el-button type="text" size="small" @click="jumpSchoolDetail(dialogData.schoolId)">未添加联系人（点击添加）</el-button></div></el-col>
       </el-row>
