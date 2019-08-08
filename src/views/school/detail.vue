@@ -300,6 +300,7 @@ export default {
                   path: '/school'
                 })
               } else {
+                this.formInline.pwd = this.oldPwd
                 this.$message.error('修改失败')
               }
             }).catch(() => {
