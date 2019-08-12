@@ -380,10 +380,10 @@ export default {
       this.dialogLoading = true
       this.dialogTableVisible = true
       this.dialogTitle = title
-      if (status) {
-        this.dialogStatus = '已处理'
-      } else {
+      if (status === 0 || status === 4) {
         this.dialogStatus = '未处理'
+      } else {
+        this.dialogStatus = '已处理'
       }
       api.getBorrowAnomalousListDetail({
         batchId: id
