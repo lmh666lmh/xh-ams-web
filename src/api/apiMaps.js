@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.2:8080'
+    BASE_API = 'http://192.168.3.162:8080'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
@@ -164,6 +164,7 @@ export const SYSTEM = {
       IMPORTSTUDENT: path('/student/import')
     }
   },
+  // 借阅查询
   BORROWRECORD: {
     // 查询学校/账号
     SEARCHSCHOOL: path('/combo/search/school'),
@@ -182,6 +183,7 @@ export const SYSTEM = {
     // 导出借阅记录
     EXPORTBORROWRECORD: path('/book/borrowed/export')
   },
+  // 系统维护
   SYSTEMANOMALOUS: {
     // 系统维护-借阅异常列表
     BORROWLIST: path('/borrowed/error/page'),
@@ -189,5 +191,20 @@ export const SYSTEM = {
     BORROWLISTDETAIL: path('/borrowed/error/detail'),
     // 系统维护-借阅异常-开启/关闭家长自助处理
     SELFHELP: path('/borrowed/error/selfHelp')
+  },
+  // 试用管理
+  PROBATION: {
+    // 系统维护-借阅异常列表
+    LIST: path('/trial/school/page'),
+    // 添加试用学生列表
+    PROBATIONSTUDENTLIST: path('/student/trial/page'),
+    // 试用人数列表/试用转付费人数
+    PROBATIONNUMLIST: path('/trial/student/page'),
+    // 试用人数统计导出
+    PROBATIONNUMEXPORT: path('/trial/student/export'),
+    // 新增试用学生
+    ADDPROBATIONSTUDENT: path('/trial/student'),
+    // 试用配置信息
+    PROBATIONCONFIG: path('/trial/config')
   }
 }

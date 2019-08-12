@@ -223,10 +223,38 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/probation',
+    component: Layout,
+    name: 'Probation',
+    meta: { title: '试用管理', icon: 'example' },
+    children: [
+      {
+        path: 'index',
+        name: 'ProbationManageIndex',
+        component: () => import('@/views/probationManage/index'),
+        meta: { title: '试用管理' }
+      },
+      {
+        path: 'add',
+        name: 'AddProbation',
+        hidden: true,
+        component: () => import('@/views/probationManage/add'),
+        meta: { title: '添加试用学生' }
+      },
+      {
+        path: 'probationStudent',
+        name: 'ProbationStudent',
+        hidden: true,
+        component: () => import('@/views/probationManage/probationStudent'),
+        meta: { title: '试用人数统计' }
+      }
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     name: 'System',
-    meta: { title: '系统维护', icon: 'example' },
+    meta: { title: '异常维护', icon: 'example' },
     children: [
       {
         path: 'borrowingAnomalous',
