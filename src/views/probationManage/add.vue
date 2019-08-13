@@ -101,7 +101,7 @@
                       type="date"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期"
-                      style="width: 100%;"/>
+                      style="width: 150px;"/>
                   </el-form-item>
                 </el-form-item>
                 <el-form-item label="结束时间:" class="space">
@@ -114,7 +114,7 @@
                       type="date"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期"
-                      style="width: 100%;"
+                      style="width: 150px;"
                       @change="computeDays"/>
                   </el-form-item>
                 </el-form-item>
