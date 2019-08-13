@@ -71,7 +71,7 @@
         <el-table-column label="班级" align="center" prop="className"/>
         <el-table-column label="学生姓名" align="center" prop="studentName"/>
         <el-table-column :render-header="renderHeader" label="试用状态" align="center" prop="trialStatusStr"/>
-        <el-table-column label="是否转付费" align="center" prop="payStatusStr"/>
+        <el-table-column label="是否付费" align="center" prop="payStatusStr"/>
         <el-table-column label="试用天数" align="center" prop="trialDays"/>
         <el-table-column label="试用有效期" align="center" prop="trialValidityPeriod"/>
       </el-table>
@@ -111,7 +111,7 @@ export default {
         label: '请选择'
       }, {
         value: '1',
-        label: '在试用'
+        label: '试用中'
       }, {
         value: '2',
         label: '已试用'

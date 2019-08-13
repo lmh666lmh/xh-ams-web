@@ -101,7 +101,7 @@
                       type="date"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期"
-                      style="width: 150px;"/>
+                      style="width: 150px !important;"/>
                   </el-form-item>
                 </el-form-item>
                 <el-form-item label="结束时间:" class="space">
@@ -114,7 +114,7 @@
                       type="date"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期"
-                      style="width: 150px;"
+                      style="width: 150px !important;"
                       @change="computeDays"/>
                   </el-form-item>
                 </el-form-item>
@@ -179,7 +179,7 @@ export default {
       multipleSelection: [],
       dialogFormVisible: false,
       dialogWidth: '800px',
-      title: '批量充值'
+      title: '添加试用'
     }
   },
   created() {

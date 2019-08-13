@@ -33,7 +33,7 @@
             <span v-else>{{ scope.row.trailStudentNums }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="试用转付费人数" align="center">
+        <el-table-column label="试用付费人数" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.transferPayStudentNums != 0" type="text" size="small" @click="routeTo('/probation/probationStudent?schoolId=' + scope.row.schoolId + '&payStatus=1')" >{{ scope.row.transferPayStudentNums }}</el-button>
             <span v-else>{{ scope.row.transferPayStudentNums }}</span>
