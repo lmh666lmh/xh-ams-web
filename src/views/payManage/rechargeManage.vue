@@ -326,11 +326,16 @@ export default {
           'el-tooltip',
           {
             props: {
-              content: '多行信息第二行信息',
               placement: 'top'
             }
           },
           [
+            h('div', {
+              props: {
+                content: '是否在小程序中显示',
+                slot: 'content'
+              }
+            }),
             h('span', {
               class: {
                 'el-icon-question': true
