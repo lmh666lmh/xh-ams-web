@@ -326,7 +326,7 @@ export default {
           'el-tooltip',
           {
             props: {
-              content: '上学期时间：9月1日-1月31日 下学期时间：2月1日-8月31日',
+              content: '多行信息第二行信息',
               placement: 'top'
             }
           },
