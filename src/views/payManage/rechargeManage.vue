@@ -5,6 +5,15 @@
         <el-form-item label="学校名称/账号">
           <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
         </el-form-item>
+        <el-form-item label="自主付费状态">
+          <el-select v-model="formInline.status" placeholder="请选择">
+            <el-option
+              v-for="item in stateOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
@@ -25,21 +34,21 @@
           </template>
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
-        <el-table-column label="学校账号" align="center" prop="schoolAccount" width="120"/>
-        <el-table-column label="学校编码" align="center" prop="schoolNum"/>
-        <el-table-column label="园长姓名" align="center" prop="leaderName"/>
-        <el-table-column label="联系方式" align="center" prop="leaderPhone" width="120"/>
-        <el-table-column label="城市区域" align="center" prop="areaName"/>
-        <el-table-column label="详细地址" align="center" prop="address"/>
-        <el-table-column label="书柜数量" align="center">
+        <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
+        <el-table-column :render-header="renderParentSet" label="是否开启家长充值" align="center" prop="schoolNum"/>
+        <el-table-column label="学生总数" align="center" prop="leaderName"/>
+        <el-table-column :render-header="renderHeaderTotal" label="本学期付费人数" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/school/bookcaseDetail', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/payManage/payStatistics', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime"/>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="本学期总销售额（元）" align="center" prop="schoolNum"/>
+        <el-table-column label="本学期代理分成（元）" align="center" prop="schoolNum"/>
+        <el-table-column label="历史总销售额（元）" align="center" prop="schoolNum"/>
+        <el-table-column label="历史代理分成（元）" align="center" prop="schoolNum"/>
+        <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/schoolManage', scope.row.schoolId)">学校管理</el-button>
+            <el-button type="text" size="small" @click="routeTo('/payManage/studentRecharge', scope.row.schoolId)">学生充值</el-button>
             <el-button type="text" size="small" @click="rechargeSet(scope.row.schoolId)">充值设置</el-button>
           </template>
         </el-table-column>
@@ -159,9 +168,20 @@ export default {
       total: 0,
       formInline: {
         schoolAccountOrName: '',
+        status: '',
         pageNum: 1,
         pageSize: 10
       },
+      stateOptions: [{
+        value: '',
+        label: '请选择'
+      }, {
+        value: '0',
+        label: '关闭'
+      }, {
+        value: '1',
+        label: '开启'
+      }],
       activeName: 'self',
       rechargeSetForm: {
         rechargeDialogVisible: false,
@@ -204,29 +224,6 @@ export default {
         this.listLoading = false
       }).catch(() => {
         this.listLoading = false
-      })
-    },
-    prohibit(id, flag) {
-      let warnText = ''
-      if (flag === 1) {
-        warnText = '是否要启用此学校？'
-      } else {
-        warnText = '是否要禁用此学校？'
-      }
-      this.$confirm(warnText, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        api.prohibitSchool({
-          schoolId: id,
-          enableFlag: flag
-        }).then(response => {
-          this.list = response.items
-          this.fetchData()
-        })
-      }).catch(() => {
-
       })
     },
     routeTo(path) {
@@ -301,6 +298,48 @@ export default {
       console.log(tab, event)
     },
     // render 事件
+    renderParentSet(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '在操作栏【充值配置】里面设置',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
+    renderHeaderTotal(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '上学期时间：9月1日-1月31日 下学期时间：2月1日-8月31日',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
     renderHeader(h, { column }) {
       return [
         column.label,
