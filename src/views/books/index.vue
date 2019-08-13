@@ -5,16 +5,6 @@
         <el-form-item label="书名">
           <el-input v-model="formInline.bookName" placeholder=""/>
         </el-form-item>
-        <el-form-item label="年龄段">
-          <el-select v-model="formInline.ageRange" placeholder="" style="width: 100px;">
-            <el-option label="请选择" value=""/>
-            <el-option
-              v-for="item in ageRangeOptions"
-              :key="item.subCode"
-              :label="item.subName"
-              :value="item.subCode" />
-          </el-select>
-        </el-form-item>
         <el-form-item label="所属类目">
           <el-select v-model="formInline.bookCategoryCode" placeholder="" style="width: 100px;">
             <el-option label="请选择" value=""/>
@@ -86,12 +76,10 @@ export default {
       formInline: {
         schoolId: '',
         bookName: '',
-        ageRange: '',
         bookCategoryCode: '',
         pageNum: 1,
         pageSize: 10
       },
-      ageRangeOptions: [],
       bookCategoryOptions: []
     }
   },
@@ -102,9 +90,8 @@ export default {
   },
   methods: {
     getDictionary() {
-      api.getDictionary('book_category,age_range').then(response => {
+      api.getDictionary('book_category').then(response => {
         if (response.code === 10000) {
-          this.ageRangeOptions = response.data.age_range
           this.bookCategoryOptions = response.data.book_category
         } else {
           console.log('字典获取失败')
