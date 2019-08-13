@@ -125,7 +125,7 @@
       <el-row class="info">
         <el-col :span="8"><div>所属学校：{{ dialogData.schoolName }}</div></el-col>
         <el-col v-if="dialogData.teacherPhone" :span="16"><div>学校对接人员：{{ dialogData.teacherPhone }}（{{ dialogData.teacherName }}）</div></el-col>
-        <el-col v-else :span="16"><div>学校对接人员：<el-button type="text" size="small" @click="jumpSchoolDetail(dialogData.schoolId)">未添加联系人（点击添加）</el-button></div></el-col>
+        <el-col v-else :span="16"><div>学校对接老师：<el-button type="text" size="small" @click="jumpSchoolDetail(dialogData.schoolId)">未添加联系人（点击添加）</el-button></div></el-col>
       </el-row>
       <el-table
         v-loading="dialogLoading"
@@ -175,8 +175,9 @@
         <p>注：1、【处理方式1】说明：</p>
         <p style="text-indent: 3rem;">①让学校对接老师或维护人员到现场，通过书柜上的管理员界面操作【异常处理】，按屏幕上的提示操作。</p>
         <p style="text-indent: 1.5rem;">2、【处理方式2】说明：</p>
-        <p style="text-indent: 3rem;">①事先联系家长告知异常情况，要求带上有在借书籍和借阅卡到书柜现场；</p>
-        <p style="text-indent: 3rem;">②点击【开启家长自助处理】，让家长在书柜刷卡区刷卡，按屏幕提示操作即可。</p>
+        <p style="text-indent: 3rem;">①如果出现异常默认开启家长自助处理，不影响【处理方式1】的操作；</p>
+        <p style="text-indent: 3rem;">②事先联系家长告知异常情况，要求带上所有在借书籍和借阅卡到学校书柜现场；</p>
+        <p style="text-indent: 3rem;">③家长只需自己在书柜刷卡区刷卡，按屏幕上的提示操作解除异常；</p>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogTableVisible = false" >关 闭</el-button>
