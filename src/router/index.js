@@ -223,6 +223,40 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/payManage',
+    component: Layout,
+    name: 'PayManage',
+    meta: { title: '付费管理', icon: 'example' },
+    children: [
+      {
+        path: 'rechargeManage',
+        name: 'RechargeManage',
+        component: () => import('@/views/payManage/rechargeManage'),
+        meta: { title: '充值管理' }
+      },
+      {
+        path: 'studentRecharge',
+        name: 'StudentRecharge',
+        hidden: true,
+        component: () => import('@/views/payManage/studentRecharge'),
+        meta: { title: '学生充值' }
+      },
+      {
+        path: 'payStatistics',
+        name: 'PayStatistics',
+        hidden: true,
+        component: () => import('@/views/payManage/payStatistics'),
+        meta: { title: '付费人数统计' }
+      },
+      {
+        path: 'orderQuery',
+        name: 'OrderQuery',
+        component: () => import('@/views/payManage/orderQuery'),
+        meta: { title: '订单查询' }
+      }
+    ]
+  },
+  {
     path: '/system',
     component: Layout,
     name: 'System',
