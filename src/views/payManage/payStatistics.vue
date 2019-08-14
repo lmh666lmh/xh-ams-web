@@ -6,24 +6,7 @@
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
-        <el-form-item label="年级班级">
-          <el-select v-model="formInline.gradeId" placeholder="请选择年级" style="width: 150px;" @change="getClass(formInline.gradeId)">
-            <el-option value="">请选择年级</el-option>
-            <el-option
-              v-for="item in gradeOptions"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId" />
-          </el-select>
-          <el-select v-model="formInline.classId" placeholder="请选择班级" style="width: 150px;">
-            <el-option value="">请选择班级</el-option>
-            <el-option
-              v-for="item in classOptions"
-              :key="item.classId"
-              :label="item.className"
-              :value="item.classId" />
-          </el-select>
-        </el-form-item>
+        <GradeClass :school-id="formInline.schoolId" :grade-id.sync="formInline.gradeId" :class-id.sync="formInline.classId"/>
         <el-form-item label="学生姓名">
           <el-input v-model="formInline.studentName" placeholder="请输入学生姓名"/>
         </el-form-item>
@@ -92,7 +75,6 @@
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
-    <div><GradeClass :school-id="formInline.schoolId" :grade.sync="formInline.gradeId" :classes.sync="formInline.classId" @selectChange="update"/></div>
   </div>
 </template>
 
@@ -160,29 +142,8 @@ export default {
   created() {
     this.formInline.schoolId = this.$route.query.schoolId
     this.fetchData()
-    this.getGradeAll()
   },
   methods: {
-    update(object) {
-      this.formInline.gradeId = object.grade
-      this.formInline.classId = object.classes
-    },
-    getGradeAll() {
-      api.getAllGrade(this.formInline.schoolId).then(response => {
-        if (response.code === 10000) {
-          this.gradeOptions = response.data
-        }
-      })
-    },
-    getClass(gradeId) {
-      this.classOptions = []
-      this.formInline.classId = ''
-      api.getAllClass({ gradeId: gradeId }).then(response => {
-        if (response.code === 10000) {
-          this.classOptions = response.data
-        }
-      })
-    },
     fetchData() {
       this.listLoading = true
       api.getSchoolList(this.formInline).then(response => {

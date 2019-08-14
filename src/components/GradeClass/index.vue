@@ -1,25 +1,23 @@
 <template>
   <div class="grade-class-container">
-    <el-form>
-      <el-form-item label="年级班级">
-        <el-select v-model="gradeCode" placeholder="请选择年级" style="width: 150px;" @change="getClass">
-          <el-option value="">请选择年级</el-option>
-          <el-option
-            v-for="item in gradeOptions"
-            :key="item.gradeId"
-            :label="item.gradeName"
-            :value="item.gradeId" />
-        </el-select>
-        <el-select v-model="classCode" placeholder="请选择班级" style="width: 150px;" @change="changeClassId">
-          <el-option value="">请选择班级</el-option>
-          <el-option
-            v-for="item in classOptions"
-            :key="item.classId"
-            :label="item.className"
-            :value="item.classId" />
-        </el-select>
-      </el-form-item>
-    </el-form>
+    <el-form-item label="年级班级">
+      <el-select v-model="gradeCode" placeholder="请选择年级" style="width: 150px;" @change="getClass">
+        <el-option value="">请选择年级</el-option>
+        <el-option
+          v-for="item in gradeOptions"
+          :key="item.gradeId"
+          :label="item.gradeName"
+          :value="item.gradeId" />
+      </el-select>
+      <el-select v-model="classCode" placeholder="请选择班级" style="width: 150px;" @change="changeClassId">
+        <el-option value="">请选择班级</el-option>
+        <el-option
+          v-for="item in classOptions"
+          :key="item.classId"
+          :label="item.className"
+          :value="item.classId" />
+      </el-select>
+    </el-form-item>
   </div>
 </template>
 
@@ -34,11 +32,11 @@ export default {
       required: true,
       default: ''
     },
-    grade: {
+    gradeId: {
       type: String,
       default: null
     },
-    classes: {
+    classId: {
       type: String,
       default: ''
     }
@@ -51,10 +49,11 @@ export default {
       classOptions: []
     }
   },
-  mounted() {
-  },
   created() {
     this.getGradeAll()
+    if (this.gradeId) {
+      this.getClass()
+    }
   },
   methods: {
     getGradeAll() {
@@ -66,21 +65,23 @@ export default {
     },
     getClass() {
       this.classOptions = []
-      this.classCode = ''
       api.getAllClass({ gradeId: this.gradeCode }).then(response => {
         if (response.code === 10000) {
           this.classOptions = response.data
         }
       })
-      this.$emit('selectChange', { grade: this.gradeCode, classes: this.classCode })
+      this.$emit('update:gradeId', this.gradeCode)
+      this.$emit('update:classId', '')
     },
     changeClassId() {
-      this.$emit('selectChange', { grade: this.gradeCode, classes: this.classCode })
+      this.$emit('update:classId', this.classCode)
     }
   }
 }
 </script>
 
 <style scoped>
-
+.grade-class-container {
+  display: inline-block;
+}
 </style>
