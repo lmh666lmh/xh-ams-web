@@ -92,17 +92,20 @@
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
+    <div><GradeClass :school-id="formInline.schoolId" :grade.sync="formInline.gradeId" :classes.sync="formInline.classId" @selectChange="update"/></div>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
+import GradeClass from '@/components/GradeClass'
 import { api } from '@/api/index'
 
 export default {
   name: 'PayStatistics',
   components: {
-    Pagination
+    Pagination,
+    GradeClass
   },
   data() {
     return {
@@ -160,6 +163,11 @@ export default {
     this.getGradeAll()
   },
   methods: {
+    update() {
+      console.log(this)
+      debugger
+      console.log(this.formInline)
+    },
     getGradeAll() {
       api.getAllGrade(this.formInline.schoolId).then(response => {
         if (response.code === 10000) {
