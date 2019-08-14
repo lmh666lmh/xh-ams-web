@@ -1,19 +1,13 @@
 <template>
-  <div class="school-container">
+  <div class="school-books-container">
+    <div class="info-container">
+      <span><span class="info-title">当前学校：</span>学校名字</span>
+      <el-button type="primary" size="small" @click="back">返回</el-button>
+    </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="书名">
           <el-input v-model="formInline.bookName" placeholder=""/>
-        </el-form-item>
-        <el-form-item label="年龄段">
-          <el-select v-model="formInline.ageRange" placeholder="" style="width: 100px;">
-            <el-option label="请选择" value=""/>
-            <el-option
-              v-for="item in ageRangeOptions"
-              :key="item.subCode"
-              :label="item.subName"
-              :value="item.subCode" />
-          </el-select>
         </el-form-item>
         <el-form-item label="所属类目">
           <el-select v-model="formInline.bookCategoryCode" placeholder="" style="width: 100px;">
@@ -86,12 +80,10 @@ export default {
       formInline: {
         schoolId: '',
         bookName: '',
-        ageRange: '',
         bookCategoryCode: '',
         pageNum: 1,
         pageSize: 10
       },
-      ageRangeOptions: [],
       bookCategoryOptions: []
     }
   },
@@ -102,9 +94,8 @@ export default {
   },
   methods: {
     getDictionary() {
-      api.getDictionary('book_category,age_range').then(response => {
+      api.getDictionary('book_category').then(response => {
         if (response.code === 10000) {
-          this.ageRangeOptions = response.data.age_range
           this.bookCategoryOptions = response.data.book_category
         } else {
           console.log('字典获取失败')
@@ -135,16 +126,25 @@ export default {
           bookTemplateId: arguments[1]
         }
       })
+    },
+    back() {
+      history.go(-1)
     }
   }
 }
 </script>
 
 <style scoped>
-  .school-container{
+  .school-books-container{
     margin: 20px;
   }
-  .operation-container{
+  .school-books-container .info-container{
     margin-bottom: 20px;
+  }
+  .school-books-container .info-container>span{
+    margin-right: 50px;
+  }
+  .school-books-container .info-container .info-title{
+    color: #92c439;
   }
 </style>

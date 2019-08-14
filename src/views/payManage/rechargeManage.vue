@@ -49,13 +49,13 @@
         <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/payManage/studentRecharge', scope.row.schoolId)">学生充值</el-button>
-            <el-button type="text" size="small" @click="rechargeSet(scope.row.schoolId)">充值设置</el-button>
+            <el-button type="text" size="small" @click="rechargeSet(scope.row.schoolId)">充值配置</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
-    <el-dialog :visible.sync="rechargeSetForm.rechargeDialogVisible" :width="rechargeSetForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="充值设置">
+    <el-dialog :visible.sync="rechargeSetForm.rechargeDialogVisible" :width="rechargeSetForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="充值配置">
       <div style="height: 405px;overflow: auto;">
         <el-form ref="rechargeSetForm" :model="rechargeSetForm.form" size="small">
           <el-form-item :label-width="rechargeSetForm.formLabelWidth" label="学校信息">
@@ -64,7 +64,84 @@
             </el-card>
           </el-form-item>
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="自主付费" name="self">
+            <el-tab-pane label="家长充值" name="self">
+              <div class="tableList">
+                <el-table
+                  v-loading="selfDataListLoading"
+                  :data="selfDataList"
+                  :cell-style="cellDialogStyle"
+                  element-loading-text="Loading"
+                  border
+                  fit
+                  highlight-current-row>
+                  <el-table-column prop="projectName" label="套餐" align="center"/>
+                  <el-table-column label="基础价(￥)" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectPrice }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="折扣价(￥)" align="center">
+                    <template slot-scope="scope">
+                      <span v-if="scope.row.discountRatio">{{ scope.row.projectPrice * scope.row.discountRatio }}</span>
+                      <span v-else>{{ scope.row.projectPrice }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="代理加价(￥)" align="center">
+                    <template slot-scope="scope">
+                      <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价" @change="handleChange" />
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="代理分成比例" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.agentDivideRatio }}%</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="家长实付(￥)" align="center">
+                    <template slot-scope="scope">
+                      <span v-if="scope.row.discountRatio && scope.row.agentAddPrice">{{ (scope.row.projectPrice * scope.row.discountRatio) + scope.row.agentAddPrice }}</span>
+                      <span v-else-if="scope.row.discountRatio && !scope.row.agentAddPrice">{{ scope.row.projectPrice * scope.row.discountRatio }}</span>
+                      <span v-else-if="!scope.row.discountRatio && scope.row.agentAddPrice">{{ scope.row.projectPrice + scope.row.agentAddPrice }}</span>
+                      <span v-else>{{ scope.row.projectPrice }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderHeader" label="是否显示" width="150" align="center">
+                    <template slot-scope="scope">
+                      <el-switch
+                        v-model="scope.row.display"
+                        active-color="#13ce66"
+                        inactive-color="#DBDFE6"/>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
+                <p>注：1、折扣价为小禾官方推出的不定期优惠活动价</p>
+                <P style="text-indent: 1.5rem;">2、家长实付 = 折扣价 + 代理加价 （不包含押金）</P>
+                <p style="text-indent: 1.5rem;">3、代理商收益 = 折扣价 * 分成比例 + 代理加价</p>
+                <p style="text-indent: 1.5rem;">4、代理加价存在上下限，如需调整，请联系：<span style="color: blue;">18046218009</span></p>
+                <p style="text-indent: 1.5rem;">5、【是否显示】表示在小程序会员中是否显示该会员套餐</p>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="后台充值" name="all">
+              <div class="tableList">
+                <el-table
+                  v-loading="allDataListLoading"
+                  :data="allDataList"
+                  :cell-style="cellDialogStyle"
+                  element-loading-text="Loading"
+                  border
+                  fit
+                  highlight-current-row>
+                  <el-table-column prop="projectName" label="套餐" align="center"/>
+                  <el-table-column label="价格" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectPrice | toRMB }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="阅读机套餐" name="robot">
               <div class="tableList">
                 <el-table
                   v-loading="selfDataListLoading"
@@ -120,25 +197,6 @@
                 <p style="text-indent: 1.5rem;">3、代理商收益 = 折扣价 * 分成比例 + 代理加价</p>
                 <p style="text-indent: 1.5rem;">4、代理加价存在上下限，如需调整，请联系：<span style="color: blue;">18046218009</span></p>
                 <p style="text-indent: 1.5rem;">5、【是否显示】表示在小程序会员中是否显示该会员套餐</p>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="全园付费" name="all">
-              <div class="tableList">
-                <el-table
-                  v-loading="allDataListLoading"
-                  :data="allDataList"
-                  :cell-style="cellDialogStyle"
-                  element-loading-text="Loading"
-                  border
-                  fit
-                  highlight-current-row>
-                  <el-table-column prop="projectName" label="套餐" align="center"/>
-                  <el-table-column label="价格" align="center">
-                    <template slot-scope="scope">
-                      <span>{{ scope.row.projectPrice | toRMB }}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
               </div>
             </el-tab-pane>
           </el-tabs>
@@ -326,16 +384,11 @@ export default {
           'el-tooltip',
           {
             props: {
+              content: '是否在小程序中显示',
               placement: 'top'
             }
           },
           [
-            h('div', {
-              props: {
-                content: '是否在小程序中显示',
-                slot: 'content'
-              }
-            }),
             h('span', {
               class: {
                 'el-icon-question': true
