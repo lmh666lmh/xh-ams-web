@@ -210,11 +210,10 @@ export default {
       this.form.probationDays = this.dateDiff(this.form.startTime, this.form.endTime)
     },
     dateDiff(sDate1, sDate2) {
-      const date1 = sDate1.split('-')
-      const oDate1 = new Date(date1[1] + '-' + date1[2] + '-' + date1[0]) // 转换为xx-xx-xxxx格式
-      const date2 = sDate2.split('-')
-      const oDate2 = new Date(date2[1] + '-' + date2[2] + '-' + date2[0])
-      return parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24)
+      const date1 = Date.parse(sDate1)
+      const date2 = Date.parse(sDate2)
+      const dateSpan = Math.abs(date2 - date1)
+      return Math.floor(dateSpan / (24 * 3600 * 1000))
     },
     getGradeAll() {
       api.getAllGrade(this.formInline.schoolId).then(response => {
