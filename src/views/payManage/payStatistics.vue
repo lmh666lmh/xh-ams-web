@@ -163,10 +163,9 @@ export default {
     this.getGradeAll()
   },
   methods: {
-    update() {
-      console.log(this)
-      debugger
-      console.log(this.formInline)
+    update(object) {
+      this.formInline.gradeId = object.grade
+      this.formInline.classId = object.classes
     },
     getGradeAll() {
       api.getAllGrade(this.formInline.schoolId).then(response => {
