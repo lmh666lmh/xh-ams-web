@@ -6,8 +6,62 @@
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
+        <el-form-item label="年级班级">
+          <el-select v-model="formInline.gradeId" placeholder="请选择年级" style="width: 150px;" @change="getClass(formInline.gradeId)">
+            <el-option value="">请选择年级</el-option>
+            <el-option
+              v-for="item in gradeOptions"
+              :key="item.gradeId"
+              :label="item.gradeName"
+              :value="item.gradeId" />
+          </el-select>
+          <el-select v-model="formInline.classId" placeholder="请选择班级" style="width: 150px;">
+            <el-option value="">请选择班级</el-option>
+            <el-option
+              v-for="item in classOptions"
+              :key="item.classId"
+              :label="item.className"
+              :value="item.classId" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="学生姓名">
-          <el-input v-model="formInline.bookName" placeholder=""/>
+          <el-input v-model="formInline.studentName" placeholder="请输入学生姓名"/>
+        </el-form-item>
+        <el-form-item label="是否付费">
+          <el-select v-model="formInline.bookcaseStatus" placeholder="请选择">
+            <el-option
+              v-for="item in stateOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="付费类型">
+          <el-select v-model="formInline.payType" placeholder="请选择">
+            <el-option
+              v-for="item in payTypeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="套餐类型">
+          <el-select v-model="formInline.payType" placeholder="请选择">
+            <el-option
+              v-for="item in typeOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="会员有效期">
+          <el-date-picker
+            v-model="formInline.date"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -28,9 +82,9 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="年级" align="center" prop="averageScoreStr"/>
-        <el-table-column label="班级" align="center" prop="averageScoreStr"/>
-        <el-table-column label="学生姓名" align="center" prop="borrowTotal"/>
+        <el-table-column label="年级" align="center" prop="gradeName"/>
+        <el-table-column label="班级" align="center" prop="className"/>
+        <el-table-column label="学生姓名" align="center" prop="studentName"/>
         <el-table-column label="付费状态" align="center" prop="averageScoreStr"/>
         <el-table-column label="付费路径" align="center" prop="averageScoreStr"/>
         <el-table-column label="套餐类型" align="center" prop="averageScoreStr"/>
@@ -57,21 +111,74 @@ export default {
       total: 0,
       formInline: {
         schoolId: '',
-        bookName: '',
+        gradeId: '',
+        classId: '',
+        studentName: '',
+        bookcaseStatus: '',
+        date: '',
+        payType: '',
         pageNum: 1,
         pageSize: 10
       },
-      bookCategoryOptions: []
+      stateOptions: [{
+        value: '',
+        label: '请选择'
+      }, {
+        value: '0',
+        label: '未付费'
+      }, {
+        value: '1',
+        label: '付费'
+      }],
+      payTypeOptions: [{
+        value: '',
+        label: '请选择'
+      }, {
+        value: '0',
+        label: '批量充值'
+      }, {
+        value: '1',
+        label: '小程序充值'
+      }],
+      typeOptions: [{
+        value: '',
+        label: '请选择'
+      }, {
+        value: '0',
+        label: 'A'
+      }, {
+        value: '1',
+        label: 'B'
+      }],
+      gradeOptions: [],
+      classOptions: []
     }
   },
   created() {
     this.formInline.schoolId = this.$route.query.schoolId
     this.fetchData()
+    this.getGradeAll()
   },
   methods: {
+    getGradeAll() {
+      api.getAllGrade(this.formInline.schoolId).then(response => {
+        if (response.code === 10000) {
+          this.gradeOptions = response.data
+        }
+      })
+    },
+    getClass(gradeId) {
+      this.classOptions = []
+      this.formInline.classId = ''
+      api.getAllClass({ gradeId: gradeId }).then(response => {
+        if (response.code === 10000) {
+          this.classOptions = response.data
+        }
+      })
+    },
     fetchData() {
       this.listLoading = true
-      api.getBooksList(this.formInline).then(response => {
+      api.getSchoolList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
@@ -93,7 +200,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .pay-statistics-container{
     margin: 20px;
   }
@@ -105,5 +212,9 @@ export default {
   }
   .pay-statistics-container .info-container .info-title{
     color: #92c439;
+  }
+  .pay-statistics-container .el-range-separator{
+    display: inline-block;
+    width: 20px;
   }
 </style>
