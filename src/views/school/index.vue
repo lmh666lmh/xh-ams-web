@@ -67,7 +67,7 @@
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
         <el-table-column label="学校账号" align="center" prop="schoolAccount" width="120"/>
-        <el-table-column label="学校编码" align="center" prop="schoolNum"/>
+        <el-table-column label="学校邀请码" align="center" prop="schoolNum"/>
         <el-table-column label="园长姓名" align="center" prop="leaderName"/>
         <el-table-column label="联系方式" align="center" prop="leaderPhone" width="120"/>
         <el-table-column label="城市区域" align="center" prop="areaName"/>
