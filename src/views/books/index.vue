@@ -1,9 +1,9 @@
 <template>
   <div class="school-books-container">
-    <div class="info-container">
-      <span><span class="info-title">当前学校：</span>学校名字</span>
-      <el-button type="primary" size="small" @click="back">返回</el-button>
-    </div>
+    <!--<div class="info-container">-->
+    <!--<span><span class="info-title">当前学校：</span>学校名字</span>-->
+    <!--<el-button type="primary" size="small" @click="back">返回</el-button>-->
+    <!--</div>-->
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="书名">
