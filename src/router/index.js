@@ -246,7 +246,7 @@ export const asyncRouterMap = [
         name: 'PayStatistics',
         hidden: true,
         component: () => import('@/views/payManage/payStatistics'),
-        meta: { title: '付费人数统计' }
+        meta: { title: '付费统计' }
       },
       {
         path: 'orderQuery',

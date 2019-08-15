@@ -10,16 +10,16 @@
         <el-form-item label="学生姓名">
           <el-input v-model="formInline.studentName" placeholder="请输入学生姓名"/>
         </el-form-item>
-        <el-form-item label="是否付费">
-          <el-select v-model="formInline.bookcaseStatus" placeholder="请选择">
+        <el-form-item label="付费状态">
+          <el-select v-model="formInline.payStatus" placeholder="请选择">
             <el-option
-              v-for="item in stateOptions"
+              v-for="item in payStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="付费类型">
+        <el-form-item label="充值方式">
           <el-select v-model="formInline.payType" placeholder="请选择">
             <el-option
               v-for="item in payTypeOptions"
@@ -99,13 +99,13 @@ export default {
         gradeId: '',
         classId: '',
         studentName: '',
-        bookcaseStatus: '',
+        payStatus: '',
         date: '',
         payType: '',
         pageNum: 1,
         pageSize: 10
       },
-      stateOptions: [{
+      payStatusOptions: [{
         value: '',
         label: '请选择'
       }, {
@@ -134,9 +134,7 @@ export default {
       }, {
         value: '1',
         label: 'B'
-      }],
-      gradeOptions: [],
-      classOptions: []
+      }]
     }
   },
   created() {

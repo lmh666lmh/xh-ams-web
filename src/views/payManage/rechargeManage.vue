@@ -5,7 +5,7 @@
         <el-form-item label="学校名称/账号">
           <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
         </el-form-item>
-        <el-form-item label="自主付费状态">
+        <el-form-item label="是否开启家长充值">
           <el-select v-model="formInline.status" placeholder="请选择">
             <el-option
               v-for="item in stateOptions"
@@ -36,16 +36,11 @@
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
         <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
         <el-table-column :render-header="renderParentSet" label="是否开启家长充值" align="center" prop="schoolNum"/>
-        <el-table-column label="学生总数" align="center" prop="leaderName"/>
-        <el-table-column :render-header="renderHeaderTotal" label="本学期付费人数" align="center">
+        <el-table-column label="学生总数" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/payManage/payStatistics', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/payManage/payStatistics', scope.row.schoolId)" >{{ scope.row.schoolNum }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="本学期总销售额（元）" align="center" prop="schoolNum"/>
-        <el-table-column label="本学期代理分成（元）" align="center" prop="schoolNum"/>
-        <el-table-column label="历史总销售额（元）" align="center" prop="schoolNum"/>
-        <el-table-column label="历史代理分成（元）" align="center" prop="schoolNum"/>
         <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/payManage/studentRecharge', scope.row.schoolId)">学生充值</el-button>
@@ -364,27 +359,6 @@ export default {
           {
             props: {
               content: '在操作栏【充值配置】里面设置',
-              placement: 'top'
-            }
-          },
-          [
-            h('span', {
-              class: {
-                'el-icon-question': true
-              }
-            })
-          ]
-        )
-      ]
-    },
-    renderHeaderTotal(h, { column }) {
-      return [
-        column.label,
-        h(
-          'el-tooltip',
-          {
-            props: {
-              content: '是否在小程序中显示',
               placement: 'top'
             }
           },
