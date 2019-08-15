@@ -696,5 +696,72 @@ export default {
    */
   borrowAnomalousSelfHelp(params, callback) {
     return API.post(SYSTEM.SYSTEMANOMALOUS.SELFHELP, params, callback)
+  },
+  /** ================================================  试用管理 ======================================================*/
+  /**
+   * @method: getProbationList
+   * @description: 试用管理 => 列表
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  getProbationList(params, callback) {
+    return API.get(SYSTEM.PROBATION.LIST, params, callback)
+  },
+  /**
+   * @method: getProbationStudentList
+   * @description: 试用管理 => 添加试用学生列表
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  getProbationStudentList(params, callback) {
+    return API.get(SYSTEM.PROBATION.PROBATIONSTUDENTLIST, params, callback)
+  },
+  /**
+   * @method: getProbationNumList
+   * @description: 试用管理 => 试用人数/转付费人数列表页
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  getProbationNumList(params, callback) {
+    return API.get(SYSTEM.PROBATION.PROBATIONNUMLIST, params, callback)
+  },
+  /**
+   * @method: exportProbationStudent
+   * @description: 试用管理 => 试用人数导出
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  exportProbationStudent(params, callback) {
+    return API.download(SYSTEM.PROBATION.PROBATIONNUMEXPORT, params, callback)
+  },
+  /**
+   * @method: addProbationStudent
+   * @description: 试用管理 => 添加试用学生
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  addProbationStudent(params, callback) {
+    return API.post(SYSTEM.PROBATION.ADDPROBATIONSTUDENT, params, callback)
+  },
+  /**
+   * @method: getProbationConfig
+   * @description: 试用管理 => 获取试用配置信息
+   * @author: ProudBin
+   * @update: 2019-08-12
+   * @param {Object}
+   * @return{Object}
+   */
+  getProbationConfig(params, callback) {
+    return API.get(SYSTEM.PROBATION.PROBATIONCONFIG, params, callback)
   }
 }
