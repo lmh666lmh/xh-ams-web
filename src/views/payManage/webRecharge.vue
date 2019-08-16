@@ -121,9 +121,6 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:5px 0'
     },
-    back() {
-      history.go(-1)
-    },
     detail(id) {
       this.$router.push({
         path: '/payManage/orderQuery?id=' + id

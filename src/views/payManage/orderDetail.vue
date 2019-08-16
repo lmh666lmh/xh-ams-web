@@ -53,6 +53,7 @@
         v-loading="listLoading"
         :data="list"
         :cell-style="cellStyle"
+        :header-cell-style="headerStyle"
         element-loading-text="Loading"
         border
         fit
@@ -69,10 +70,12 @@
         <el-table-column label="班级" align="center" prop="averageScoreStr"/>
         <el-table-column label="学生姓名" align="center" prop="averageScoreStr"/>
         <el-table-column label="购买套餐" align="center" prop="averageScoreStr"/>
-        <el-table-column label="押金（元）" align="center" prop="averageScoreStr"/>
-        <el-table-column label="成本（元）" align="center" prop="averageScoreStr"/>
-        <el-table-column label="利润（元）" align="center" prop="averageScoreStr"/>
-        <el-table-column label="订单总金额（元）" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单金额明细（元）" align="center">
+          <el-table-column label="押金（元）" align="center" prop="averageScoreStr"/>
+          <el-table-column label="成本（元）" align="center" prop="averageScoreStr"/>
+          <el-table-column label="利润（元）" align="center" prop="averageScoreStr"/>
+          <el-table-column label="订单总金额（元）" align="center" prop="averageScoreStr"/>
+        </el-table-column>
         <el-table-column label="订单支付时间" align="center" prop="averageScoreStr"/>
       </el-table>
     </div>
@@ -177,8 +180,8 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:5px 0'
     },
-    back() {
-      history.go(-1)
+    headerStyle({ row, rowIndex }) {
+      return 'padding: 0;'
     },
     detail(id) {
       this.$router.push({
@@ -205,5 +208,8 @@ export default {
   }
   .order-detail-container .operation-container{
     margin-bottom: 20px;
+  }
+  .order-detail-container .el-table th>.cell{
+    padding: 3px 0;
   }
 </style>
