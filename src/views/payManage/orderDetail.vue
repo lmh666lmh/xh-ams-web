@@ -58,28 +58,37 @@
         border
         fit
         highlight-current-row>
-        <el-table-column align="center" label="序号" width="95">
+        <el-table-column align="center" label="序号" width="80">
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="充值方式" align="center" prop="gradeName"/>
         <el-table-column :render-header="renderOrderNo" label="订单编号" prop="studentName" align="center"/>
         <el-table-column label="学校名称" align="center" prop="studentName"/>
         <el-table-column label="年级" align="center" prop="averageScoreStr"/>
         <el-table-column label="班级" align="center" prop="averageScoreStr"/>
         <el-table-column label="学生姓名" align="center" prop="averageScoreStr"/>
+        <el-table-column label="充值方式" align="center" prop="gradeName"/>
         <el-table-column label="购买套餐" align="center" prop="averageScoreStr"/>
+        <el-table-column label="支付手机号" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单金额（元）" align="center" prop="averageScoreStr"/>
         <el-table-column label="订单金额明细（元）" align="center">
-          <el-table-column label="押金（元）" align="center" prop="averageScoreStr"/>
-          <el-table-column label="成本（元）" align="center" prop="averageScoreStr"/>
-          <el-table-column label="利润（元）" align="center" prop="averageScoreStr"/>
-          <el-table-column label="订单总金额（元）" align="center" prop="averageScoreStr"/>
+          <el-table-column label="书本押金" align="center" prop="averageScoreStr"/>
+          <el-table-column label="亲禾支付微信手付费" align="center" prop="averageScoreStr"/>
+          <el-table-column label="亲禾分成" align="center" prop="averageScoreStr"/>
+          <el-table-column label="代理支付微信手续费" align="center" prop="averageScoreStr"/>
+          <el-table-column label="代理收益" align="center" prop="averageScoreStr"/>
         </el-table-column>
         <el-table-column label="订单支付时间" align="center" prop="averageScoreStr"/>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
+    <div class="tips">
+      <p>注：1、订单详情页合并了家长充值和后台充值的所有学生订单详情</p>
+      <p style="text-indent: 1.5rem;">2、充值方式：家长充值（家长通过小程序充值）、后台充值（代理商通过后台充值）</p>
+      <p style="text-indent: 1.5rem;">3、家长通过小程序充值的订单支付给微信平台0.6%的手续费</p>
+      <p style="text-indent: 1.5rem;">因此代理商需支付代理分成那部分的手续费，剩余的手续费亲禾承担</p>
+    </div>
   </div>
 </template>
 
@@ -210,6 +219,14 @@ export default {
     margin-bottom: 20px;
   }
   .order-detail-container .el-table th>.cell{
-    padding: 3px 0;
+    padding: 5px 0;
+  }
+  .order-detail-container .tips {
+    color: #888;
+    font-size: 12px;
+  }
+  .order-detail-container .tips p{
+    padding: 0;
+    margin-top: 0;
   }
 </style>

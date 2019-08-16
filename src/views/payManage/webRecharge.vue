@@ -48,13 +48,12 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="年级" align="center" prop="gradeName"/>
-        <el-table-column label="班级" align="center" prop="className"/>
-        <el-table-column label="学生姓名" align="center" prop="studentName"/>
-        <el-table-column label="付费状态" align="center" prop="averageScoreStr"/>
-        <el-table-column label="付费路径" align="center" prop="averageScoreStr"/>
-        <el-table-column label="套餐类型" align="center" prop="averageScoreStr"/>
-        <el-table-column label="会员有效期" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单编号" align="center" prop="gradeName"/>
+        <el-table-column label="学校名称" align="center" prop="className"/>
+        <el-table-column label="订单状态" align="center" prop="studentName"/>
+        <el-table-column label="充值人数" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单金额（元）" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单支付时间" align="center" prop="averageScoreStr"/>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="detail('123456')" >订单详情</el-button>
