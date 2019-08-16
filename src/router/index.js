@@ -251,8 +251,22 @@ export const asyncRouterMap = [
       {
         path: 'orderQuery',
         name: 'OrderQuery',
+        meta: { title: '订单查询' },
         component: () => import('@/views/payManage/orderQuery'),
-        meta: { title: '订单查询' }
+        children: [
+          {
+            path: 'detail',
+            name: 'OrderDetail',
+            component: () => import('@/views/payManage/orderDetail'),
+            meta: { title: '订单详情' }
+          },
+          {
+            path: 'webRecharge',
+            name: 'WebRecharge',
+            component: () => import('@/views/payManage/webRecharge'),
+            meta: { title: '后台订单' }
+          }
+        ]
       }
     ]
   },

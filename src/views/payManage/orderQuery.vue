@@ -1,5 +1,7 @@
 <template>
-  <div>1</div>
+  <div class="order-manage">
+    <router-view/>
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
