@@ -18,7 +18,7 @@ switch (prefix) {
     BASE_API = 'http://192.168.3.3:8180'
     break
   case 'test':
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.3:8180/server'
     break
   case 'pro':
     BASE_API = 'https://agent.xiaohebook.com/server'
