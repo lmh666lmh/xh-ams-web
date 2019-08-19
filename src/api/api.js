@@ -763,5 +763,50 @@ export default {
    */
   getProbationConfig(params, callback) {
     return API.get(SYSTEM.PROBATION.PROBATIONCONFIG, params, callback)
+  },
+  /** ================================================  付费管理 ======================================================*/
+  /**
+   * @method: getOrderQueryList
+   * @description: 付费管理 => 订单查询 => 后台充值订单查询
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  getOrderQueryList(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.ORDERQUERY.LIST, params, callback)
+  },
+  /**
+   * @method: getOrderQueryDetail
+   * @description: 付费管理 => 订单查询 => 订单详情
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  getOrderQueryDetail(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.ORDERQUERY.DETAIL, params, callback)
+  },
+  /**
+   * @method: exportOrderQueryWeb
+   * @description: 付费管理 => 订单查询 => 后台充值订单导出
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  exportOrderQueryWeb(params, callback) {
+    return API.download(SYSTEM.PAYMANAGE.ORDERQUERY.EXPORTWEB, params, callback)
+  },
+  /**
+   * @method: exportOrderQueryDetail
+   * @description: 付费管理 => 订单查询 => 订单详情导出
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  exportOrderQueryDetail(params, callback) {
+    return API.download(SYSTEM.PAYMANAGE.ORDERQUERY.EXPORTDETAIL, params, callback)
   }
 }

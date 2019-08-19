@@ -3,28 +3,43 @@
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="订单编号">
-          <el-input v-model="formInline.studentName" placeholder="请输入订单编号"/>
+          <el-input v-model="formInline.orderNum" placeholder="请输入订单编号"/>
         </el-form-item>
-        <el-form-item label="学校名称/账号">
-          <el-input v-model="formInline.studentName" placeholder="请输入学校名称/账号"/>
+        <el-form-item label="学校名称/账户">
+          <el-autocomplete
+            v-model="schoolName"
+            :fetch-suggestions="searchSchool"
+            :debounce="700"
+            :clearable="true"
+            :trigger-on-focus="false"
+            popper-class="my-autocomplete"
+            placeholder="请填写"
+            @select="searchSchoolSelect">
+            <i slot="suffix" class="el-icon-search el-input__icon"/>
+            <template slot-scope="{ item }">
+              <div class="name">{{ item.value }}</div>
+              <span class="addr">账号：{{ item.schoolAccount }}</span>
+              <span class="addr">编码：{{ item.schoolNum }}</span>
+            </template>
+          </el-autocomplete>
         </el-form-item>
         <GradeClass :school-id="formInline.schoolId" :grade-id.sync="formInline.gradeId" :class-id.sync="formInline.classId"/>
         <el-form-item label="学生姓名">
           <el-input v-model="formInline.studentName" placeholder="请输入学生姓名"/>
         </el-form-item>
         <el-form-item label="购买套餐">
-          <el-select v-model="formInline.payType" placeholder="请选择">
+          <el-select v-model="formInline.packageType" placeholder="请选择">
             <el-option
-              v-for="item in typeOptions"
+              v-for="item in packageTypeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="充值方式">
-          <el-select v-model="formInline.payType" placeholder="请选择">
+          <el-select v-model="formInline.orderType" placeholder="请选择">
             <el-option
-              v-for="item in payTypeOptions"
+              v-for="item in orderTypeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
@@ -38,7 +53,8 @@
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期"/>
+            end-placeholder="结束日期"
+            @change="computeDate"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -63,23 +79,47 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column :render-header="renderOrderNo" label="订单编号" prop="studentName" align="center"/>
-        <el-table-column label="学校名称" align="center" prop="studentName"/>
-        <el-table-column label="年级" align="center" prop="averageScoreStr"/>
-        <el-table-column label="班级" align="center" prop="averageScoreStr"/>
-        <el-table-column label="学生姓名" align="center" prop="averageScoreStr"/>
-        <el-table-column label="充值方式" align="center" prop="gradeName"/>
-        <el-table-column label="购买套餐" align="center" prop="averageScoreStr"/>
-        <el-table-column label="支付手机号" align="center" prop="averageScoreStr"/>
-        <el-table-column label="订单金额（元）" align="center" prop="averageScoreStr"/>
-        <el-table-column label="订单金额明细（元）" align="center">
-          <el-table-column label="书本押金" align="center" prop="averageScoreStr"/>
-          <el-table-column label="亲禾支付微信手付费" align="center" prop="averageScoreStr"/>
-          <el-table-column label="亲禾分成" align="center" prop="averageScoreStr"/>
-          <el-table-column label="代理支付微信手续费" align="center" prop="averageScoreStr"/>
-          <el-table-column label="代理收益" align="center" prop="averageScoreStr"/>
+        <el-table-column :render-header="renderOrderNo" label="订单编号" prop="orderNum" align="center"/>
+        <el-table-column label="学校名称" align="center" prop="schoolName"/>
+        <el-table-column label="年级" align="center" prop="gradeName"/>
+        <el-table-column label="班级" align="center" prop="className"/>
+        <el-table-column label="学生姓名" align="center" prop="studentName"/>
+        <el-table-column label="充值方式" align="center" prop="orderTypeStr"/>
+        <el-table-column label="购买套餐" align="center" prop="packageTypeStr"/>
+        <el-table-column label="支付手机号" align="center" prop="parentPhone"/>
+        <el-table-column label="订单金额（元）" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.totalFee | toRMB }}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="订单支付时间" align="center" prop="averageScoreStr"/>
+        <el-table-column label="订单金额明细（元）" align="center">
+          <el-table-column label="书本押金" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.cashPledge | toRMB }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="亲禾支付微信手付费" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.companyCommissionCharge | toRMB }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="亲禾分成" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.companyIncome | toRMB }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="代理支付微信手续费" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.agentCommissionCharge | toRMB }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="代理收益" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.agentIncome | toRMB }}</span>
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="订单支付时间" align="center" prop="timeEnd"/>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
@@ -108,28 +148,32 @@ export default {
       list: null,
       listLoading: true,
       total: 0,
+      date: '',
+      schoolName: '',
       formInline: {
+        orderNum: '',
         schoolId: '',
         gradeId: '',
         classId: '',
+        orderType: '',
         studentName: '',
-        payStatus: '',
-        date: '',
-        payType: '',
+        packageType: '',
+        startTime: '',
+        endTime: '',
         pageNum: 1,
         pageSize: 10
       },
-      payTypeOptions: [{
+      orderTypeOptions: [{
         value: '',
         label: '请选择'
       }, {
-        value: '0',
-        label: '批量充值'
-      }, {
         value: '1',
-        label: '小程序充值'
+        label: '后台充值'
+      }, {
+        value: '2',
+        label: '家长充值'
       }],
-      typeOptions: [{
+      packageTypeOptions: [{
         value: '',
         label: '请选择'
       }, {
@@ -147,9 +191,53 @@ export default {
     }
   },
   created() {
+    this.formInline.orderNum = this.$route.query.orderNum
     this.fetchData()
   },
   methods: {
+    computeDate() {
+      if (this.date) {
+        this.formInline.startTime = this.date[0]
+        this.formInline.endTime = this.date[1]
+      } else {
+        this.formInline.startTime = ''
+        this.formInline.endTime = ''
+      }
+    },
+    searchSchool(queryString, callback) {
+      this.formInline.schoolId = ''
+      const searchKey = queryString.trim()
+      if (!searchKey) {
+        callback([])
+      } else {
+        api.getSearchSchool({
+          searchKey: searchKey
+        }).then(res => {
+          if (res.code === 10000) {
+            const array = []
+            res.data.forEach((value, index) => {
+              array.push({
+                value: value.schoolName,
+                schoolId: value.schoolId,
+                schoolNum: value.schoolNum,
+                schoolAccount: value.schoolAccount
+              })
+            })
+            // 调用 callback 返回建议列表的数据
+            callback(array)
+          } else {
+            callback([])
+          }
+        }).catch(err => {
+          callback([])
+          console.log(err)
+        })
+      }
+    },
+    searchSchoolSelect(item) {
+      console.log(item)
+      this.formInline.schoolId = item.schoolId
+    },
     // render 事件
     renderOrderNo(h, { column }) {
       return [
@@ -174,7 +262,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getOrderQueryDetail(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
@@ -228,5 +316,22 @@ export default {
   .order-detail-container .tips p{
     padding: 0;
     margin-top: 0;
+  }
+  .my-autocomplete li {
+    line-height: normal;
+    padding: 7px;
+  }
+  .my-autocomplete .name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .my-autocomplete .addr {
+    font-size: 12px;
+    color: #b4b4b4;
+    display: block;
+    text-indent: 1rem;
+  }
+  .my-autocomplete .highlighted .addr {
+    color: #ddd;
   }
 </style>

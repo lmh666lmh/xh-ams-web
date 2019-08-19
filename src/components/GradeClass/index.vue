@@ -1,7 +1,7 @@
 <template>
   <div class="grade-class-container">
     <el-form-item label="年级班级">
-      <el-select v-model="gradeCode" placeholder="请选择年级" style="width: 150px;" @change="getClass">
+      <el-select v-model="gradeCode" placeholder="请选择年级" style="width: 150px;" @change="getClass" @visible-change="isHasSchoolId($event)">
         <el-option value="">请选择年级</el-option>
         <el-option
           v-for="item in gradeOptions"
@@ -56,6 +56,13 @@ export default {
     }
   },
   methods: {
+    isHasSchoolId(e) {
+      if (e && !this.schoolId) {
+        this.$message('请先选择学校')
+      } else if (e && this.schoolId) {
+        this.getGradeAll()
+      }
+    },
     getGradeAll() {
       api.getAllGrade(this.schoolId).then(response => {
         if (response.code === 10000) {
