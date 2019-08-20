@@ -29,11 +29,12 @@
         </el-form-item>
         <el-form-item label="购买套餐">
           <el-select v-model="formInline.packageType" placeholder="请选择">
+            <el-option value="">请选择</el-option>
             <el-option
               v-for="item in packageTypeOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
+              :key="item.packageType"
+              :label="item.packageTypeName"
+              :value="item.packageType" />
           </el-select>
         </el-form-item>
         <el-form-item label="充值方式">
@@ -47,13 +48,14 @@
         </el-form-item>
         <el-form-item label="订单支付时间">
           <el-date-picker
-            v-model="formInline.date"
+            v-model="date"
             :picker-options="pickerOptions"
             type="daterange"
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
             @change="computeDate"/>
         </el-form-item>
         <el-form-item>
@@ -168,21 +170,12 @@ export default {
         label: '请选择'
       }, {
         value: '1',
-        label: '后台充值'
+        label: '全园付费'
       }, {
         value: '2',
-        label: '家长充值'
+        label: '自主付费'
       }],
-      packageTypeOptions: [{
-        value: '',
-        label: '请选择'
-      }, {
-        value: '0',
-        label: 'A'
-      }, {
-        value: '1',
-        label: 'B'
-      }],
+      packageTypeOptions: [],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now() - 8.64e6 // 如果没有后面的-8.64e6就是不可以选择今天的
@@ -191,10 +184,20 @@ export default {
     }
   },
   created() {
-    this.formInline.orderNum = this.$route.query.orderNum
+    this.formInline.orderNum = this.$route.query.orderNum ? this.$route.query.orderNum : ''
     this.fetchData()
+    this.getPackageType()
   },
   methods: {
+    getPackageType() {
+      api.getPackageType().then(res => {
+        if (res.code === 10000) {
+          this.packageTypeOptions = res.data
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     computeDate() {
       if (this.date) {
         this.formInline.startTime = this.date[0]
@@ -272,6 +275,9 @@ export default {
     },
     onSubmit() {
       this.formInline.pageNum = 1
+      if (!this.schoolName) {
+        this.formInline.schoolId = ''
+      }
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
@@ -280,13 +286,9 @@ export default {
     headerStyle({ row, rowIndex }) {
       return 'padding: 0;'
     },
-    detail(id) {
-      this.$router.push({
-        path: '/payManage/orderQuery?id=' + id
-      })
-    },
     down() {
-      api.exportProbationStudent()
+      const param = '?orderNum=' + this.formInline.orderNum + '&schoolId=' + this.formInline.schoolId + '&gradeId=' + this.formInline.gradeId + '&classId=' + this.formInline.classId + '&orderType=' + this.formInline.orderType + '&studentName=' + this.formInline.studentName + '&packageType=' + this.formInline.packageType + '&startTime=' + this.formInline.startTime + '&endTime' + this.formInline.endTime
+      api.exportOrderQueryDetail(param)
     }
   }
 }

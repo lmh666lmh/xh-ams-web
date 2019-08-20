@@ -103,6 +103,28 @@ export default {
   changeBookCasePassword(params, callback) {
     return API.put(SYSTEM.USER.CHANGEBOOKCASEPASSWORD, params, callback)
   },
+  /**
+   * @method: addPayPassword
+   * @description: 更改密码
+   * @author: ProudBin
+   * @update: 2019-08-20
+   * @param {Object} params {oldPwd:'旧密码（加密）',newPwd:'新密码（加密）',confirmNewPwd:'确认新密码（加密）'}
+   * @return{Object} 返回成功与否
+   */
+  addPayPassword(params, callback) {
+    return API.post(SYSTEM.USER.ADDPAYPASSWORD, params, callback)
+  },
+  /**
+   * @method: editPayPassword
+   * @description: 更改密码
+   * @author: ProudBin
+   * @update: 2019-08-20
+   * @param {Object} params {newPwd:'新密码（加密）',confirmNewPwd:'确认新密码（加密）'}
+   * @return{Object} 返回成功与否
+   */
+  editPayPassword(params, callback) {
+    return API.put(SYSTEM.USER.EDITPAYPASSWORD, params, callback)
+  },
 
   // 首页统计
   getIndexStatistics(params, callback) {
@@ -808,5 +830,72 @@ export default {
    */
   exportOrderQueryDetail(params, callback) {
     return API.download(SYSTEM.PAYMANAGE.ORDERQUERY.EXPORTDETAIL, params, callback)
+  },
+  /**
+   * @method: getPackageType
+   * @description: 付费管理 => 订单查询 => 订单详购买套餐查询
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  getPackageType(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.ORDERQUERY.PACKAGETYPE, params, callback)
+  },
+  /**
+   * @method: getRechargeManageList
+   * @description: 付费管理 => 充值管理 => 列表
+   * @author: ProudBin
+   * @update: 2019-08-19
+   * @param {Object}
+   * @return{Object}
+   */
+  getRechargeManageList(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.RECHARGEMANAGE.LIST, params, callback)
+  },
+  /**
+   * @method: getRechargeStudentList
+   * @description: 付费管理 => 充值管理 => 学生总数列表/学生充值列表
+   * @author: ProudBin
+   * @update: 2019-08-19
+   * @param {Object}
+   * @return{Object}
+   */
+  getRechargeStudentList(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.RECHARGEMANAGE.STUDENTLIST, params, callback)
+  },
+  /**
+   * @method: addBatchRecharge
+   * @description: 付费管理 => 充值管理 => 批量充值
+   * @author: ProudBin
+   * @update: 2019-08-19
+   * @param {Object}
+   * @return{Object}
+   */
+  addBatchRecharge(params, callback) {
+    return API.post(SYSTEM.PAYMANAGE.RECHARGEMANAGE.BATCHREAHARGE, params, callback)
+  },
+  /**
+   * @method: getPackageType
+   * @description: 付费管理 => 充值管理 => 购买套餐查询
+   * @author: ProudBin
+   * @update: 2019-08-17
+   * @param {Object}
+   * @return{Object}
+   */
+  getPayPackageType(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.RECHARGEMANAGE.PACKAGETYPE, params, callback)
+  },
+  /**
+   * @method: getAgentCapital
+   * @description: 付费管理 => 充值管理 => 查询代理商预充款
+   * @author: ProudBin
+   * @update: 2019-08-20
+   * @param {Object}
+   * @return{Object}
+   */
+  getAgentCapital(params, callback) {
+    return API.get(SYSTEM.PAYMANAGE.RECHARGEMANAGE.CAPITAL, params, callback)
   }
+
 }

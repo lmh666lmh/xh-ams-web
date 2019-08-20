@@ -6,7 +6,7 @@
           <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
         </el-form-item>
         <el-form-item label="是否开启家长充值">
-          <el-select v-model="formInline.status" placeholder="请选择">
+          <el-select v-model="formInline.openParentPay" placeholder="请选择">
             <el-option
               v-for="item in stateOptions"
               :key="item.value"
@@ -35,10 +35,10 @@
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
         <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
-        <el-table-column :render-header="renderParentSet" label="是否开启家长充值" align="center" prop="schoolNum"/>
+        <el-table-column :render-header="renderParentSet" label="是否开启家长充值" align="center" prop="openParentPayStr"/>
         <el-table-column label="学生总数" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/payManage/payStatistics', scope.row.schoolId)" >{{ scope.row.schoolNum }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/payManage/payStatistics', scope.row.schoolId)" >{{ scope.row.studentTotal }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150" align="center">
@@ -242,7 +242,7 @@ export default {
       total: 0,
       formInline: {
         schoolAccountOrName: '',
-        status: '',
+        openParentPay: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -292,7 +292,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getRechargeManageList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false

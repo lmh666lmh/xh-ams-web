@@ -78,6 +78,18 @@ export default {
         }
       }
     }
+    const checkTeacherPhone = (rule, value, callback) => {
+      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
+      if (value !== '') {
+        if (!regPhone.test(value)) {
+          callback(new Error('请输入正确的手机号码'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
     const checkPwd = (rule, value, callback) => {
       const regPwd = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/
       if (value === '') {
@@ -138,7 +150,7 @@ export default {
           { required: true, validator: checkPhone, trigger: 'blur' }
         ],
         icTeacherPhone: [
-          { required: false, validator: checkPhone, trigger: 'blur' }
+          { required: false, validator: checkTeacherPhone, trigger: 'blur' }
         ]
       }
     }

@@ -207,6 +207,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Pagination from '@/components/Pagination'
 import { SYSTEM } from '@/api/apiMaps'
 import { getToken } from '@/utils/auth'
@@ -255,11 +256,24 @@ export default {
       return {
         'AGENT_SESSION_ID': getToken()
       }
-    }
+    },
+    ...mapGetters([
+      'setPayPwd'
+    ])
   },
   created() {
     this.fetchData()
     this.getProvince()
+    if (!this.setPayPwd) {
+      this.$confirm('您暂未设置订单支付密码，请先设置支付密码', '提示', {
+        confirmButtonText: '去设置',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.routeTo('/payPassword')
+      }).catch(() => {
+      })
+    }
   },
   methods: {
     toRMB: value => {

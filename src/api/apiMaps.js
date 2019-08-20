@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.229:8080'
+    BASE_API = 'http://192.168.3.2:8080'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
@@ -46,7 +46,11 @@ export const SYSTEM = {
     // 修改密码
     CHANGEPASSWORD: path('/agent/resetPwd'),
     // 修改书柜密码
-    CHANGEBOOKCASEPASSWORD: path('/agent/resetBookcasePwd')
+    CHANGEBOOKCASEPASSWORD: path('/agent/resetBookcasePwd'),
+    // 新增支付密码
+    ADDPAYPASSWORD: path('/agent/initPayPwd'),
+    // 修改支付密码
+    EDITPAYPASSWORD: path('/agent/resetPayPwd')
   },
   // 首页统计数据
   INDEX: path('/school/list'),
@@ -218,7 +222,22 @@ export const SYSTEM = {
       // 导出后台订单
       EXPORTWEB: path('/order/export'),
       // 导出详情
-      EXPORTDETAIL: path('/order/detail/export')
+      EXPORTDETAIL: path('/order/detail/export'),
+      // 购买套餐类型
+      PACKAGETYPE: path('/school/allPackage')
+    },
+    // 充值管理
+    RECHARGEMANAGE: {
+      // 列表
+      LIST: path('/school/pagePayInfo'),
+      // 学生总数/学生充值列表
+      STUDENTLIST: path('/student/pay/page'),
+      // 批量充值
+      BATCHREAHARGE: path('/pay/student/batch'),
+      // 套餐类型
+      PACKAGETYPE: path('/school/pay/project/packageType'),
+      // 代理商资金
+      CAPITAL: path('/agent/capital')
     }
   }
 }

@@ -75,6 +75,19 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/payPassword',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'PayPassword',
+        component: () => import('@/views/passwordManage'),
+        meta: { title: '支付密码管理' }
+      }
+    ]
+  },
+  {
     path: '/editBookCasePassword',
     component: Layout,
     hidden: true,

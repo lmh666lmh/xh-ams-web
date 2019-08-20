@@ -7,6 +7,7 @@ const getters = {
   name: state => state.user.name,
   agentId: state => state.user.agentId,
   account: state => state.user.account,
+  setPayPwd: state => state.user.setPayPwd,
   roles: state => state.user.roles,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
