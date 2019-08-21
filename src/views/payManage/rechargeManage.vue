@@ -120,7 +120,7 @@
                 <p>注：1、家长充值是配置小程序上家长购买会员套餐的价格；</p>
                 <P style="text-indent: 1.5rem;">2、折扣价以小禾官方推出的政策为主；</P>
                 <P style="text-indent: 1.5rem;">3、销售价 = 折扣价 + 代理加价 + 书本押金；</P>
-                <P style="text-indent: 1.5rem;">4、亲禾分成 = 原价 * 25%；</P>
+                <P style="text-indent: 1.5rem;">4、亲禾分成 = 折扣价 * 25%；</P>
                 <p style="text-indent: 1.5rem;">5、代理商收益 = 折扣价 + 代理加价 - 亲禾分成</p>
                 <p style="text-indent: 1.5rem;">6、代理加价存在上下限，如需调整，请联系：<span style="color: blue;">18046218009</span></p>
                 <p style="text-indent: 1.5rem;">7、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>

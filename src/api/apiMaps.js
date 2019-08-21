@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.2:8080'
+    BASE_API = 'http://192.168.3.229:8080'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
