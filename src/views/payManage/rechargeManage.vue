@@ -53,11 +53,7 @@
     <el-dialog :visible.sync="rechargeSetForm.rechargeDialogVisible" :width="rechargeSetForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="充值配置">
       <div style="height: 405px;overflow: auto;">
         <el-form ref="rechargeSetForm" :model="rechargeSetForm.form" size="small">
-          <el-form-item :label-width="rechargeSetForm.formLabelWidth" label="学校信息">
-            <el-card class="box-card">
-              <p>当前学校：{{ rechargeSetForm.schoolName }}</p>
-            </el-card>
-          </el-form-item>
+          <p style="margin-top: 0;">当前学校：{{ rechargeSetForm.schoolName }}</p>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="家长充值" name="self">
               <div class="tableList">
@@ -70,18 +66,13 @@
                   border
                   fit
                   highlight-current-row>
-                  <el-table-column prop="projectName" label="套餐" align="center" width="80"/>
-                  <el-table-column label="原价(￥)" align="center" width="100">
-                    <template slot-scope="scope">
-                      <span>{{ scope.row.projectPrice }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="折扣价(￥)" align="center" width="100">
+                  <el-table-column prop="projectName" label="套餐名称" align="center" width="80"/>
+                  <el-table-column label="最低价(￥)" align="center" width="100">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="代理加价(￥)" align="center">
+                  <el-table-column label="代理商加价(￥)" align="center">
                     <template slot-scope="scope">
                       <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价" @change="computeAutoAddPrice(scope.row.agentAddPrice, scope.row.projectId)"/>
                     </template>
@@ -91,9 +82,14 @@
                       <el-input-number v-model="cashPledgeFee" :step="1" :precision="0" :min="0" :max="100" controls-position="right" size="mini" label="书本押金" @change="computeCashPledgeFee"/>
                     </template>
                   </el-table-column>
-                  <el-table-column label="套餐销售价(￥)" align="center" width="100">
+                  <el-table-column label="家长销售价(￥)" align="center" width="100">
                     <template slot-scope="scope">
-                      <span>{{ scope.row.discountPrice + scope.row.agentAddPrice + cashPledgeFee }}</span>
+                      <span style="color: red;">{{ scope.row.discountPrice + scope.row.agentAddPrice + cashPledgeFee }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="月平均价(￥)" align="center" width="100">
+                    <template slot-scope="scope">
+                      <span>{{ ((scope.row.discountPrice + scope.row.agentAddPrice + cashPledgeFee) / scope.row.months).toFixed(2) }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="亲禾分成(￥)" align="center" width="100">
@@ -118,12 +114,10 @@
               </div>
               <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
                 <p>注：1、家长充值是配置小程序上家长购买会员套餐的价格；</p>
-                <P style="text-indent: 1.5rem;">2、折扣价以小禾官方推出的政策为主；</P>
-                <P style="text-indent: 1.5rem;">3、销售价 = 折扣价 + 代理加价 + 书本押金；</P>
-                <P style="text-indent: 1.5rem;">4、亲禾分成 = 折扣价 * 25%；</P>
-                <p style="text-indent: 1.5rem;">5、代理商收益 = 折扣价 + 代理加价 - 亲禾分成</p>
-                <p style="text-indent: 1.5rem;">6、代理加价存在上下限，如需调整，请联系：<span style="color: blue;">18046218009</span></p>
-                <p style="text-indent: 1.5rem;">7、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>
+                <P style="text-indent: 1.5rem;">2、销售价 = 最低价 + 代理加价 + 书本押金；</P>
+                <p style="text-indent: 1.5rem;">3、代理商收益 = 家长销售价 - 书本押金 - 亲禾分成</p>
+                <p style="text-indent: 1.5rem;">4、代理加价存在上下限，如需调整，请联系：<span style="color: blue;">18046218009</span></p>
+                <p style="text-indent: 1.5rem;">5、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>
               </div>
             </el-tab-pane>
             <el-tab-pane label="后台充值" name="all">
@@ -137,12 +131,7 @@
                   fit
                   highlight-current-row>
                   <el-table-column prop="projectName" label="套餐名称" align="center"/>
-                  <el-table-column label="原价(￥)" align="center">
-                    <template slot-scope="scope">
-                      <span>{{ scope.row.projectPrice }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="折扣价(￥)" align="center">
+                  <el-table-column label="亲禾分成(￥)" align="center">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice }}</span>
                     </template>
@@ -156,9 +145,7 @@
               </div>
               <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
                 <p>注：1、后台充值是代理商通过线下收费后，再通过代理商后台给学生充值；</p>
-                <P style="text-indent: 1.5rem;">2、折扣价以小禾官方推出的政策为主；</P>
-                <P style="text-indent: 1.5rem;">3、折扣价即是代理商跟小禾平台的结算价</P>
-                <P style="text-indent: 1.5rem;">4、合同销售价目的是方便代理商统计线下收益情况，默认销售价为【家长充值】里面配置的销售价，代理商根据合同销售价修改价格，修改的价格下限不低于【家长充值】里面的基础价；</P>
+                <P style="text-indent: 1.5rem;">2、合同销售价目的是方便代理商统计线下收益情况，默认销售价为【家长充值】里面配置的销售价，代理商根据合同销售价修改价格，修改的价格下限不低于【家长充值】里面的最低价；</P>
               </div>
             </el-tab-pane>
             <el-tab-pane label="阅读机套餐" name="robot">
@@ -172,17 +159,17 @@
                   fit
                   highlight-current-row>
                   <el-table-column prop="projectName" label="套餐名称" align="center"/>
-                  <el-table-column label="阅读机器人原价(￥)" align="center">
+                  <el-table-column label="阅读机器人市场(￥)" align="center">
                     <template slot-scope="scope">
                       <span>{{ scope.row.projectPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="阅读机器人折扣价(￥)" align="center">
+                  <el-table-column label="阅读机器人最低价(￥)" align="center">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderPlus" label="代理加价(￥)" align="center">
+                  <el-table-column :render-header="renderPlus" label="代理商加价(￥)" align="center">
                     <template slot-scope="scope">
                       <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价"/>
                     </template>
@@ -193,9 +180,14 @@
                       <span v-else>无</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="套餐销售价(￥)" align="center">
+                  <el-table-column label="家长销售价(￥)" align="center">
                     <template slot-scope="scope">
-                      <span>{{ scope.row.discountPrice + scope.row.agentAddPrice + (scope.row.combinedProjectPrice ? scope.row.combinedProjectPrice : 0) }}</span>
+                      <span style="color: red;">{{ scope.row.discountPrice + scope.row.agentAddPrice + (scope.row.combinedProjectPrice ? scope.row.combinedProjectPrice : 0) }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="立省价格(￥)" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectPrice - scope.row.discountPrice - scope.row.agentAddPrice }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column :render-header="renderHeader" label="是否开启" width="150" align="center">
@@ -210,7 +202,7 @@
               </div>
               <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
                 <p>注：1、阅读机器人套餐是配置阅读机加会员卡组合成套餐销售，在小程序上充值购买；</p>
-                <P style="text-indent: 1.5rem;">2、阅读机器人折扣价为代理商跟亲禾平台的结算价；</P>
+                <P style="text-indent: 1.5rem;">2、阅读机器人最低价为代理商跟亲禾平台的结算价；</P>
                 <p style="text-indent: 1.5rem;">3、阅读机机器人的利润 = 代理商加价价格；</p>
                 <p style="text-indent: 1.5rem;">4、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>
               </div>
@@ -442,7 +434,7 @@ export default {
     },
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       // 这里rowspan为1是行有一行合并,colspan为3是列有3列合并,你要合并几行几列就写上相应的数字
-      if (columnIndex === 4) {
+      if (columnIndex === 3) {
         if (rowIndex % this.autoPayData.length === 0) {
           return {
             rowspan: this.autoPayData.length,
