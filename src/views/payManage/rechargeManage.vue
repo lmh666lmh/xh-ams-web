@@ -597,8 +597,6 @@ export default {
     padding: 5px;
   }
   .recharge-manage-container .tableList{
-    max-height: 245px;
-    overflow: auto;
   }
   .recharge-manage-container .el-dialog__body{
     padding-top: 10px;
