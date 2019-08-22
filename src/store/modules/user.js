@@ -8,7 +8,8 @@ const user = {
     account: '', // 账号
     avatar: '', // 头像
     agentId: '', // 代理商ID
-    roles: []
+    roles: [],
+    setPayPwd: false // 是否设置支付密码
   },
 
   mutations: {
@@ -29,6 +30,9 @@ const user = {
     },
     SET_AGENT_ID: (state, agentId) => {
       state.agentId = agentId
+    },
+    SET_PAY_PWD: (state, payPwdSetStatus) => {
+      state.setPayPwd = payPwdSetStatus
     }
   },
 
@@ -65,6 +69,7 @@ const user = {
           commit('SET_ACCOUNT', data.agentAccount)
           commit('SET_AVATAR', data.agentPic || '/static/image/agentPic.gif')
           commit('SET_AGENT_ID', data.agentId)
+          commit('SET_PAY_PWD', data.payPwdSetStatus)
           resolve(response)
         }).catch((error) => {
           reject(error)

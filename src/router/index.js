@@ -75,6 +75,19 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/payPassword',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'PayPassword',
+        component: () => import('@/views/passwordManage'),
+        meta: { title: '支付密码管理' }
+      }
+    ]
+  },
+  {
     path: '/editBookCasePassword',
     component: Layout,
     hidden: true,
@@ -219,6 +232,54 @@ export const asyncRouterMap = [
         component: () => import('@/views/borrowingRecords/bookDetail'),
         hidden: true,
         meta: { title: '书籍借阅记录' }
+      }
+    ]
+  },
+  {
+    path: '/payManage',
+    component: Layout,
+    name: 'PayManage',
+    meta: { title: '付费管理', icon: 'example' },
+    children: [
+      {
+        path: 'rechargeManage',
+        name: 'RechargeManage',
+        component: () => import('@/views/payManage/rechargeManage'),
+        meta: { title: '充值管理' }
+      },
+      {
+        path: 'studentRecharge',
+        name: 'StudentRecharge',
+        hidden: true,
+        component: () => import('@/views/payManage/studentRecharge'),
+        meta: { title: '学生充值' }
+      },
+      {
+        path: 'payStatistics',
+        name: 'PayStatistics',
+        hidden: true,
+        component: () => import('@/views/payManage/payStatistics'),
+        meta: { title: '付费统计' }
+      },
+      {
+        path: 'orderQuery',
+        name: 'OrderQuery',
+        meta: { title: '订单查询' },
+        component: () => import('@/views/payManage/orderQuery'),
+        children: [
+          {
+            path: 'detail',
+            name: 'OrderDetail',
+            component: () => import('@/views/payManage/orderDetail'),
+            meta: { title: '订单详情' }
+          },
+          {
+            path: 'webRecharge',
+            name: 'WebRecharge',
+            component: () => import('@/views/payManage/webRecharge'),
+            meta: { title: '后台订单' }
+          }
+        ]
       }
     ]
   },

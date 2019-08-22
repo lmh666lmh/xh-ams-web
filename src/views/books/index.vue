@@ -1,5 +1,9 @@
 <template>
-  <div class="school-container">
+  <div class="school-books-container">
+    <!--<div class="info-container">-->
+    <!--<span><span class="info-title">当前学校：</span>学校名字</span>-->
+    <!--<el-button type="primary" size="small" @click="back">返回</el-button>-->
+    <!--</div>-->
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="书名">
@@ -122,16 +126,25 @@ export default {
           bookTemplateId: arguments[1]
         }
       })
+    },
+    back() {
+      history.go(-1)
     }
   }
 }
 </script>
 
 <style scoped>
-  .school-container{
+  .school-books-container{
     margin: 20px;
   }
-  .operation-container{
+  .school-books-container .info-container{
     margin-bottom: 20px;
+  }
+  .school-books-container .info-container>span{
+    margin-right: 50px;
+  }
+  .school-books-container .info-container .info-title{
+    color: #92c439;
   }
 </style>
