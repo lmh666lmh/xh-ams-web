@@ -119,7 +119,7 @@ export default {
         label: '未支付'
       }, {
         value: '1',
-        label: '已完成'
+        label: '支付成功'
       }]
     }
   },

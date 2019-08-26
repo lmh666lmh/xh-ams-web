@@ -159,7 +159,7 @@
                   fit
                   highlight-current-row>
                   <el-table-column prop="projectName" label="套餐名称" align="center"/>
-                  <el-table-column label="阅读机器人市场(￥)" align="center">
+                  <el-table-column label="阅读机器人市场价(￥)" align="center">
                     <template slot-scope="scope">
                       <span>{{ scope.row.projectPrice }}</span>
                     </template>

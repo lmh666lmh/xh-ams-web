@@ -74,7 +74,12 @@
         <el-table-column label="付费状态" align="center" prop="payStatusStr"/>
         <el-table-column :render-header="renderOrderType" label="充值方式" align="center" prop="lastOrderTypeStr"/>
         <el-table-column :render-header="renderPackageType" label="套餐类型" align="center" prop="lastPackageTypeStr"/>
-        <el-table-column label="会员有效期" align="center" prop="expireTime"/>
+        <el-table-column label="会员有效期" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.expireTimeStatusStr === '到期'" style="color: red;">{{ scope.row.expireTime }}</span>
+            <span v-else>{{ scope.row.expireTime }}</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
