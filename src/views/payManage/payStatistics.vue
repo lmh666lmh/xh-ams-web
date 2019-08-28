@@ -133,10 +133,10 @@ export default {
         label: '请选择'
       }, {
         value: '1',
-        label: '全员付费'
+        label: '后台充值'
       }, {
         value: '2',
-        label: '自主付费'
+        label: '家长充值'
       }],
       packageTypeOptions: []
     }
