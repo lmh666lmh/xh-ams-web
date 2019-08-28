@@ -64,7 +64,7 @@
         <el-table-column label="有效期状态" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.expireTimeStatusStr === '到期'" style="color: red;">{{ scope.row.expireTimeStatusStr }}</span>
-            <span>{{ scope.row.expireTimeStatusStr }}</span>
+            <span v-else>{{ scope.row.expireTimeStatusStr }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -299,8 +299,10 @@ export default {
       }
       if (type === 'all' && this.multipleSelection.length === 0) {
         this.$message('请先选择需要充值的学生')
+        this.title = '批量充值'
         return
       } else if (type === 'single') {
+        this.title = '个人充值'
         this.toggleSelection(index)
       }
       this.getAgentCapital()
