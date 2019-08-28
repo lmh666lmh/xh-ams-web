@@ -91,7 +91,7 @@
         <el-table-column label="支付手机号" align="center" prop="parentPhone"/>
         <el-table-column label="订单金额（元）" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.totalFee | toRMB }}</span>
+            <span style="color: #FF8F22;">{{ scope.row.totalFee | toRMB }}</span>
           </template>
         </el-table-column>
         <el-table-column label="订单金额明细（元）" align="center">
@@ -117,7 +117,7 @@
           </el-table-column>
           <el-table-column label="代理收益" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.agentIncome | toRMB }}</span>
+              <span style="color: #2DAE00;">{{ scope.row.agentIncome | toRMB }}</span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -170,10 +170,10 @@ export default {
         label: '请选择'
       }, {
         value: '1',
-        label: '全园付费'
+        label: '后台充值'
       }, {
         value: '2',
-        label: '自主付费'
+        label: '家长充值'
       }],
       packageTypeOptions: [],
       pickerOptions: {
