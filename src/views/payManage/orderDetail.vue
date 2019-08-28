@@ -314,6 +314,7 @@ export default {
   .order-detail-container .tips {
     color: #888;
     font-size: 12px;
+    margin-top: 10px;
   }
   .order-detail-container .tips p{
     padding: 0;
