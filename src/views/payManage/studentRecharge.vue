@@ -306,6 +306,8 @@ export default {
         this.toggleSelection(index)
       }
       this.getAgentCapital()
+      this.form.packageType = ''
+      this.form.payPwd = ''
       this.dialogFormVisible = true
     },
     showPayPassword() {
