@@ -62,16 +62,16 @@
 
 <script>
 import { api } from '@/api/index'
+import { regPhone } from '@/utils/validate'
 
 export default {
   name: 'SchoolDetail',
   data() {
     const checkPhone = (rule, value, callback) => {
-      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (value === '') {
         callback(new Error('此项必填'))
       } else {
-        if (!regPhone.test(value)) {
+        if (!regPhone(value)) {
           callback(new Error('请输入正确的手机号码'))
         } else {
           callback()
@@ -79,9 +79,8 @@ export default {
       }
     }
     const checkTeacherPhone = (rule, value, callback) => {
-      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (value !== '') {
-        if (!regPhone.test(value)) {
+        if (!regPhone(value)) {
           callback(new Error('请输入正确的手机号码'))
         } else {
           callback()

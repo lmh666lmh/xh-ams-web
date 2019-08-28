@@ -461,6 +461,7 @@ import Pagination from '@/components/Pagination'
 import { getToken } from '@/utils/auth'
 import { SYSTEM } from '@/api/apiMaps'
 import { api } from '@/api/index'
+import { regPhone } from '@/utils/validate'
 
 export default {
   name: 'StudentParent',
@@ -469,11 +470,10 @@ export default {
   },
   data() {
     const checkPhone = (rule, value, callback) => {
-      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (value === '') {
         callback(new Error('请填写手机号'))
       } else {
-        if (!regPhone.test(value)) {
+        if (!regPhone(value)) {
           callback(new Error('请输入正确的手机号码'))
         } else {
           const repeat = this.dialogForm.form.parent.filter(item => item.parentAccount === value)

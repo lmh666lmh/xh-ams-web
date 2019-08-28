@@ -35,15 +35,16 @@
 </template>
 
 <script>
+import { regPhone } from '@/utils/validate'
+
 export default {
   name: 'ForgetPassword',
   data() {
     const phone = (rule, value, callback) => {
-      const regPhone = /^1(3|4|5|6|7|8|9)\d{9}$/
       if (value === '') {
         callback(new Error('请填写手机号码'))
       } else {
-        if (!regPhone.test(value)) {
+        if (!regPhone(value)) {
           callback(new Error('请输入正确的手机号码'))
         } else {
           callback()
