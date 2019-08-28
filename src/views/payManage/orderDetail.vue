@@ -105,7 +105,7 @@
               <span>{{ scope.row.companyCommissionCharge | toRMB }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="亲禾分成" align="center">
+          <el-table-column :render-header="renderTips" label="亲禾分成" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.companyIncome | toRMB }}</span>
             </template>
@@ -115,7 +115,7 @@
               <span>{{ scope.row.agentCommissionCharge | toRMB }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="代理收益" align="center">
+          <el-table-column :render-header="renderTips" label="代理收益" align="center">
             <template slot-scope="scope">
               <span style="color: #2DAE00;">{{ scope.row.agentIncome | toRMB }}</span>
             </template>
@@ -250,6 +250,27 @@ export default {
           {
             props: {
               content: '点击后台充值的订单编号，可查看本批次的后台充值订单',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
+    renderTips(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '已扣除手续费',
               placement: 'top'
             }
           },

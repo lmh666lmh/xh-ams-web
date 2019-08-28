@@ -120,34 +120,6 @@
                 <p style="text-indent: 1.5rem;">5、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="后台充值" name="all">
-              <div class="tableList">
-                <el-table
-                  v-loading="allPayDataLoading"
-                  :data="allPayData"
-                  :cell-style="cellDialogStyle"
-                  element-loading-text="Loading"
-                  border
-                  fit
-                  highlight-current-row>
-                  <el-table-column prop="projectName" label="套餐名称" align="center"/>
-                  <el-table-column label="亲禾分成(￥)" align="center">
-                    <template slot-scope="scope">
-                      <span>{{ scope.row.discountPrice }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column :render-header="renderContract" label="合同销售价(￥)" align="center">
-                    <template slot-scope="scope">
-                      <el-input-number v-model="scope.row.payProjectFeatures.contractPrice" :step="1" :precision="0" :min="scope.row.payProjectFeatures.minContractPrice" controls-position="right" size="mini" label="合同销售价"/>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-              <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
-                <p>注：1、后台充值是代理商通过线下收费后，再通过代理商后台给学生充值；</p>
-                <P style="text-indent: 1.5rem;">2、合同销售价目的是方便代理商统计线下收益情况，默认销售价为【家长充值】里面配置的销售价，代理商根据合同销售价修改价格，修改的价格下限不低于【家长充值】里面的最低价；</P>
-              </div>
-            </el-tab-pane>
             <el-tab-pane label="阅读机套餐" name="robot">
               <div class="tableList">
                 <el-table
@@ -205,6 +177,34 @@
                 <P style="text-indent: 1.5rem;">2、阅读机器人最低价为代理商跟亲禾平台的结算价；</P>
                 <p style="text-indent: 1.5rem;">3、阅读机机器人的利润 = 代理商加价价格；</p>
                 <p style="text-indent: 1.5rem;">4、【是否开启】表示在小程序中【我的】-【会员充值】界面是否开启会员套餐充值功能；</p>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="后台充值" name="all">
+              <div class="tableList">
+                <el-table
+                  v-loading="allPayDataLoading"
+                  :data="allPayData"
+                  :cell-style="cellDialogStyle"
+                  element-loading-text="Loading"
+                  border
+                  fit
+                  highlight-current-row>
+                  <el-table-column prop="projectName" label="套餐名称" align="center"/>
+                  <el-table-column label="亲禾分成(￥)" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.discountPrice }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderContract" label="合同销售价(￥)" align="center">
+                    <template slot-scope="scope">
+                      <el-input-number v-model="scope.row.payProjectFeatures.contractPrice" :step="1" :precision="0" :min="scope.row.payProjectFeatures.minContractPrice" controls-position="right" size="mini" label="合同销售价"/>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+              <div style="margin-top: 20px;color: #a5a6a8;font-size: 12px;">
+                <p>注：1、后台充值是代理商通过线下收费后，再通过代理商后台给学生充值；</p>
+                <P style="text-indent: 1.5rem;">2、合同销售价目的是方便代理商统计线下收益情况，默认销售价为【家长充值】里面配置的销售价，代理商根据合同销售价修改价格，修改的价格下限不低于【家长充值】里面的最低价；</P>
               </div>
             </el-tab-pane>
           </el-tabs>
