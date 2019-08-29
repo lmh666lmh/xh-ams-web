@@ -89,7 +89,7 @@
                   </el-table-column>
                   <el-table-column label="月平均价(￥)" align="center" width="100">
                     <template slot-scope="scope">
-                      <span>{{ ((scope.row.discountPrice + scope.row.agentAddPrice + cashPledgeFee) / scope.row.months).toFixed(2) }}</span>
+                      <span>{{ ((scope.row.discountPrice + scope.row.agentAddPrice) / scope.row.months).toFixed(2) }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column label="亲禾分成(￥)" align="center" width="100">
