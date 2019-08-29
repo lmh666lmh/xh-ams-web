@@ -79,7 +79,7 @@
                   </el-table-column>
                   <el-table-column :render-header="renderCashPledgeFee" label="书本押金(￥)" align="center">
                     <template slot-scope="scope">
-                      <el-input-number v-model="cashPledgeFee" :step="1" :precision="0" :min="0" :max="100" controls-position="right" size="mini" label="书本押金" @change="computeCashPledgeFee"/>
+                      <el-input-number v-model="cashPledgeFee" :step="1" :precision="0" :min="0" :max="100" controls-position="right" size="mini" label="书本押金" @change="computeCashPledgeFee(cashPledgeFee)"/>
                     </template>
                   </el-table-column>
                   <el-table-column label="家长销售价(￥)" align="center" width="100">
@@ -143,7 +143,7 @@
                   </el-table-column>
                   <el-table-column :render-header="renderPlus" label="代理商加价(￥)" align="center">
                     <template slot-scope="scope">
-                      <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价"/>
+                      <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价" @change="computeReadRobotAddPrice(scope.row.agentAddPrice, scope.row.projectId)"/>
                     </template>
                   </el-table-column>
                   <el-table-column :render-header="renderMember" label="会员卡价格(￥)" align="center">
@@ -197,7 +197,7 @@
                   </el-table-column>
                   <el-table-column :render-header="renderContract" label="合同销售价(￥)" align="center">
                     <template slot-scope="scope">
-                      <el-input-number v-model="scope.row.payProjectFeatures.contractPrice" :step="1" :precision="0" :min="scope.row.payProjectFeatures.minContractPrice" controls-position="right" size="mini" label="合同销售价"/>
+                      <el-input-number v-model="scope.row.payProjectFeatures.contractPrice" :step="1" :precision="0" :min="scope.row.payProjectFeatures.minContractPrice" controls-position="right" size="mini" label="合同销售价" @change="computeContractPrice(scope.row.payProjectFeatures.contractPrice, scope.row.projectId)"/>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -256,9 +256,9 @@ export default {
         schoolName: '',
         schoolId: ''
       },
-      autoPayData: [],
+      autoPayData: [], // 家长充值
       autoPayLoading: false,
-      allPayData: [],
+      allPayData: [], // 后台充值
       allPayDataLoading: false,
       readRobotPackageData: [],
       readRobotPackageLoading: false,
@@ -303,10 +303,18 @@ export default {
         }
       })
     },
+    // 家长充值代理商加价计算
     computeAutoAddPrice(value, id) {
+      console.log(value)
+      console.log(id)
       let autoPayTotal = 0
       this.autoPayData.find(item => {
         if (item.projectId === id) {
+          if (!item.agentAddPrice) {
+            this.$nextTick(() => {
+              item.agentAddPrice = 0
+            })
+          }
           autoPayTotal = item.discountPrice + item.agentAddPrice + this.cashPledgeFee
         }
       })
@@ -316,13 +324,48 @@ export default {
         }
       })
     },
-    computeCashPledgeFee() {
+    // 书本押金计算
+    computeCashPledgeFee(value) {
+      console.log(value)
+      if (!value) {
+        this.$nextTick(() => {
+          this.cashPledgeFee = 0
+        })
+      }
       this.autoPayData.find(autoPayItem => {
         this.readRobotPackageData.find(item => {
           if (item.payProjectFeatures.combinedProjectId === autoPayItem.projectId) {
             item.combinedProjectPrice = autoPayItem.discountPrice + autoPayItem.agentAddPrice + this.cashPledgeFee
           }
         })
+      })
+    },
+    // 阅读机代理商加价计算
+    computeReadRobotAddPrice(value, id) {
+      console.log(value)
+      console.log(id)
+      this.readRobotPackageData.find(item => {
+        if (item.projectId === id) {
+          if (!item.agentAddPrice) {
+            this.$nextTick(() => {
+              item.agentAddPrice = 0
+            })
+          }
+        }
+      })
+    },
+    // 后台充值合同销售价计算
+    computeContractPrice(value, id) {
+      console.log(value)
+      console.log(id)
+      this.allPayData.find(item => {
+        if (item.projectId === id) {
+          if (!item.payProjectFeatures.contractPrice) {
+            this.$nextTick(() => {
+              item.payProjectFeatures.contractPrice = item.payProjectFeatures.minContractPrice
+            })
+          }
+        }
       })
     },
     rechargeSet(schoolId) {
