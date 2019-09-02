@@ -58,7 +58,16 @@
         highlight-current-row
         @current-change="currentChange"
         @expand-change="expandParent">
-        <el-table-column label="查看家长信息" type="expand" width="110">
+        <el-table-column align="center" label="序号" width="95px">
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column label="学生姓名" align="center" prop="studentName"/>
+        <el-table-column label="年级" align="center" prop="gradeName"/>
+        <el-table-column label="班级" align="center" prop="className"/>
+        <el-table-column label="有效期" align="center" prop="expireTime"/>
+        <el-table-column label="点击下方箭头查看家长信息" type="expand" width="110">
           <template slot-scope="scope">
             <el-table
               v-loading="scope.row.loading"
@@ -94,15 +103,6 @@
             </el-table>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="序号" width="95px">
-          <template slot-scope="scope">
-            {{ scope.$index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column label="学生姓名" align="center" prop="studentName"/>
-        <el-table-column label="年级" align="center" prop="gradeName"/>
-        <el-table-column label="班级" align="center" prop="className"/>
-        <el-table-column label="有效期" align="center" prop="expireTime"/>
         <el-table-column label="操作" align="center" width="200px">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="editStudent('edit', scope.row.studentId)" >修改</el-button>
