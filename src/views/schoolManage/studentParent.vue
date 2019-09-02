@@ -32,6 +32,7 @@
       <el-button type="success" size="small" class="el-icon-circle-plus" @click="editStudent('add')">新增学生</el-button>
       <el-upload
         :on-success="onSuccess"
+        :on-error="onError"
         :on-progress="startUpload"
         :show-file-list="false"
         :action="uploadUrl"
@@ -1066,6 +1067,14 @@ export default {
       } else if (response.code === 0) {
         this.$message.error(response.message)
       }
+    },
+    onError(err, file, fileList) {
+      console.log(err)
+      this.$message({
+        message: '导入失败',
+        type: 'error'
+      })
+      this.ajaxLoading.close()
     }
   }
 }

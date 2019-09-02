@@ -40,6 +40,7 @@
       <el-button type="success" size="small" class="el-icon-circle-plus" @click="routeTo('/school/detail?type=add')">添加学校</el-button>
       <el-upload
         :on-success="onSuccess"
+        :on-error="onError"
         :on-progress="startUpload"
         :show-file-list="false"
         :action="uploadUrl"
@@ -307,6 +308,14 @@ export default {
       } else if (response.code === 0) {
         this.$message.error(response.message)
       }
+    },
+    onError(err, file, fileList) {
+      this.ajaxLoading.close()
+      this.$message({
+        message: '导入失败',
+        type: 'error'
+      })
+      console.log(err)
     },
     down(url) {
       api.download(url)
