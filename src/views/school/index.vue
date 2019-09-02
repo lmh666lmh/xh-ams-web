@@ -72,6 +72,11 @@
         <el-table-column label="联系方式" align="center" prop="leaderPhone" width="120"/>
         <el-table-column label="城市区域" align="center" prop="areaName"/>
         <el-table-column label="详细地址" align="center" prop="address"/>
+        <el-table-column :render-header="renderSchoolQR" label="学校二维码" align="center">
+          <template slot-scope="scope">
+            <img :src="scope.row.schoolQcUrl" class="school-qr">
+          </template>
+        </el-table-column>
         <el-table-column label="书柜数量" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/school/bookcaseDetail', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
@@ -168,6 +173,27 @@ export default {
     }
   },
   methods: {
+    renderSchoolQR(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '右键图片存储为即可下载',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
     onSubmit() {
       this.formInline.pageNum = 1
       this.fetchData()
@@ -317,6 +343,11 @@ export default {
 }
 .school-container .upload-demo{
   display: inline-block;
+}
+.school-container .school-qr{
+  width: 100px;
+  height: 100px;
+  margin-top: 10px;
 }
 .school-container .box-card{
   width: 300px;
