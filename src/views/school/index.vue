@@ -61,7 +61,7 @@
         border
         fit
         highlight-current-row>
-        <el-table-column label="序号" width="95" align="center">
+        <el-table-column label="序号" width="60" align="center">
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
           </template>
@@ -73,7 +73,7 @@
         <el-table-column label="联系方式" align="center" prop="leaderPhone" width="120"/>
         <el-table-column label="城市区域" align="center" prop="areaName"/>
         <el-table-column label="详细地址" align="center" prop="address"/>
-        <el-table-column :render-header="renderSchoolQR" label="学校二维码" align="center">
+        <el-table-column :render-header="renderSchoolQR" label="学校二维码" align="center" width="120">
           <template slot-scope="scope">
             <img :src="scope.row.schoolQcUrl" class="school-qr">
           </template>
