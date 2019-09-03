@@ -57,6 +57,10 @@
       </el-form-item>
     </el-form>
     <el-button v-show="type == 'detail'" size="small" style="margin-left: 10px;" @click="cancel">返回</el-button>
+    <div class="tips">
+      <p>注：1、学校账号/密码用于书柜登录使用；</p>
+      <p style="text-indent: 1.5rem;">2、对接老师目的是方便异常处理时联系老师，建议填写；</p>
+    </div>
   </div>
 </template>
 
@@ -335,5 +339,14 @@ export default {
 .edit-container{
   width: 520px;
   padding: 10px;
+}
+.edit-container .tips {
+  color: #888;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.edit-container .tips p{
+  padding: 0;
+  margin-top: 0;
 }
 </style>

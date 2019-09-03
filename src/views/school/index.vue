@@ -75,7 +75,7 @@
         <el-table-column label="详细地址" align="center" prop="address"/>
         <el-table-column :render-header="renderSchoolQR" label="学校二维码" align="center" width="120">
           <template slot-scope="scope">
-            <img :src="scope.row.schoolQcUrl" class="school-qr">
+            <img :src="scope.row.schoolQcUrl" class="school-qr" alt="点击下载" border="0" @click="downloadImg(scope.row.schoolQcUrl, scope.row.schoolName)">
           </template>
         </el-table-column>
         <el-table-column label="书柜数量" align="center">
@@ -181,7 +181,7 @@ export default {
           'el-tooltip',
           {
             props: {
-              content: '右键图片存储为即可下载',
+              content: '点击图片即可下载或者右键图片存储为',
               placement: 'top'
             }
           },
@@ -194,6 +194,32 @@ export default {
           ]
         )
       ]
+    },
+    downloadImg(imgSrc, schoolName) {
+      const image = new Image()
+      // 解决跨域 canvas 污染问题
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.src = imgSrc
+      image.onload = function() {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        const context = canvas.getContext('2d')
+        context.drawImage(image, 0, 0, image.width, image.height)
+        // 得到图片的base64编码数据
+        const url = canvas.toDataURL('image/png')
+        // 生成一个 a 标签
+        const a = document.createElement('a')
+        // 创建一个点击事件
+        const event = new MouseEvent('click')
+        // 将 a 的 download 属性设置为我们想要下载的图片的名称，若 name 不存在则使用'图片'作为默认名称
+        a.download = schoolName || '图片'
+        // 将生成的 URL 设置为 a.href 属性
+        a.href = url
+        // 触发 a 的点击事件
+        a.dispatchEvent(event)
+        // return a
+      }
     },
     onSubmit() {
       this.formInline.pageNum = 1
@@ -357,6 +383,7 @@ export default {
   width: 100px;
   height: 100px;
   margin-top: 10px;
+  cursor: pointer;
 }
 .school-container .box-card{
   width: 300px;
