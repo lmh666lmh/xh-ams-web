@@ -312,23 +312,37 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/system',
+    path: '/anomalous',
     component: Layout,
-    name: 'System',
+    name: 'Anomalous',
     meta: { title: '异常维护', icon: 'example' },
     children: [
       {
         path: 'borrowingAnomalous',
         name: 'BorrowingAnomalous',
-        component: () => import('@/views/system/borrowingAnomalous'),
+        component: () => import('@/views/anomalous/borrowingAnomalous'),
         meta: { title: '借阅异常' }
       },
       {
         path: 'equipmentAnomalous',
         name: 'EquipmentAnomalous',
         hidden: true,
-        component: () => import('@/views/system/equipmentAnomalous'),
+        component: () => import('@/views/anomalous/equipmentAnomalous'),
         meta: { title: '设备异常' }
+      }
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    name: 'System',
+    meta: { title: '系统设置', icon: 'example' },
+    children: [
+      {
+        path: 'customerService',
+        name: 'CustomerService',
+        component: () => import('@/views/system/customerService'),
+        meta: { title: '客服管理' }
       }
     ]
   },
