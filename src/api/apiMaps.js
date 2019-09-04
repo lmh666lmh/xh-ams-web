@@ -31,6 +31,8 @@ switch (prefix) {
 const path = _path => BASE_API + _path
 
 export const SYSTEM = {
+  // 获取七牛云图片上传权限 type=img/voice/video
+  TOKEN: path('/qiniu/token'),
   // 省市区
   AREA: {
     PROVINCE: path('/area/province'),

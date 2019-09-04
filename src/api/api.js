@@ -58,6 +58,18 @@ export default {
   getDictionary(params, callback) {
     return API.getDirect(SYSTEM.DICTIONARY, params, callback)
   },
+  /** ===============================================  上传相关 =======================================================*/
+  /**
+   * @method: getToken
+   * @description: 获取七牛云上传token权限
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} params {type:'空间类型',key:'覆盖上传文件名（可选）'} type => img/voice/video
+   * @return{Object} 成功与否
+   */
+  getToken(params, callback) {
+    return API.get(SYSTEM.TOKEN, params, callback)
+  },
   /** ================================================   用户相关 =====================================================*/
   /**
    * @method: login
