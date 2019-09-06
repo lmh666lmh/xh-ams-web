@@ -26,7 +26,7 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="edit">修改</el-button>
             <el-button type="text" size="small" @click="remove">删除</el-button>
-            <el-button type="text" size="small">绑定学校</el-button>
+            <el-button type="text" size="small" @click="bindSchool">绑定学校</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,6 +77,62 @@
         <el-button type="primary" size="mini" @click="dialogFormVisible = false">保 存</el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="dialogTableVisible" :title="dialogTableTitle" :width="dialogTableWidth">
+      <div class="table-main">
+        <div class="table-header">
+          <el-form :inline="true" :model="formDialogInline" size="small" class="demo-form-inline">
+            <el-form-item label="当前客服:" style="margin-right: 190px;">
+              <span>客服1</span>
+              <el-input v-model="formDialogInline.schoolAccountOrName" type="hidden"/>
+            </el-form-item>
+            <el-form-item label="学校名称/账号">
+              <el-input v-model="formDialogInline.schoolAccountOrName" placeholder="请填写" size="mini"/>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="mini" @click="onSubmit">搜索</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="table-operation">
+          <span style="font-size: 12px;color: #797979;margin-right: 20px;">共选择 <span style="color: #579df8;">{{ totalSelectNum }}</span> 条</span>
+          <el-button type="success" size="mini">批量绑定</el-button>
+        </div>
+        <div class="table-body">
+          <el-table
+            v-loading="listLoadingDialog"
+            ref="multipleTable"
+            :data="listDialog"
+            :cell-style="cellStyle"
+            element-loading-text="Loading"
+            border
+            fit
+            highlight-current-row
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              align="center"
+              width="55"/>
+            <el-table-column align="center" label="序号" width="55">
+              <template slot-scope="scope">
+                {{ scope.$index + 1 }}
+              </template>
+            </el-table-column>
+            <el-table-column label="学校名称" align="center" prop="bookcaseNum"/>
+            <el-table-column label="学校账号" align="center" prop="schoolName"/>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="edit">绑定</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div v-show="totalDialog != 0"><Pagination :total="totalDialog" :page.sync="formDialogInline.pageNum" :limit.sync="formDialogInline.pageSize" @pagination="fetchDialogData"/></div>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="dialogTableVisible = false">取 消</el-button>
+        <el-button type="primary" size="mini" @click="dialogTableVisible = false">保 存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -107,11 +163,18 @@ export default {
       list: null,
       listLoading: true,
       total: 0,
+      listDialog: null,
+      listLoadingDialog: true,
+      totalDialog: 0,
       isShowImageProgress: false,
       imageProgress: 0,
       domain: 'https://upload.qiniup.com',
       imageUrl: 'http://img.qn.xiaohebook.com',
       formInline: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      formDialogInline: {
         pageNum: 1,
         pageSize: 10
       },
@@ -137,9 +200,13 @@ export default {
       },
       dialogFormTitle: '新增客服',
       dialogFormWidth: '500px',
-      dialogTableVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '90px'
+      dialogTableTitle: '绑定学校',
+      dialogTableWidth: '700px',
+      dialogTableVisible: false,
+      formLabelWidth: '90px',
+      multipleSelection: [],
+      totalSelectNum: 0
     }
   },
   created() {
@@ -148,13 +215,26 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      api.getEquipmentBookcaseList(this.formInline).then(response => {
+      api.getSchoolList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
       }).catch(() => {
         this.listLoading = false
       })
+    },
+    fetchDialogData() {
+      this.listLoadingDialog = true
+      api.getSchoolList(this.formDialogInline).then(response => {
+        this.totalDialog = response.data.total
+        this.listDialog = response.data.list
+        this.listLoadingDialog = false
+      }).catch(() => {
+        this.listLoadingDialog = false
+      })
+    },
+    onSubmit() {
+      this.fetchDialogData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
@@ -168,6 +248,24 @@ export default {
       this.dialogFormTitle = '客服修改'
     },
     remove() {
+      this.$confirm('您确定要删除当前客服？（删除后，将解绑当前客服所有绑定的学校！）', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      }).catch(() => {
+
+      })
+    },
+    handleSelectionChange(val) {
+      console.log(val)
+      this.multipleSelection = val
+      this.totalSelectNum = val.length
+    },
+    bindSchool() {
+      this.fetchDialogData()
+      this.dialogTableVisible = true
     },
     handleAvatarSuccess(req) {
       const that = this
@@ -327,5 +425,21 @@ export default {
     height: 130px;
     z-index: 999;
     overflow: hidden;
+  }
+  .customer-service-container .table-main{
+    max-height: 350px;
+  }
+  .customer-service-container .table-header{
+    height: 50px;
+  }
+  .customer-service-container .table-operation{
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  .customer-service-container .table-body{
+    padding-top: 5px;
+    max-height: 260px;
+    box-sizing: border-box;
+    overflow: auto;
   }
 </style>
