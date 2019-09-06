@@ -241,5 +241,29 @@ export const SYSTEM = {
       // 代理商资金
       CAPITAL: path('/agent/capital')
     }
+  },
+  SYSTEMSETTING: {
+    // 客服管理
+    CUSTOMER: {
+      // 列表
+      LIST: path('/support/getSupportList/page'),
+      // 新增客服
+      ADD: path('/support'),
+      // 修改客服
+      EDIT: path('/support'),
+      // 删除客服
+      DELETE: path('/support'),
+      // 获取客服信息
+      DETAIL: path('/support/getSupport'),
+      // 已绑定学校列表
+      BINDSCHOOLLIST: path('/support/getBindSchool/page'),
+      // 未绑定学校列表
+      UNBINDSCHOOLLIST: path('/support/getUnbindSchool/page'),
+      // 客服绑定/批量绑定学校
+      BINDSCHOOL: path('/support/batchBind'),
+      // 客服解绑/批量解绑学校
+      UNBINDSCHOOL: path('/support/batchUnbind')
+    }
   }
+
 }

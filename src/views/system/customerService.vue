@@ -17,16 +17,19 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="客服姓名" align="center" prop="bookcaseNum"/>
-        <el-table-column label="联系电话" align="center" prop="schoolName"/>
-        <el-table-column label="微信号" align="center" prop="schoolName"/>
-        <el-table-column label="已绑定学校" align="center" prop="schoolName"/>
-        <el-table-column label="联系电话" align="center" prop="schoolName"/>
+        <el-table-column label="客服姓名" align="center" prop="supportName"/>
+        <el-table-column label="联系电话" align="center" prop="supportPhone"/>
+        <el-table-column label="微信号" align="center" prop="wechatNumber"/>
+        <el-table-column label="已绑定学校" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="bindSchool(scope.row.bindNum, 'bind')" >{{ scope.row.bindNum }}</el-button>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="edit">修改</el-button>
-            <el-button type="text" size="small" @click="remove">删除</el-button>
-            <el-button type="text" size="small" @click="bindSchool">绑定学校</el-button>
+            <el-button type="text" size="small" @click="edit(scope.row.supportId)">修改</el-button>
+            <el-button type="text" size="small" @click="remove(scope.row.supportId)">删除</el-button>
+            <el-button type="text" size="small" @click="bindSchool(scope.row.supportId, 'unBind')">绑定学校</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -37,19 +40,19 @@
     </div>
     <el-dialog :visible.sync="dialogFormVisible" :title="dialogFormTitle" :width="dialogFormWidth">
       <el-form ref="form" :model="form" :rules="rules" style="height: 180px;">
-        <el-form-item :label-width="formLabelWidth" label="客服姓名" prop="name" class="form-item">
-          <el-input v-model="form.name" class="form-input" size="mini"/>
+        <el-form-item :label-width="formLabelWidth" label="客服姓名" prop="supportName" class="form-item">
+          <el-input v-model="form.supportName" class="form-input" size="mini"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="联系电话" prop="phone" class="form-item">
-          <el-input v-model="form.phone" class="form-input" size="mini"/>
+        <el-form-item :label-width="formLabelWidth" label="联系电话" prop="supportPhone" class="form-item">
+          <el-input v-model="form.supportPhone" class="form-input" size="mini"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="微信号" prop="wechat" class="form-item">
-          <el-input v-model="form.wechat" class="form-input" size="mini"/>
+        <el-form-item :label-width="formLabelWidth" label="微信号" prop="wechatNumber" class="form-item">
+          <el-input v-model="form.wechatNumber" class="form-input" size="mini"/>
         </el-form-item>
         <el-aside class="wechat-pic">
           <div class="image-box">
-            <el-form-item prop="QRCode">
-              <el-input v-model="form.QRCode" style="display: none;"/>
+            <el-form-item prop="pictureUrl">
+              <el-input v-model="form.pictureUrl" style="display: none;"/>
               <el-upload
                 :show-file-list="false"
                 :http-request="handleAvatarSuccess"
@@ -58,7 +61,7 @@
                 list-type="picture"
                 accept=".jpeg,.png"
                 class="avatar-uploader">
-                <img v-if="form.QRCode" :src="form.QRCode" class="avatar">
+                <img v-if="form.pictureUrl" :src="form.pictureUrl" class="avatar">
                 <div v-else class="text-icon">
                   <i class="el-icon-upload"/>
                   <div class="el-upload__text">上传微信二维码图片</div>
@@ -73,8 +76,8 @@
         <p class="pic-tips">*允许上传图片类型（png，jpeg）最大不能超过2MB。</p>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="dialogFormVisible = false">保 存</el-button>
+        <el-button size="mini" @click="cancelCustomerForm">取 消</el-button>
+        <el-button type="primary" size="mini" @click="submitCustomerForm">保 存</el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" :title="dialogTableTitle" :width="dialogTableWidth">
@@ -121,7 +124,7 @@
             <el-table-column label="学校账号" align="center" prop="schoolName"/>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="edit">绑定</el-button>
+                <el-button type="text" size="small">绑定</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -129,8 +132,7 @@
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogTableVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="dialogTableVisible = false">保 存</el-button>
+        <el-button size="mini" @click="cancelCustomerTable">关闭</el-button>
       </div>
     </el-dialog>
   </div>
@@ -179,22 +181,22 @@ export default {
         pageSize: 10
       },
       form: {
-        name: '',
-        phone: '',
-        wechat: '',
-        QRCode: ''
+        supportName: '',
+        supportPhone: '',
+        wechatNumber: '',
+        pictureUrl: ''
       },
       rules: {
-        name: [
+        supportName: [
           { required: true, message: '请输入客服姓名', trigger: 'blur' }
         ],
-        phone: [
+        supportPhone: [
           { required: true, validator: checkPhone, trigger: 'blur' }
         ],
-        wechat: [
+        wechatNumber: [
           { required: true, message: '请输入客服微信号', trigger: 'blur' }
         ],
-        QRCode: [
+        pictureUrl: [
           { required: true, message: '请上传图片', trigger: 'change' }
         ]
       },
@@ -215,7 +217,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getCustomerList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
@@ -239,15 +241,27 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
-    add() {
+    add(supportId) {
       this.dialogFormVisible = true
       this.dialogFormTitle = '新增客服'
     },
-    edit() {
+    edit(supportId) {
       this.dialogFormVisible = true
       this.dialogFormTitle = '客服修改'
+      api.getCustomerDetail({
+        supportId: supportId
+      }).then(res => {
+        if (res.code === 10000) {
+          this.form.supportName = res.data.supportName
+          this.form.supportPhone = res.data.supportPhone
+          this.form.wechatNumber = res.data.wechatNumber
+          this.form.pictureUrl = res.data.pictureUrl
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
-    remove() {
+    remove(supportId) {
       this.$confirm('您确定要删除当前客服？（删除后，将解绑当前客服所有绑定的学校！）', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -258,12 +272,21 @@ export default {
 
       })
     },
+    cancelCustomerForm() {
+      this.dialogFormVisible = false
+    },
+    submitCustomerForm() {
+      this.dialogFormVisible = false
+    },
+    cancelCustomerTable() {
+      this.dialogTableVisible = false
+    },
     handleSelectionChange(val) {
       console.log(val)
       this.multipleSelection = val
       this.totalSelectNum = val.length
     },
-    bindSchool() {
+    bindSchool(supportId) {
       this.fetchDialogData()
       this.dialogTableVisible = true
     },
@@ -300,7 +323,7 @@ export default {
             complete(res) {
               // 上传成功以后会返回key 和 hash  key就是文件名了！
               that.isShowImageProgress = false
-              that.form.QRCode = that.imageUrl + '/' + res.key + '?' + new Date().getTime()
+              that.form.pictureUrl = that.imageUrl + '/' + res.key + '?' + new Date().getTime()
             }
           }
           const observable = qiniu.upload(req.file, keyName, res.data.token, putExtra, config)

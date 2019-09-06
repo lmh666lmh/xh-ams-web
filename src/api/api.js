@@ -908,6 +908,105 @@ export default {
    */
   getAgentCapital(params, callback) {
     return API.get(SYSTEM.PAYMANAGE.RECHARGEMANAGE.CAPITAL, params, callback)
+  },
+  /** ================================================  客服管理 ======================================================*/
+  /**
+   * @method: getCustomerList
+   * @description: 系统设置 => 客服管理 => 列表
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  getCustomerList(params, callback) {
+    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.LIST, params, callback)
+  },
+  /**
+   * @method: addCustomer
+   * @description: 系统设置 => 客服管理 => 新增客服
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  addCustomer(params, callback) {
+    return API.post(SYSTEM.SYSTEMSETTING.CUSTOMER.ADD, params, callback)
+  },
+  /**
+   * @method: editCustomer
+   * @description: 系统设置 => 客服管理 => 修改客服
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  editCustomer(params, callback) {
+    return API.put(SYSTEM.SYSTEMSETTING.CUSTOMER.EDIT, params, callback)
+  },
+  /**
+   * @method: deleteCustomer
+   * @description: 系统设置 => 客服管理 => 删除客服
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  deleteCustomer(params, callback) {
+    return API.delete(SYSTEM.SYSTEMSETTING.CUSTOMER.DELETE, params, callback)
+  },
+  /**
+   * @method: getCustomerDetail
+   * @description: 系统设置 => 客服管理 => 获取客服详情
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  getCustomerDetail(params, callback) {
+    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.DETAIL, params, callback)
+  },
+  /**
+   * @method: getBindSchoolList
+   * @description: 系统设置 => 客服管理 => 获取已绑定客服的学校列表
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  getBindSchoolList(params, callback) {
+    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.BINDSCHOOLLIST, params, callback)
+  },
+  /**
+   * @method: getUNBindSchoolList
+   * @description: 系统设置 => 客服管理 => 获取未绑定客服的学校列表
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  getUNBindSchoolList(params, callback) {
+    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.DETAIL, params, callback)
+  },
+  /**
+   * @method: customerBindSchool
+   * @description: 系统设置 => 客服管理 => 绑定/批量绑定学校
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  customerBindSchool(params, callback) {
+    return API.post(SYSTEM.SYSTEMSETTING.CUSTOMER.BINDSCHOOL, params, callback)
+  },
+  /**
+   * @method: customerUNBindSchool
+   * @description: 系统设置 => 客服管理 => 解绑/批量解绑学校
+   * @author: ProudBin
+   * @update: 2019-09-06
+   * @param {Object}
+   * @return{Object}
+   */
+  customerUNBindSchool(params, callback) {
+    return API.post(SYSTEM.SYSTEMSETTING.CUSTOMER.UNBINDSCHOOL, params, callback)
   }
-
 }
