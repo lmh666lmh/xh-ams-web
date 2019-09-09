@@ -985,7 +985,7 @@ export default {
    * @return{Object}
    */
   getUNBindSchoolList(params, callback) {
-    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.DETAIL, params, callback)
+    return API.get(SYSTEM.SYSTEMSETTING.CUSTOMER.UNBINDSCHOOLLIST, params, callback)
   },
   /**
    * @method: customerBindSchool

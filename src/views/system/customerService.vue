@@ -22,14 +22,14 @@
         <el-table-column label="微信号" align="center" prop="wechatNumber"/>
         <el-table-column label="已绑定学校" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="bindSchool(scope.row.bindNum, 'bind')" >{{ scope.row.bindNum }}</el-button>
+            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'bind')" >{{ scope.row.bindNum }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="edit(scope.row.supportId)">修改</el-button>
             <el-button type="text" size="small" @click="remove(scope.row.supportId)">删除</el-button>
-            <el-button type="text" size="small" @click="bindSchool(scope.row.supportId, 'unBind')">绑定学校</el-button>
+            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'unBind')">绑定学校</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -38,13 +38,13 @@
     <div class="tips">
       <p>注：1、如果未添加客服和绑定学校客服，默认联系的客服电话为代理商电话；</p>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" :title="dialogFormTitle" :width="dialogFormWidth">
+    <el-dialog :visible.sync="dialogFormVisible" :title="dialogFormTitle" :width="dialogFormWidth" @close="closeDialog('form')">
       <el-form ref="form" :model="form" :rules="rules" style="height: 180px;">
         <el-form-item :label-width="formLabelWidth" label="客服姓名" prop="supportName" class="form-item">
           <el-input v-model="form.supportName" class="form-input" size="mini"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="联系电话" prop="supportPhone" class="form-item">
-          <el-input v-model="form.supportPhone" class="form-input" size="mini"/>
+          <el-input v-model="form.supportPhone" class="form-input" size="mini" maxlength="11"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="微信号" prop="wechatNumber" class="form-item">
           <el-input v-model="form.wechatNumber" class="form-input" size="mini"/>
@@ -76,8 +76,8 @@
         <p class="pic-tips">*允许上传图片类型（png，jpeg）最大不能超过2MB。</p>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="cancelCustomerForm">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitCustomerForm">保 存</el-button>
+        <el-button size="mini" @click="cancelCustomerForm('form')">取 消</el-button>
+        <el-button type="primary" size="mini" @click="submitCustomerForm('form')">保 存</el-button>
       </div>
     </el-dialog>
     <el-dialog :visible.sync="dialogTableVisible" :title="dialogTableTitle" :width="dialogTableWidth">
@@ -86,19 +86,18 @@
           <el-form :inline="true" :model="formDialogInline" size="small" class="demo-form-inline">
             <el-form-item label="当前客服:" style="margin-right: 190px;">
               <span>客服1</span>
-              <el-input v-model="formDialogInline.schoolAccountOrName" type="hidden"/>
             </el-form-item>
             <el-form-item label="学校名称/账号">
-              <el-input v-model="formDialogInline.schoolAccountOrName" placeholder="请填写" size="mini"/>
+              <el-input v-model="formDialogInline.searchKey" placeholder="请填写" size="mini"/>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="mini" @click="onSubmit">搜索</el-button>
+              <el-button type="primary" size="mini" @click="onSubmit('search')">搜索</el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="table-operation">
           <span style="font-size: 12px;color: #797979;margin-right: 20px;">共选择 <span style="color: #579df8;">{{ totalSelectNum }}</span> 条</span>
-          <el-button type="success" size="mini">批量绑定</el-button>
+          <el-button type="success" size="mini" @click="bindSchool('batch')">批量{{ dialogTableBtnText }}</el-button>
         </div>
         <div class="table-body">
           <el-table
@@ -120,15 +119,15 @@
                 {{ scope.$index + 1 }}
               </template>
             </el-table-column>
-            <el-table-column label="学校名称" align="center" prop="bookcaseNum"/>
-            <el-table-column label="学校账号" align="center" prop="schoolName"/>
+            <el-table-column label="学校名称" align="center" prop="schoolName"/>
+            <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
-                <el-button type="text" size="small">绑定</el-button>
+                <el-button type="text" size="small" @click="bindSchool('single',[listDialog[scope.$index]])">{{ dialogTableBtnText }}</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <div v-show="totalDialog != 0"><Pagination :total="totalDialog" :page.sync="formDialogInline.pageNum" :limit.sync="formDialogInline.pageSize" @pagination="fetchDialogData"/></div>
+          <div v-show="totalDialog != 0"><Pagination :total="totalDialog" :page.sync="formDialogInline.pageNum" :limit.sync="formDialogInline.pageSize" @pagination="onSubmit"/></div>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -177,6 +176,8 @@ export default {
         pageSize: 10
       },
       formDialogInline: {
+        supportId: '',
+        searchKey: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -186,6 +187,7 @@ export default {
         wechatNumber: '',
         pictureUrl: ''
       },
+      supportId: null, // 编辑客服弹窗需要
       rules: {
         supportName: [
           { required: true, message: '请输入客服姓名', trigger: 'blur' }
@@ -208,7 +210,10 @@ export default {
       dialogTableVisible: false,
       formLabelWidth: '90px',
       multipleSelection: [],
-      totalSelectNum: 0
+      totalSelectNum: 0,
+      dialogTableType: null, // 当前弹窗类型 bind:绑学校 unBind:解绑学校
+      dialogTableCustomerName: '',
+      dialogTableBtnText: '解绑'
     }
   },
   created() {
@@ -225,9 +230,9 @@ export default {
         this.listLoading = false
       })
     },
-    fetchDialogData() {
+    fetchDialogBindData() {
       this.listLoadingDialog = true
-      api.getSchoolList(this.formDialogInline).then(response => {
+      api.getBindSchoolList(this.formDialogInline).then(response => {
         this.totalDialog = response.data.total
         this.listDialog = response.data.list
         this.listLoadingDialog = false
@@ -235,19 +240,38 @@ export default {
         this.listLoadingDialog = false
       })
     },
-    onSubmit() {
-      this.fetchDialogData()
+    fetchDialogUnBindData() {
+      this.listLoadingDialog = true
+      api.getUNBindSchoolList(this.formDialogInline).then(response => {
+        this.totalDialog = response.data.total
+        this.listDialog = response.data.list
+        this.listLoadingDialog = false
+      }).catch(() => {
+        this.listLoadingDialog = false
+      })
+    },
+    onSubmit(type) {
+      if (type === 'search') {
+        this.formDialogInline.pageNum = 1
+      }
+      if (this.dialogTableType === 'bind') {
+        this.fetchDialogBindData()
+      } else {
+        this.fetchDialogUnBindData()
+      }
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
-    add(supportId) {
+    add() {
       this.dialogFormVisible = true
       this.dialogFormTitle = '新增客服'
+      this.supportId = null
     },
     edit(supportId) {
       this.dialogFormVisible = true
       this.dialogFormTitle = '客服修改'
+      this.supportId = supportId
       api.getCustomerDetail({
         supportId: supportId
       }).then(res => {
@@ -267,16 +291,71 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
-      }).catch(() => {
-
+        api.deleteCustomer({
+          supportId: supportId
+        }).then(res => {
+          if (res.code === 10000) {
+            this.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+            this.fetchData()
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch((err) => {
+        console.log(err)
       })
     },
-    cancelCustomerForm() {
+    cancelCustomerForm(formName) {
       this.dialogFormVisible = false
+      this.$refs[formName].resetFields()
     },
-    submitCustomerForm() {
-      this.dialogFormVisible = false
+    closeDialog(formName) {
+      this.$refs[formName].resetFields()
+    },
+    submitCustomerForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.supportId) {
+            api.editCustomer({
+              ...this.form,
+              ...{ supportId: this.supportId }
+            }).then(res => {
+              if (res.code === 10000) {
+                this.dialogFormVisible = false
+                this.$message({
+                  message: '修改成功！',
+                  type: 'success'
+                })
+                this.fetchData()
+              } else {
+                this.$message.error(res.message)
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          } else {
+            api.addCustomer(this.form).then(res => {
+              if (res.code === 10000) {
+                this.dialogFormVisible = false
+                this.$message({
+                  message: '新增成功！',
+                  type: 'success'
+                })
+                this.fetchData()
+              } else {
+                this.$message.error(res.message)
+              }
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+        }
+      })
     },
     cancelCustomerTable() {
       this.dialogTableVisible = false
@@ -286,9 +365,89 @@ export default {
       this.multipleSelection = val
       this.totalSelectNum = val.length
     },
-    bindSchool(supportId) {
-      this.fetchDialogData()
+    getTableSchool(type) {
+      if (type === 'bind') {
+        this.fetchDialogBindData()
+      } else {
+        this.fetchDialogUnBindData()
+      }
+    },
+    showDialogSchool(supportId, type) {
+      this.dialogTableType = type
+      this.formDialogInline.supportId = supportId
+      this.formDialogInline.searchKey = ''
+      this.formDialogInline.pageNum = 1
+      if (type === 'bind') {
+        this.dialogTableBtnText = '解绑'
+        this.dialogTableTitle = '已绑定学校'
+      } else {
+        this.dialogTableBtnText = '绑定'
+        this.dialogTableTitle = '绑定学校'
+      }
+      this.getTableSchool(type)
       this.dialogTableVisible = true
+    },
+    bindSchool(type, rows) {
+      const arr = []
+      if (type === 'batch' && this.multipleSelection.length === 0) {
+        this.$message('请先选择学校')
+        return
+      } else if (type === 'single') {
+        this.toggleSelection(rows)
+      }
+      this.multipleSelection.forEach((val, index) => {
+        arr.push(val.schoolId)
+      })
+      if (this.dialogTableType === 'bind') {
+        this.customerUNBindSchool(arr)
+      } else {
+        this.customerBindSchool(arr)
+      }
+    },
+    customerBindSchool(schoolIds) {
+      api.customerBindSchool({
+        ...{ supportId: this.formDialogInline.supportId },
+        schoolId: schoolIds
+      }).then(res => {
+        if (res.code === 10000) {
+          this.dialogTableVisible = false
+          this.$message({
+            message: '绑定成功！',
+            type: 'success'
+          })
+          this.fetchData()
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    customerUNBindSchool(schoolIds) {
+      api.customerUNBindSchool({
+        schoolId: schoolIds
+      }).then(res => {
+        if (res.code === 10000) {
+          this.dialogTableVisible = false
+          this.$message({
+            message: '解绑成功！',
+            type: 'success'
+          })
+          this.fetchData()
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    toggleSelection(rows) {
+      this.$refs.multipleTable.clearSelection()
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      }
     },
     handleAvatarSuccess(req) {
       const that = this

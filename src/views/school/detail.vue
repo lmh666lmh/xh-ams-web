@@ -289,7 +289,7 @@ export default {
               loading.close()
               if (response.code === 10000) {
                 this.$message({
-                  message: '修改成功！',
+                  message: '添加成功！',
                   type: 'success'
                 })
                 this.$router.push({
@@ -297,7 +297,7 @@ export default {
                 })
               } else {
                 this.formInline.pwd = this.oldPwd
-                this.$message.error('修改失败')
+                this.$message.error(response.message)
               }
             }).catch(() => {
               this.formInline.pwd = this.oldPwd
@@ -316,7 +316,7 @@ export default {
                 })
               } else {
                 this.formInline.pwd = this.oldPwd
-                this.$message.error('修改失败')
+                this.$message.error(response.message)
               }
             }).catch(() => {
               this.formInline.pwd = this.oldPwd
