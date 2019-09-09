@@ -22,14 +22,14 @@
         <el-table-column label="微信号" align="center" prop="wechatNumber"/>
         <el-table-column label="已绑定学校" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'bind')" >{{ scope.row.bindNum }}</el-button>
+            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'bind', scope.row.supportName)" >{{ scope.row.bindNum }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="edit(scope.row.supportId)">修改</el-button>
             <el-button type="text" size="small" @click="remove(scope.row.supportId)">删除</el-button>
-            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'unBind')">绑定学校</el-button>
+            <el-button type="text" size="small" @click="showDialogSchool(scope.row.supportId, 'unBind', scope.row.supportName)">绑定学校</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -84,13 +84,13 @@
       <div class="table-main">
         <div class="table-header">
           <el-form :inline="true" :model="formDialogInline" size="small" class="demo-form-inline">
-            <el-form-item label="当前客服:" style="margin-right: 190px;">
-              <span>客服1</span>
+            <el-form-item label="当前客服:" class="dialog-form-item">
+              <span>{{ dialogTableCustomerName }}</span>
             </el-form-item>
-            <el-form-item label="学校名称/账号">
+            <el-form-item label="学校名称/账号" class="dialog-form-item" style="position: absolute;top: 0;right: 80px;">
               <el-input v-model="formDialogInline.searchKey" placeholder="请填写" size="mini"/>
             </el-form-item>
-            <el-form-item>
+            <el-form-item class="dialog-form-item" style="position: absolute;top: 0;right: 20px;">
               <el-button type="primary" size="mini" @click="onSubmit('search')">搜索</el-button>
             </el-form-item>
           </el-form>
@@ -372,9 +372,10 @@ export default {
         this.fetchDialogUnBindData()
       }
     },
-    showDialogSchool(supportId, type) {
+    showDialogSchool(supportId, type, supportName) {
       this.dialogTableType = type
       this.formDialogInline.supportId = supportId
+      this.dialogTableCustomerName = supportName
       this.formDialogInline.searchKey = ''
       this.formDialogInline.pageNum = 1
       if (type === 'bind') {
@@ -623,5 +624,11 @@ export default {
     max-height: 260px;
     box-sizing: border-box;
     overflow: auto;
+  }
+  .customer-service-container .demo-form-inline{
+    position: relative;
+  }
+  .customer-service-container .dialog-form-item{
+    margin: 0;
   }
 </style>
