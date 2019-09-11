@@ -150,7 +150,7 @@ export default {
   data() {
     const checkPhone = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入手机号'))
+        callback(new Error('请输入联系电话'))
       } else {
         callback()
       }
