@@ -44,7 +44,7 @@
           <el-input v-model="form.supportName" class="form-input" size="mini"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="联系电话" prop="supportPhone" class="form-item">
-          <el-input v-model="form.supportPhone" class="form-input" size="mini" maxlength="11"/>
+          <el-input v-model="form.supportPhone" class="form-input" size="mini" maxlength="15"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="微信号" prop="wechatNumber" class="form-item">
           <el-input v-model="form.wechatNumber" class="form-input" size="mini"/>
@@ -141,7 +141,6 @@
 import * as qiniu from 'qiniu-js'
 import Pagination from '@/components/Pagination'
 import { api } from '@/api/index'
-import { regPhone } from '@/utils/validate'
 
 export default {
   name: 'CustomerService',
@@ -153,11 +152,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入手机号'))
       } else {
-        if (!regPhone(value)) {
-          callback(new Error('请输入正确的手机号码'))
-        } else {
-          callback()
-        }
+        callback()
       }
     }
     return {
