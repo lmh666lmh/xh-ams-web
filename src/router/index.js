@@ -324,6 +324,12 @@ export const asyncRouterMap = [
         meta: { title: '借阅异常' }
       },
       {
+        path: 'booksRepair',
+        name: 'BooksRepair',
+        component: () => import('@/views/anomalous/booksRepair'),
+        meta: { title: '书籍报修' }
+      },
+      {
         path: 'equipmentAnomalous',
         name: 'EquipmentAnomalous',
         hidden: true,
