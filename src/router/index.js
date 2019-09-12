@@ -330,6 +330,13 @@ export const asyncRouterMap = [
         meta: { title: '书籍报修' }
       },
       {
+        path: 'booksRepairDetail',
+        name: 'BooksRepairDetail',
+        hidden: true,
+        component: () => import('@/views/anomalous/booksRepairDetail'),
+        meta: { title: '报修记录' }
+      },
+      {
         path: 'equipmentAnomalous',
         name: 'EquipmentAnomalous',
         hidden: true,
