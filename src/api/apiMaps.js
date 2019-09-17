@@ -200,7 +200,9 @@ export const SYSTEM = {
     // 异常维护-书籍报修列表
     BOOKREPAIRLIST: path('/repair/page'),
     // 异常维护-书籍报修详情列表
-    BOOKREPAIRDETAILLIST: path('/repair/detail/page')
+    BOOKREPAIRDETAILLIST: path('/repair/detail/page'),
+    // 异常维护-书籍报修详情列表-提交异常
+    BOOKREPAIRDETAILSUBMIT: path('/repair/deal')
   },
   // 试用管理
   PROBATION: {

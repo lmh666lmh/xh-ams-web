@@ -8,9 +8,9 @@
     </div>
     <div class="operation-container">
       <span style="color: red;">报修处理选择：</span>
-      <el-radio v-model="repairStatus" label="1">暂不报修</el-radio>
-      <el-radio v-model="repairStatus" label="2">锁柜报修</el-radio>
-      <el-button type="primary" size="mini" style="margin-left: 50px;" @click="back">提交处理</el-button>
+      <el-radio v-model="repairStatus" :label="1">暂不报修</el-radio>
+      <el-radio v-model="repairStatus" :label="2">锁柜报修</el-radio>
+      <el-button type="primary" size="mini" style="margin-left: 50px;" @click="submit">提交处理</el-button>
     </div>
     <div class="list">
       <el-table
@@ -33,9 +33,14 @@
           </template>
         </el-table-column>
         <el-table-column label="报修学生" align="center" prop="studentName"/>
-        <el-table-column label="书籍破损图片" align="center">
+        <el-table-column label="书籍破损图片" align="center" width="220">
           <template slot-scope="scope">
-            <img v-for="(item, index) in JSON.parse(scope.row.bookWearoutImgJson)" :key="index" :src="item" alt="" class="repair-pic">
+            <el-image
+              v-for="(item, index) in JSON.parse(scope.row.bookWearoutImgJson)"
+              :key="index"
+              :src="item"
+              :preview-src-list="JSON.parse(scope.row.bookWearoutImgJson)"
+              class="repair-pic"/>
           </template>
         </el-table-column>
         <el-table-column label="谁破坏的书籍" align="center" prop="wearoutPersonFlagStr"/>
@@ -95,6 +100,34 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
+    },
+    submit() {
+      if (this.repairStatus === '') {
+        this.$message.warning('请先选择报修方式')
+        return
+      }
+      this.$confirm('是否提交报修处理？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.submitBookRepairDetail({
+          bookRfId: this.formInline.bookRfId,
+          repairStatus: this.repairStatus
+        }).then(res => {
+          if (res.code === 10000) {
+            this.$message({
+              message: '提交成功！',
+              type: 'success'
+            })
+          } else {
+            this.$message.err(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(() => {
+      })
     }
   }
 }
@@ -122,5 +155,6 @@ export default {
     max-width: 50px;
     max-height: 50px;
     margin: 0 5px;
+    cursor: pointer;
   }
 </style>
