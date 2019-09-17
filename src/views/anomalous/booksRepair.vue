@@ -2,25 +2,50 @@
   <div class="books-repair-container">
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
-        <el-form-item label="学校名称/账号">
-          <el-input v-model="formInline.schoolAccountOrName" placeholder="请输入学校名称/账号"/>
+        <el-form-item label="学校名称/账户">
+          <el-autocomplete
+            v-model="schoolName"
+            :fetch-suggestions="searchSchool"
+            :debounce="700"
+            :clearable="true"
+            :trigger-on-focus="false"
+            popper-class="my-autocomplete"
+            placeholder="请填写"
+            @select="searchSchoolSelect">
+            <i slot="suffix" class="el-icon-search el-input__icon"/>
+            <template slot-scope="{ item }">
+              <div class="name">{{ item.value }}</div>
+              <span class="addr">账号：{{ item.schoolAccount }}</span>
+              <span class="addr">编码：{{ item.schoolNum }}</span>
+            </template>
+          </el-autocomplete>
         </el-form-item>
         <el-form-item label="报修书籍">
-          <el-input v-model="formInline.bookName" placeholder="请输入书籍名称"/>
+          <el-autocomplete
+            v-model="bookName"
+            :fetch-suggestions="searchBooks"
+            :debounce="700"
+            :clearable="true"
+            :trigger-on-focus="false"
+            popper-class="my-autocomplete"
+            placeholder="请填写"
+            @select="searchBooksSelect">
+            <i slot="suffix" class="el-icon-search el-input__icon"/>
+          </el-autocomplete>
         </el-form-item>
         <el-form-item label="借阅状态">
-          <el-select v-model="formInline.borrowStatus" placeholder="请选择">
+          <el-select v-model="formInline.bookStatus" placeholder="请选择">
             <el-option
-              v-for="item in borrowStatusOptions"
+              v-for="item in bookStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="报修进度">
-          <el-select v-model="formInline.repairProgress" placeholder="请选择">
+          <el-select v-model="formInline.repairStatus" placeholder="请选择">
             <el-option
-              v-for="item in repairProgressOptions"
+              v-for="item in repairStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
@@ -49,20 +74,21 @@
         <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
         <el-table-column label="报修书籍" align="center">
           <template slot-scope="scope">
-            <span>《{{ scope.row.leaderName }}》</span>
+            <span>《{{ scope.row.bookName }}》</span>
           </template>
         </el-table-column>
-        <el-table-column label="借阅状态" align="center" prop="leaderName"/>
+        <el-table-column label="借阅状态" align="center" prop="bookStatusStr"/>
         <el-table-column label="报修进度" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.leaderName }}</span>
+            <span v-if="scope.row.repairStatus === 0" style="color: red;">{{ scope.row.repairStatusStr }}</span>
+            <span v-else>{{ scope.row.repairStatusStr }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="锁住柜号" align="center" prop="areaName"/>
-        <el-table-column label="最后报修时间" align="center" prop="createTime"/>
+        <el-table-column label="锁住柜号" align="center" prop="lockGridNum"/>
+        <el-table-column label="最后报修时间" align="center" prop="lastRepairTime"/>
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/anomalous/booksRepairDetail', scope.row.schoolId)">处理/查看报修</el-button>
+            <el-button type="text" size="small" @click="routeTo('/anomalous/booksRepairDetail', scope.row.bookRfId)">处理/查看报修</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,22 +111,30 @@ export default {
       list: null,
       listLoading: true,
       total: 0,
+      schoolName: '',
+      bookName: '',
       formInline: {
-        schoolAccountOrName: '',
-        bookName: '',
-        borrowStatus: '',
-        repairProgress: '',
+        schoolId: '',
+        bookTemplateId: '',
+        bookStatus: '',
+        repairStatus: '',
         pageNum: 1,
         pageSize: 10
       },
-      borrowStatusOptions: [{
-        value: '0',
+      bookStatusOptions: [{
+        value: '',
+        label: '全部'
+      }, {
+        value: '2',
         label: '在借'
       }, {
         value: '1',
         label: '已还'
       }],
-      repairProgressOptions: [{
+      repairStatusOptions: [{
+        value: '',
+        label: '全部'
+      }, {
         value: '0',
         label: '待处理'
       }, {
@@ -111,9 +145,6 @@ export default {
         label: '锁柜报修'
       }, {
         value: '3',
-        label: '处理中'
-      }, {
-        value: '4',
         label: '已处理'
       }]
     }
@@ -124,6 +155,12 @@ export default {
   methods: {
     onSubmit() {
       this.formInline.pageNum = 1
+      if (!this.schoolName) {
+        this.formInline.schoolId = ''
+      }
+      if (!this.bookName) {
+        this.formInline.bookTemplateId = ''
+      }
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
@@ -131,7 +168,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getBookRepairList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
@@ -143,9 +180,75 @@ export default {
       this.$router.push({
         path: path,
         query: {
-          schoolId: arguments[1]
+          bookRfId: arguments[1]
         }
       })
+    },
+    searchSchoolSelect(item) {
+      console.log(item)
+      this.formInline.schoolId = item.schoolId
+    },
+    searchBooksSelect(item) {
+      console.log(item)
+      this.formInline.bookTemplateId = item.bookTemplateId
+    },
+    searchSchool(queryString, callback) {
+      this.formInline.schoolId = ''
+      const searchKey = queryString.trim()
+      if (!searchKey) {
+        callback([])
+      } else {
+        api.getSearchSchool({
+          searchKey: searchKey
+        }).then(res => {
+          if (res.code === 10000) {
+            const array = []
+            res.data.forEach((value, index) => {
+              array.push({
+                value: value.schoolName,
+                schoolId: value.schoolId,
+                schoolNum: value.schoolNum,
+                schoolAccount: value.schoolAccount
+              })
+            })
+            // 调用 callback 返回建议列表的数据
+            callback(array)
+          } else {
+            callback([])
+          }
+        }).catch(err => {
+          callback([])
+          console.log(err)
+        })
+      }
+    },
+    searchBooks(queryString, callback) {
+      this.formInline.bookTemplateId = ''
+      const searchKey = queryString.trim()
+      if (!searchKey) {
+        callback([])
+      } else {
+        api.getSearchBooks({
+          searchKey: searchKey
+        }).then(res => {
+          if (res.code === 10000) {
+            const array = []
+            res.data.forEach((value, index) => {
+              array.push({
+                value: value.bookName,
+                bookTemplateId: value.bookTemplateId
+              })
+            })
+            // 调用 callback 返回建议列表的数据
+            callback(array)
+          } else {
+            callback([])
+          }
+        }).catch(err => {
+          callback([])
+          console.log(err)
+        })
+      }
     }
   }
 }
