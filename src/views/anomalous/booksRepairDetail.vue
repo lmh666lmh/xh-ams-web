@@ -35,12 +35,7 @@
         <el-table-column label="报修学生" align="center" prop="studentName"/>
         <el-table-column label="书籍破损图片" align="center" width="220">
           <template slot-scope="scope">
-            <el-image
-              v-for="(item, index) in JSON.parse(scope.row.bookWearoutImgJson)"
-              :key="index"
-              :src="item"
-              :preview-src-list="JSON.parse(scope.row.bookWearoutImgJson)"
-              class="repair-pic"/>
+            <img v-for="(item, index) in JSON.parse(scope.row.bookWearoutImgJson)" :key="index" :src="item" :preview="scope.row.id" preview-text="" class="repair-pic">
           </template>
         </el-table-column>
         <el-table-column label="谁破坏的书籍" align="center" prop="wearoutPersonFlagStr"/>
@@ -97,6 +92,9 @@ export default {
         this.bookcaseNum = response.data.bookcaseNum
         this.bookName = response.data.bookName
         this.listLoading = false
+        setTimeout(() => {
+          this.$previewRefresh()
+        }, 2000)
       }).catch(() => {
         this.listLoading = false
       })
