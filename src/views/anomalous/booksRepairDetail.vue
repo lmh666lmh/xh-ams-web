@@ -4,9 +4,10 @@
       <span><span class="info-title">当前学校：</span>{{ schoolName }}</span>
       <span><span class="info-title">书柜编号：</span>{{ bookcaseNum }}</span>
       <span><span class="info-title">报修书籍：</span>《 {{ bookName }} 》</span>
+      <span v-if="repairStatusStr !== '待处理'"><span class="info-title">报修进度：</span>《 {{ repairStatusStr }} 》</span>
       <el-button type="primary" size="mini" @click="back">返回</el-button>
     </div>
-    <div class="operation-container">
+    <div v-if="repairStatusStr === '待处理'" class="operation-container">
       <span style="color: red;">报修处理选择：</span>
       <el-radio v-model="repairStatus" :label="1">暂不报修</el-radio>
       <el-radio v-model="repairStatus" :label="2">锁柜报修</el-radio>
@@ -65,6 +66,7 @@ export default {
       bookName: '',
       bookcaseNum: '',
       repairStatus: '',
+      repairStatusStr: '',
       formInline: {
         bookRfId: '',
         pageNum: 1,
@@ -92,6 +94,7 @@ export default {
         this.bookcaseNum = response.data.bookcaseNum
         this.bookName = response.data.bookName
         this.listLoading = false
+        this.repairStatusStr = response.data.repairStatusStr
         setTimeout(() => {
           this.$previewRefresh()
         }, 2000)

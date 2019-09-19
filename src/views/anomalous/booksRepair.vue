@@ -88,7 +88,8 @@
         <el-table-column label="最后报修时间" align="center" prop="lastRepairTime"/>
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/anomalous/booksRepairDetail', scope.row.bookRfId)">处理/查看报修</el-button>
+            <el-button v-if="scope.row.repairStatus === 0" type="text" size="small" @click="routeTo('/anomalous/booksRepairDetail', scope.row.bookRfId)">处理</el-button>
+            <el-button v-else type="text" size="small" @click="routeTo('/anomalous/booksRepairDetail', scope.row.bookRfId)">查看报修</el-button>
           </template>
         </el-table-column>
       </el-table>
