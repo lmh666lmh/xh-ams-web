@@ -189,14 +189,20 @@ export const SYSTEM = {
     // 导出借阅记录
     EXPORTBORROWRECORD: path('/book/borrowed/export')
   },
-  // 系统维护
+  // 异常维护
   SYSTEMANOMALOUS: {
-    // 系统维护-借阅异常列表
+    // 异常维护-借阅异常列表
     BORROWLIST: path('/borrowed/error/page'),
-    // 系统维护-借阅异常-详情查看
+    // 异常维护-借阅异常-详情查看
     BORROWLISTDETAIL: path('/borrowed/error/detail'),
-    // 系统维护-借阅异常-开启/关闭家长自助处理
-    SELFHELP: path('/borrowed/error/selfHelp')
+    // 异常维护-借阅异常-开启/关闭家长自助处理
+    SELFHELP: path('/borrowed/error/selfHelp'),
+    // 异常维护-书籍报修列表
+    BOOKREPAIRLIST: path('/repair/page'),
+    // 异常维护-书籍报修详情列表
+    BOOKREPAIRDETAILLIST: path('/repair/detail/page'),
+    // 异常维护-书籍报修详情列表-提交异常
+    BOOKREPAIRDETAILSUBMIT: path('/repair/deal')
   },
   // 试用管理
   PROBATION: {

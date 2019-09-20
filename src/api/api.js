@@ -731,6 +731,39 @@ export default {
   borrowAnomalousSelfHelp(params, callback) {
     return API.post(SYSTEM.SYSTEMANOMALOUS.SELFHELP, params, callback)
   },
+  /**
+   * @method: getBookRepairList
+   * @description: 系统维护 => 书籍报修列表
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBookRepairList(params, callback) {
+    return API.get(SYSTEM.SYSTEMANOMALOUS.BOOKREPAIRLIST, params, callback)
+  },
+  /**
+   * @method: getBookRepairDetailList
+   * @description: 系统维护 => 书籍报修详情列表
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  getBookRepairDetailList(params, callback) {
+    return API.get(SYSTEM.SYSTEMANOMALOUS.BOOKREPAIRDETAILLIST, params, callback)
+  },
+  /**
+   * @method: submitBookRepairDetail
+   * @description: 系统维护 => 书籍报修详情列表 => 提交异常处理
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object}
+   * @return{Object}
+   */
+  submitBookRepairDetail(params, callback) {
+    return API.post(SYSTEM.SYSTEMANOMALOUS.BOOKREPAIRDETAILSUBMIT, params, callback)
+  },
   /** ================================================  试用管理 ======================================================*/
   /**
    * @method: getProbationList

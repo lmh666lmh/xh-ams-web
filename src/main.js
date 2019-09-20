@@ -5,6 +5,8 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { JSEncrypt } from 'jsencrypt' // RSA加密插件
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
 import '@/styles/index.scss' // global css
 
@@ -18,6 +20,7 @@ import '@/permission' // permission control
 import vFilters from './utils/filter'
 
 Vue.use(ElementUI)
+Vue.use(preview)
 
 for (const key in vFilters) {
   Vue.filter(key, vFilters[key])
