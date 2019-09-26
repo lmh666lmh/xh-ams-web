@@ -75,7 +75,7 @@
             <el-table
               :data="multipleSelection"
               :cell-style="cellStyle"
-              height="250"
+              height="300"
               border
               fit
               highlight-current-row>
@@ -91,8 +91,25 @@
           </el-col>
           <el-col :span="8">
             <div class="config-cont">
-              <el-form :model="form" label-width="80px">
-                <el-form-item label="开始时间:" class="space">
+              <el-form :model="form">
+                <el-form-item label="试用天数:" class="space">
+                  <el-input-number :disabled="form.fixedTimeStatus" v-model="form.probationDays" :step="1" :precision="0" :min="form.trialMinDays" :max="form.trialMaxDays" controls-position="right" size="mini"/> 天
+                </el-form-item>
+                <el-form-item label="试用人数:" class="space">
+                  <span>{{ totalSelectNum }} 个</span>
+                </el-form-item>
+                <el-form-item label="是否设置固定有效期" class="space">
+                  <el-switch
+                    v-model="form.fixedTimeStatus"
+                    active-color="#13ce66"
+                    inactive-color="#DBDFE6"
+                    @change="switchFixedTime"/>
+                  <el-tooltip placement="top">
+                    <div slot="content">开启后只限定在固定有效期内试用<br>否则，以激活后开始计算试用有效期</div>
+                    <i class="el-icon-question" style="font-size: 16px;"/>
+                  </el-tooltip>
+                </el-form-item>
+                <el-form-item v-show="form.fixedTimeStatus" label="开始时间:" class="space">
                   <el-form-item>
                     <el-date-picker
                       :readonly="true"
@@ -104,7 +121,7 @@
                       style="width: 150px !important;"/>
                   </el-form-item>
                 </el-form-item>
-                <el-form-item label="结束时间:" class="space">
+                <el-form-item v-show="form.fixedTimeStatus" label="结束时间:" class="space">
                   <el-form-item>
                     <el-date-picker
                       v-model="form.endTime"
@@ -118,13 +135,7 @@
                       @change="computeDays"/>
                   </el-form-item>
                 </el-form-item>
-                <div style="font-size: 12px;color: red;text-align: center;">试用时间选择区间：{{ form.trialMinDays }}-{{ form.trialMaxDays }}天</div>
-                <el-form-item label="试用天数:" class="space">
-                  <span>{{ form.probationDays }} 天</span>
-                </el-form-item>
-                <el-form-item label="试用人数:" class="space">
-                  <span>{{ totalSelectNum }} 个</span>
-                </el-form-item>
+                <div v-show="form.fixedTimeStatus" style="font-size: 12px;color: red;text-indent: 4.5rem;">试用时间选择区间：{{ form.trialMinDays }}-{{ form.trialMaxDays }}天</div>
                 <el-button type="primary" size="small" class="submitForm" @click="submitForm()">添加试用</el-button>
               </el-form>
             </div>
@@ -169,6 +180,7 @@ export default {
       form: {
         startTime: '',
         endTime: '',
+        fixedTimeStatus: false,
         probationDays: 0,
         trialMinDays: 0,
         trialMaxDays: 0
@@ -283,6 +295,7 @@ export default {
       })
       api.addProbationStudent({
         num: this.form.probationDays,
+        fixedTimeStatus: this.form.fixedTimeStatus,
         studentIds: arr
       }).then(res => {
         if (res.code === 10000) {
@@ -319,6 +332,9 @@ export default {
     back() {
       history.go(-1)
     },
+    switchFixedTime() {
+      this.computeDays()
+    },
     // render 事件
     renderHeader(h, { column }) {
       return [
@@ -345,7 +361,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .probation-manage-container{
     margin: 20px;
   }
@@ -363,7 +379,7 @@ export default {
   }
   .probation-manage-container .config-cont{
     background-color: #f6f6f6;
-    height: 250px;
+    height: 300px;
     border-radius: 5px;
     padding: 30px 10px 10px;
     box-sizing: border-box;
@@ -380,5 +396,8 @@ export default {
     bottom: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+  .el-input-number--mini{
+    width: 90px;
   }
 </style>

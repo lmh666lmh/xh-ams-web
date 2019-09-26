@@ -27,7 +27,7 @@
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
         <el-table-column label="学校账号" align="center" prop="schoolAccount"/>
         <el-table-column label="学生总数" align="center" prop="studentNums"/>
-        <el-table-column label="试用人数" align="center">
+        <el-table-column label="已添加试用人数" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.trailStudentNums != 0" type="text" size="small" @click="routeTo('/probation/probationStudent?schoolId=' + scope.row.schoolId)" >{{ scope.row.trailStudentNums }}</el-button>
             <span v-else>{{ scope.row.trailStudentNums }}</span>

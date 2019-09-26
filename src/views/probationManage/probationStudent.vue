@@ -73,7 +73,7 @@
         <el-table-column :render-header="renderHeader" label="试用状态" align="center" prop="trialStatusStr"/>
         <el-table-column label="是否付费" align="center" prop="payStatusStr"/>
         <el-table-column label="试用天数" align="center" prop="trialDays"/>
-        <el-table-column label="试用有效期" align="center" prop="trialValidityPeriod"/>
+        <el-table-column :render-header="renderEnd" label="试用有效期" align="center" prop="trialValidityPeriod"/>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
@@ -109,6 +109,9 @@ export default {
       trialStatusOptions: [{
         value: '',
         label: '请选择'
+      }, {
+        value: '3',
+        label: '未激活'
       }, {
         value: '1',
         label: '试用中'
@@ -196,7 +199,28 @@ export default {
           'el-tooltip',
           {
             props: {
-              content: '当前页面只展示试用的学生',
+              content: '如果未借书状态为未激活；如果开始借书状态为试用中',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
+    renderEnd(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '未激活状态不显示有效期，除非设置固定有效期才显示',
               placement: 'top'
             }
           },
