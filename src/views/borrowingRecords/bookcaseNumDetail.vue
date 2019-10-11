@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column label="借阅书籍" align="center" width="200">
           <template slot-scope="scope">
-            <p v-for="item in scope.row.bookList" :key="item.bookTemplateId" class="bookDetail" @click="routeTo('/borrowingRecords/bookDetail' + '?bookTemplateId=' + item.bookTemplateId + '&schoolId=' + scope.row.schoolId)">《{{ item.bookName }}》</p>
+            <p v-for="item in scope.row.bookList" :key="item.bookTemplateId">《{{ item.bookName }}》</p>
           </template>
         </el-table-column>
         <el-table-column label="操作类型" align="center" prop="brTypeStr"/>
