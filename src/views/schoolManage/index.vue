@@ -8,7 +8,7 @@
       <el-tab-pane label="学生家长管理" name="third"><router-view v-if="activeName == 'third'"/></el-tab-pane>
       <el-tab-pane label="年级管理" name="first"><router-view v-if="activeName == 'first'"/></el-tab-pane>
       <el-tab-pane label="班级管理" name="second"><router-view v-if="activeName == 'second'"/></el-tab-pane>
-      <el-tab-pane label="教师管理" name="second"><router-view v-if="activeName == 'four'"/></el-tab-pane>
+      <el-tab-pane label="教师管理" name="fourth"><router-view v-if="activeName == 'fourth'"/></el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
           path = '/schoolManage/index/class'
         } else if (tab.name === 'third') {
           path = '/schoolManage/index/studentParent'
-        } else if (tab.name === 'four') {
+        } else if (tab.name === 'fourth') {
           path = '/schoolManage/index/teacherManage'
         }
       }
