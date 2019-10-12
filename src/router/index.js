@@ -168,6 +168,11 @@ export const asyncRouterMap = [
             path: 'studentParent',
             name: 'StudentParent',
             component: () => import('@/views/schoolManage/studentParent')
+          },
+          {
+            path: 'teacherManage',
+            name: 'TeacherManage',
+            component: () => import('@/views/schoolManage/teacherManage')
           }
         ]
       }
