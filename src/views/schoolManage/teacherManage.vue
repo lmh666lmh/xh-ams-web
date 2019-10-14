@@ -8,24 +8,7 @@
         <el-form-item label="手机号">
           <el-input v-model="formInline.phone" placeholder="请输入手机号"/>
         </el-form-item>
-        <el-form-item label="任教/管理班级">
-          <el-select v-model="formInline.gradeId" placeholder="请选择年级" style="width: 150px;" @change="getClass('search', formInline.gradeId)">
-            <el-option value="">请选择年级</el-option>
-            <el-option
-              v-for="item in gradeOptions"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId" />
-          </el-select>
-          <el-select v-model="formInline.classId" placeholder="请选择班级" style="width: 150px;">
-            <el-option value="">请选择班级</el-option>
-            <el-option
-              v-for="item in classOptions"
-              :key="item.classId"
-              :label="item.className"
-              :value="item.classId" />
-          </el-select>
-        </el-form-item>
+        <GradeClass :school-id="formInline.schoolId" :grade-id.sync="formInline.gradeId" :class-id.sync="formInline.classId"/>
         <el-form-item label="职位">
           <el-select v-model="formInline.teacherType" placeholder="请选择">
             <el-option
@@ -102,7 +85,17 @@
           <el-radio v-model="form.gender" label="woman">女</el-radio>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="任教班级" prop="teacherClassList" >
-          <el-tree :data="allClass" show-checkbox node-key="gradeId" :props="defaultProps"/>
+          <div style="max-height: 200px; overflow: auto;">
+            <el-tree
+              ref="tree"
+              :data="allClassOptions"
+              :props="defaultProps"
+              :default-checked-keys="defaultCheckedKeys"
+              :default-expanded-keys="defaultExpandedKeys"
+              show-checkbox
+              node-key="id"
+              @check-change="handleCheckChange"/>
+          </div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="状态">
           <el-radio v-model="form.teacherStatus" label="1">在职</el-radio>
@@ -122,20 +115,20 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import GradeClass from '@/components/GradeClass'
 import { api } from '@/api/index'
 
 export default {
   name: 'TeacherManage',
   components: {
-    Pagination
+    Pagination,
+    GradeClass
   },
   data() {
     return {
       list: null,
       listLoading: true,
       total: 0,
-      gradeTypeOptions: [],
-      gradeId: '',
       formInline: {
         schoolId: '',
         teacherName: '',
@@ -183,9 +176,19 @@ export default {
         teacherStatus: '',
         remake: ''
       },
-      allClass: [],
-      menu: [],
-      menusIds: [],
+      allClassOptions: [],
+      defaultCheckedKeys: [],
+      defaultExpandedKeys: [],
+      defaultProps: {
+        children: 'classList',
+        label: function(data, node) {
+          if (data.gradeName) {
+            return data.gradeName
+          } else {
+            return data.className
+          }
+        }
+      },
       rules: {
         gradeId: [
           { required: true, message: '请选择年级', trigger: 'change' }
@@ -199,7 +202,6 @@ export default {
   created() {
     this.formInline.schoolId = this.$route.query.schoolId
     this.fetchData()
-    this.getGradeAll()
     this.getAllClassGroup(this.formInline.schoolId)
   },
   methods: {
@@ -220,46 +222,28 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
-    getGradeAll() {
-      api.getAllGrade(this.formInline.schoolId).then(response => {
-        if (response.code === 10000) {
-          this.gradeOptions = response.data
-        }
-      })
-    },
-    getClass(type, gradeId) {
-      this.classOptions = []
-      this.classDialogOptions = []
-      if (type === 'search') {
-        this.formInline.classId = ''
-      } else if (type === 'dialog') {
-        this.dialogForm.form.classId = ''
-      } else if (type === 'multipleTable') {
-        this.multipleTableFormInline.classId = ''
-      }
-      api.getAllClass({ gradeId: gradeId }).then(response => {
-        if (response.code === 10000) {
-          if (type === 'search') {
-            this.classOptions = response.data
-          } else {
-            this.classDialogOptions = response.data
-          }
-        }
-      })
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(this.$refs.tree.getCheckedNodes())
     },
     getTeacherDetail(schoolId, teacherId) {
       api.getTeacherDetail({ schoolId: schoolId, teacherId: teacherId }).then(response => {
+        this.defaultCheckedKeys = []
+        this.defaultExpandedKeys = []
         if (response.code === 10000) {
           this.form.teacherName = response.data.teacherName
-          this.form.questionDTOList = response.data.questionDTOList ? response.data.questionDTOList : []
+          response.data.teacherClassList.forEach((value, key) => {
+            this.defaultCheckedKeys.push(value.classId)
+            this.defaultExpandedKeys.push(value.gradeId)
+          })
+          this.defaultExpandedKeys = Array.from(new Set(this.defaultExpandedKeys))
         }
       })
     },
     getAllClassGroup(schoolId) {
       api.getAllClassGroup({ schoolId: schoolId }).then(response => {
         if (response.code === 10000) {
-          this.allClass = response.data ? response.data : []
-          console.log(response)
+          this.allClassOptions = response.data ? response.data : []
+          console.log(response.data)
         }
       })
     },
@@ -267,6 +251,8 @@ export default {
       this.dialogFormVisible = true
       if (type === 'add') {
         this.title = '新增老师'
+        this.defaultCheckedKeys = []
+        this.defaultExpandedKeys = []
       } else {
         this.title = '修改老师'
         this.getTeacherDetail(this.formInline.schoolId, teacherId)
@@ -328,7 +314,7 @@ export default {
               loading.close()
             })
           } else {
-            api.editTeacher({ ...this.form, ...{ gradeId: this.gradeId }}).then(response => {
+            api.editTeacher({ ...this.form }).then(response => {
               loading.close()
               if (response.code === 10000) {
                 this.dialogFormVisible = false

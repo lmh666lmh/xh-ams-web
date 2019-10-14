@@ -72,6 +72,7 @@ export default {
     },
     getClass() {
       this.classOptions = []
+      this.classCode = ''
       api.getAllClass({ gradeId: this.gradeCode }).then(response => {
         if (response.code === 10000) {
           this.classOptions = response.data
