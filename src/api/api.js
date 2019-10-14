@@ -444,6 +444,17 @@ export default {
     return API.get(SYSTEM.SCHOOLMANAGE.CLASS.ALL, params, callback)
   },
   /**
+   * @method: getAllClassGroup
+   * @description: 学校管理 => 学校管理 => 班级管理 => 获取学校所有班级(分组)
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params {schoolId:'学校ID'}
+   * @return{Object} 学校所有班级list
+   */
+  getAllClassGroup(params, callback) {
+    return API.get(SYSTEM.SCHOOLMANAGE.CLASS.ALLCLASSGROUP, params, callback)
+  },
+  /**
    * @method: addClass
    * @description: 学校管理 => 学校管理 => 班级管理 => 新增班级
    * @author: ProudBin
@@ -608,6 +619,62 @@ export default {
   getParentDetail(params, callback) {
     return API.get(SYSTEM.SCHOOLMANAGE.STUDENTPARENT.DETAILPARENT, params, callback)
   },
+  /**
+   * @method: getTeacherList
+   * @description: 学校管理 => 学校管理 => 老师管理 => 老师列表
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params
+   * @return{Object} 老师列表list
+   */
+  getTeacherList(params, callback) {
+    return API.get(SYSTEM.SCHOOLMANAGE.TEACHER.PAGETEACHER, params, callback)
+  },
+  /**
+   * @method: addParent
+   * @description: 学校管理 => 学校管理 => 老师管理 => 新增老师
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params
+   * @return{Object} 成功与否
+   */
+  addTeacher(params, callback) {
+    return API.post(SYSTEM.SCHOOLMANAGE.TEACHER.ADDTEACHER, params, callback)
+  },
+  /**
+   * @method: editParent
+   * @description: 学校管理 => 学校管理 => 老师管理 => 修改老师
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params
+   * @return{Object} 成功与否
+   */
+  editTeacher(params, callback) {
+    return API.put(SYSTEM.SCHOOLMANAGE.TEACHER.EDITTEACHER, params, callback)
+  },
+  /**
+   * @method: deleteParent
+   * @description: 学校管理 => 学校管理 => 老师管理 => 删除老师
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params
+   * @return{Object} 成功与否
+   */
+  deleteTeacher(params, callback) {
+    return API.delete(SYSTEM.SCHOOLMANAGE.TEACHER.EDITTEACHER, params, callback)
+  },
+  /**
+   * @method: getParentDetail
+   * @description: 学校管理 => 学校管理 => 老师管理 => 获取老师详情
+   * @author: lisd
+   * @update: 2019-10-12
+   * @param {Object} params
+   * @return{Object} 老师详情
+   */
+  getTeacherDetail(params, callback) {
+    return API.get(SYSTEM.SCHOOLMANAGE.TEACHER.DETAILTEACHER, params, callback)
+  },
+
   /** ================================================  借阅记录 ======================================================*/
   /**
    * @method: getSearchSchool

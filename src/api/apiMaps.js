@@ -141,7 +141,9 @@ export const SYSTEM = {
       // 获取班级详情
       DETAIL: path('/class/gc'),
       // 获取所有班级
-      ALL: path('/class/list')
+      ALL: path('/class/list'),
+      // 所有班级和年级（分组）
+      ALLCLASSGROUP: path('/class/all')
     },
     STUDENTPARENT: {
       // 学生列表
@@ -168,6 +170,18 @@ export const SYSTEM = {
       DETAILPARENT: path('/student/parent/detail'),
       // 批量导入学生
       IMPORTSTUDENT: path('/student/import')
+    },
+    TEACHER: {
+      // 老师列表
+      PAGETEACHER: path('/teacher/page'),
+      // 老师学生
+      ADDTEACHER: path('/teacher'),
+      // 修改老师
+      EDITTEACHER: path('/teacher'),
+      // 删除老师
+      DELETETEACHER: path('/teacher'),
+      // 详情
+      DETAILTEACHER: path('/teacher')
     }
   },
   // 借阅查询
