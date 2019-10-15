@@ -6,7 +6,7 @@
           <el-input v-model="formInline.teacherName" placeholder="请输入老师名称"/>
         </el-form-item>
         <el-form-item label="手机号">
-          <el-input v-model="formInline.phone" placeholder="请输入手机号"/>
+          <el-input v-model="formInline.phone" placeholder="请输入手机号" maxlength="11"/>
         </el-form-item>
         <GradeClass :school-id="formInline.schoolId" :grade-id.sync="formInline.gradeId" :class-id.sync="formInline.classId"/>
         <el-form-item label="职位">
@@ -69,22 +69,22 @@
           <el-input v-model="form.teacherName" style="width: 200px;" maxlength="32"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="职位" prop="teacherType">
-          <el-select v-model="form.teacherType" style="width: 200px;" maxlength="32">
+          <el-select v-model="form.teacherType" style="width: 200px;">
             <el-option
-              v-for="item in teacherStatusOptions"
+              v-for="item in teacherTypeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="手机号码" prop="phone">
-          <el-input v-model="form.phone" style="width: 200px;" maxlength="32"/>
+          <el-input v-model="form.phone" style="width: 200px;" maxlength="11"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="性别">
           <el-radio v-model="form.gender" label="man">男</el-radio>
           <el-radio v-model="form.gender" label="woman">女</el-radio>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="任教班级" prop="teacherClassList" >
+        <el-form-item :label-width="formLabelWidth" label="任教班级">
           <div style="max-height: 200px; overflow: auto;">
             <el-tree
               ref="tree"
@@ -92,21 +92,22 @@
               :props="defaultProps"
               :default-checked-keys="defaultCheckedKeys"
               :default-expanded-keys="defaultExpandedKeys"
+              empty-text="请先创建年级班级"
               show-checkbox
               node-key="id"
               @check-change="handleCheckChange"/>
           </div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="状态">
-          <el-radio v-model="form.teacherStatus" label="1">在职</el-radio>
-          <el-radio v-model="form.teacherStatus" label="0">离职</el-radio>
+          <el-radio v-model="form.teacherStatus" :label="1">在职</el-radio>
+          <el-radio v-model="form.teacherStatus" :label="0">离职</el-radio>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="备注" prop="remake">
-          <el-input v-model="form.remake" style="width: 200px;" maxlength="32"/>
+        <el-form-item :label-width="formLabelWidth" label="备注">
+          <el-input v-model="form.remake" style="width: 200px;" maxlength="255"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="cancel">取 消</el-button>
+        <el-button size="small" @click="cancel('form')">取 消</el-button>
         <el-button size="small" type="primary" @click="confirm('form')">确 定</el-button>
       </div>
     </el-dialog>
@@ -116,6 +117,7 @@
 <script>
 import Pagination from '@/components/Pagination'
 import GradeClass from '@/components/GradeClass'
+import { regPhone } from '@/utils/validate'
 import { api } from '@/api/index'
 
 export default {
@@ -125,6 +127,17 @@ export default {
     GradeClass
   },
   data() {
+    const checkPhone = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入手机号码'))
+      } else {
+        if (!regPhone(value)) {
+          callback(new Error('请输入正确的手机号码'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       list: null,
       listLoading: true,
@@ -156,10 +169,10 @@ export default {
         value: '',
         label: '请选择'
       }, {
-        value: '1',
+        value: 1,
         label: '在职'
       }, {
-        value: '0',
+        value: 0,
         label: '离职'
       }],
       dialogFormVisible: false,
@@ -171,9 +184,8 @@ export default {
         teacherName: '',
         teacherType: '',
         phone: '',
-        gender: '',
-        teacherClassList: [],
-        teacherStatus: '',
+        gender: 'man',
+        teacherStatus: 1,
         remake: ''
       },
       allClassOptions: [],
@@ -190,11 +202,14 @@ export default {
         }
       },
       rules: {
-        gradeId: [
-          { required: true, message: '请选择年级', trigger: 'change' }
+        teacherName: [
+          { required: true, message: '请填写教师姓名', trigger: 'blur' }
         ],
-        classId: [
-          { required: true, message: '请选择班级', trigger: 'change' }
+        teacherType: [
+          { required: true, message: '请选择教师职位', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, validator: checkPhone, trigger: 'blur' }
         ]
       }
     }
@@ -223,19 +238,37 @@ export default {
       return 'padding:0'
     },
     handleCheckChange(data, checked, indeterminate) {
-      console.log(this.$refs.tree.getCheckedNodes())
+    },
+    editTeacher(type, teacherId) {
+      this.dialogFormVisible = true
+      if (type === 'add') {
+        this.title = '新增老师'
+        this.form.gender = 'man'
+        this.form.gender = 'man'
+        this.form.teacherId = ''
+        if (this.$refs.tree) {
+          this.$refs.tree.setCheckedKeys([])
+          for (let i = 0; i < this.$refs.tree.store._getAllNodes().length; i++) {
+            this.$refs.tree.store._getAllNodes()[i].expanded = false
+          }
+        }
+      } else {
+        this.title = '修改老师'
+        this.getTeacherDetail(this.formInline.schoolId, teacherId)
+      }
     },
     getTeacherDetail(schoolId, teacherId) {
       api.getTeacherDetail({ schoolId: schoolId, teacherId: teacherId }).then(response => {
-        this.defaultCheckedKeys = []
-        this.defaultExpandedKeys = []
+        this.$refs.tree.setCheckedKeys([])
         if (response.code === 10000) {
-          this.form.teacherName = response.data.teacherName
+          for (const key in this.form) {
+            this.form[key] = response.data[key]
+          }
           response.data.teacherClassList.forEach((value, key) => {
             this.defaultCheckedKeys.push(value.classId)
             this.defaultExpandedKeys.push(value.gradeId)
           })
-          this.defaultExpandedKeys = Array.from(new Set(this.defaultExpandedKeys))
+          this.defaultExpandedKeys = Array.from(new Set(this.defaultExpandedKeys)) // 去重
         }
       })
     },
@@ -243,20 +276,8 @@ export default {
       api.getAllClassGroup({ schoolId: schoolId }).then(response => {
         if (response.code === 10000) {
           this.allClassOptions = response.data ? response.data : []
-          console.log(response.data)
         }
       })
-    },
-    editTeacher(type, teacherId) {
-      this.dialogFormVisible = true
-      if (type === 'add') {
-        this.title = '新增老师'
-        this.defaultCheckedKeys = []
-        this.defaultExpandedKeys = []
-      } else {
-        this.title = '修改老师'
-        this.getTeacherDetail(this.formInline.schoolId, teacherId)
-      }
     },
     deleteTeacher(teacherId) {
       this.$confirm('确定要删除当前老师吗？', '提示', {
@@ -270,7 +291,10 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.7)'
         })
-        api.deleteTeacher(teacherId).then(response => {
+        api.deleteTeacher({
+          schoolId: this.formInline.schoolId,
+          teacherId: teacherId
+        }).then(response => {
           loading.close()
           if (response.code === 10000) {
             this.$message({
@@ -279,7 +303,7 @@ export default {
             })
             this.fetchData()
           } else {
-            this.$message.error('删除失败')
+            this.$message.error(response.message)
           }
         }).catch(() => {
           loading.close()
@@ -298,7 +322,7 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
           })
           if (this.title === '新增老师') {
-            api.addTeacher({ ...this.form, ...{ schoolId: this.formInline.schoolId }}).then(response => {
+            api.addTeacher({ ...this.form, ...{ schoolId: this.formInline.schoolId }, ...{ classIdList: this.$refs.tree.getCheckedKeys(true) }}).then(response => {
               loading.close()
               if (response.code === 10000) {
                 this.dialogFormVisible = false
@@ -314,15 +338,15 @@ export default {
               loading.close()
             })
           } else {
-            api.editTeacher({ ...this.form }).then(response => {
+            api.editTeacher({ ...this.form, ...{ schoolId: this.formInline.schoolId }, ...{ classIdList: this.$refs.tree.getCheckedKeys(true) }}).then(response => {
               loading.close()
               if (response.code === 10000) {
                 this.dialogFormVisible = false
+                this.fetchData()
                 this.$message({
                   message: '修改成功！',
                   type: 'success'
                 })
-                this.fetchData()
               } else {
                 this.$message.error('修改失败')
               }
@@ -335,8 +359,9 @@ export default {
         }
       })
     },
-    cancel() {
+    cancel(formName) {
       this.dialogFormVisible = false
+      this.$refs[formName].resetFields()
     },
     closeDialog(formName) {
       this.$refs[formName].resetFields()
