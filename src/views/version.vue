@@ -5,7 +5,7 @@
       :key="item.num">
       <div style="margin-bottom: 10px;">
         <p style="margin: 0">{{ item.num }}</p>
-        <p v-for="(cont, index) in item.cont" :key="index" style="margin: 0;text-indent: 1rem;">{{ cont }}</p>
+        <p v-for="(cont, index) in item.cont" :key="index" style="margin: 0;text-indent: 1rem;font-size: 14px;">{{ cont }}</p>
       </div>
     </div>
   </div>
