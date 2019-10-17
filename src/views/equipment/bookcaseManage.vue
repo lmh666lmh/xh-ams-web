@@ -48,11 +48,11 @@
             <span style="font-size: 12px;">{{ scope.row.bookcaseStatusStr }}</span>
           </template>
         </el-table-column>
-        <!--<el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/equipment/bookcaseDetail', scope.row.bookcaseId, 'bookcase')" >详情</el-button>
+            <el-button type="text" size="small" @click="routeTo('/equipment/bookcaseDetail', scope.row.bookcaseId, 'bookcase')" >远程管理</el-button>
           </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
