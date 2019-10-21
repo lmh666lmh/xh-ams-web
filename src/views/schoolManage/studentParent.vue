@@ -113,7 +113,7 @@
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
-    <el-dialog :visible.sync="dialogForm.addStudentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="新增学生" @close="closeDialog('addStudent', 'addStudentForm')">
+    <el-dialog :visible.sync="dialogForm.addStudentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="新增学生" @close="closeDialog('addStudent')">
       <div class="dialog-body">
         <el-form ref="addStudentForm" :model="dialogForm.form" :rules="dialogForm.rules" size="small">
           <div class="title">学生信息</div>
@@ -206,7 +206,7 @@
         <el-button size="small" type="primary" @click="confirm('addStudent', 'addStudentForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogForm.editStudentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="修改学生" @close="closeDialog('editStudent', 'editStudentForm')">
+    <el-dialog :visible.sync="dialogForm.editStudentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="修改学生" @close="closeDialog('editStudent')">
       <el-form ref="editStudentForm" :model="dialogForm.form" :rules="dialogForm.rules" size="small">
         <el-form-item :label-width="dialogForm.formLabelWidth" label="学生姓名" prop="studentName">
           <el-input v-model="dialogForm.form.studentName" style="width: 200px;" maxlength="32"/>
@@ -256,7 +256,7 @@
         <el-button size="small" type="primary" @click="confirm('editStudent', 'editStudentForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogForm.addParentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="新增家长" @close="closeDialog('addParent', 'addParentForm')">
+    <el-dialog :visible.sync="dialogForm.addParentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="新增家长" @close="closeDialog('addParent')">
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-form ref="addParentForm" :model="dialogForm.form" :rules="dialogForm.rules" size="small">
           <el-form-item
@@ -305,7 +305,7 @@
         <el-button size="small" type="primary" @click="confirm('addParent', 'addParentForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="dialogForm.editParentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="修改家长" @close="closeDialog('editParent', 'editParentForm')">
+    <el-dialog :visible.sync="dialogForm.editParentDialogVisible" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="修改家长" @close="closeDialog('editParent')">
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-form ref="editParentForm" :model="dialogForm.form" :rules="dialogForm.rules" size="small">
           <el-form-item
@@ -346,6 +346,73 @@
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="cancel('editParent')">取 消</el-button>
         <el-button size="small" type="primary" @click="confirm('editParent', 'editParentForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="confirmAddStudentDialog" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="confirmStudentDialog" title="当前新增存在重名的学生" @close="closeDialog('addStudent')">
+      <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          :cell-style="cellStyle"
+          :row-key="getRowKeys"
+          :expand-row-keys="expands"
+          :default-expand-all="false"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+          @current-change="currentChange"
+          @expand-change="expandParent">
+          <el-table-column align="center" label="序号" width="55px">
+            <template slot-scope="scope">
+              {{ scope.$index + 1 }}
+            </template>
+          </el-table-column>
+          <el-table-column label="学生姓名" align="center" prop="studentName"/>
+          <el-table-column label="家长姓名" align="center" prop="gradeName"/>
+          <el-table-column label="手机号码" align="center" prop="className"/>
+          <el-table-column label="关系" align="center" prop="expireTime"/>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="editParent('add', scope.row.studentId)" >加入成员</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="confirm('editParent', 'addStudentForm')">新增学生</el-button>
+        <el-button size="small" type="success" @click="cancel('confirmAddStudent')">取消新增</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="repeatStudentDialog" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="confirmStudentDialog" title="当前批量导入存在重复的学生" >
+      <div style="margin-bottom: 15px;color: #7ccd4c;">重复学生名单（已过滤）：</div>
+      <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          :cell-style="cellStyle"
+          :row-key="getRowKeys"
+          :expand-row-keys="expands"
+          :default-expand-all="false"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+          @current-change="currentChange"
+          @expand-change="expandParent">
+          <el-table-column align="center" label="序号" width="55px">
+            <template slot-scope="scope">
+              {{ scope.$index + 1 }}
+            </template>
+          </el-table-column>
+          <el-table-column label="学生姓名" align="center" prop="studentName"/>
+          <el-table-column label="家长姓名" align="center" prop="gradeName"/>
+          <el-table-column label="手机号码" align="center" prop="className"/>
+          <el-table-column label="关系" align="center" prop="expireTime"/>
+        </el-table>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" type="success" @click="cancel('repeatStudent')">关闭</el-button>
       </div>
     </el-dialog>
   </div>
@@ -468,7 +535,9 @@ export default {
       studentId: null,
       parentId: null,
       currentRow: null,
-      expandedRows: []
+      expandedRows: [],
+      confirmAddStudentDialog: false,
+      repeatStudentDialog: true
     }
   },
   computed: {
@@ -852,6 +921,10 @@ export default {
         this.dialogForm.editParentDialogVisible = false
       } else if (type === 'addParent') {
         this.dialogForm.addParentDialogVisible = false
+      } else if (type === 'confirmAddStudent') {
+        this.confirmAddStudentDialog = false
+      } else if (type === 'repeatStudent') {
+        this.repeatStudentDialog = false
       }
     },
     addParentDialog(type) {
@@ -868,7 +941,7 @@ export default {
         this.dialogForm.form.parent.splice(index, 1)
       }
     },
-    closeDialog(type, formName) {
+    closeDialog(type) {
       for (const key in this.$refs) {
         if (key === 'multipleTable') {
           this.$refs.multipleTable.clearSelection() // 清除选择
@@ -944,6 +1017,19 @@ export default {
   }
   .student-container .addStudentDialog .el-dialog__body{
     padding: 0 20px !important;
+  }
+  .student-container .confirmStudentDialog .el-dialog__body{
+    padding: 20px 20px !important;
+  }
+  .student-container .confirmStudentDialog .el-dialog__header{
+    text-align: center;
+    background-color: #7ccd4c;
+  }
+  .student-container .confirmStudentDialog .el-dialog__header .el-dialog__title{
+    color: #fff !important;
+  }
+  .student-container .confirmStudentDialog .el-dialog__header .el-dialog__close{
+    color: #fff;
   }
   .student-container .title{
     position: relative;
