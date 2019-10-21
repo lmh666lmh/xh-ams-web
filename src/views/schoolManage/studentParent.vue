@@ -42,7 +42,6 @@
         class="upload-demo">
         <el-button size="small" type="success" class="el-icon-upload">批量导入学生</el-button>
       </el-upload>
-      <!--<el-button type="success" size="small" @click="batchRecharge">批量充值</el-button>-->
       <el-button type="success" size="small" class="el-icon-download" @click="down('/excelTemplate/导入学生家长模板.xlsx')">模版下载</el-button>
     </div>
     <div class="list">
@@ -108,7 +107,6 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="editStudent('edit', scope.row.studentId)" >修改</el-button>
             <el-button type="text" size="small" @click="deleteStudent(scope.row.studentId)" >删除</el-button>
-            <!--<el-button type="text" size="small" @click="recharge(scope.row.studentId)" >充值</el-button>-->
             <el-button type="text" size="small" @click="editParent('add', scope.row.studentId)" >添加家长</el-button>
           </template>
         </el-table-column>
@@ -350,109 +348,6 @@
         <el-button size="small" type="primary" @click="confirm('editParent', 'editParentForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="rechargeForm.rechargeDialogVisible" :width="rechargeForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="学生充值" @close="closeDialog('recharge', 'rechargeForm')">
-      <div style="height: 300px;">
-        <el-form ref="rechargeForm" :model="rechargeForm.form" :rules="rechargeForm.rules" size="small">
-          <el-form-item :label-width="rechargeForm.formLabelWidth" label="充值账号">
-            <el-card class="box-card">
-              <p>学生姓名：XXX</p>
-              <p>所在班级：大班-大一班</p>
-              <p>当前有效期：2019.04.15-2019.12.12</p>
-            </el-card>
-          </el-form-item>
-          <el-form-item :label-width="rechargeForm.formLabelWidth" label="充值时长" style="margin-top: 60px;">
-            <el-radio v-model="rechargeForm.form.rechargeType" label="1" border size="medium">按学期</el-radio>
-            <el-radio v-model="rechargeForm.form.rechargeType" label="2" border size="medium">连续包季</el-radio>
-            <el-radio v-model="rechargeForm.form.rechargeType" label="3" border size="medium">连续包月</el-radio>
-          </el-form-item>
-          <el-form-item :label-width="rechargeForm.formLabelWidth" label="">
-            <span v-if="rechargeForm.form.rechargeType == 1">按学期</span>
-            <span v-if="rechargeForm.form.rechargeType == 2">包季</span>
-            <span v-if="rechargeForm.form.rechargeType == 3">包月</span>
-          </el-form-item>
-          <el-form-item :label-width="rechargeForm.formLabelWidth" label="应付金额">
-            <span>50</span>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="cancel('recharge')">取 消</el-button>
-        <el-button size="small" type="primary" @click="confirm('recharge', 'rechargeForm')">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog :visible.sync="rechargeForm.batchRechargeDialogVisible" :width="rechargeForm.formWidth" :close-on-click-modal="false" custom-class="addStudentDialog" title="学生批量充值" @close="closeDialog('batchRecharge', 'batchRechargeForm')">
-      <div>
-        <el-form ref="batchRechargeForm" :model="rechargeForm.form" :rules="rechargeForm.rules" size="small">
-          <div class="title">充值信息</div>
-          <el-form-item :label-width="rechargeForm.batchRechargeFormLabelWidth" label="充值时长">
-            <el-radio v-model="rechargeForm.form.rechargeType" label="1" border size="medium">按学期</el-radio>
-            <el-radio v-model="rechargeForm.form.rechargeType" label="2" border size="medium">连续包季</el-radio>
-            <el-radio v-model="rechargeForm.form.rechargeType" label="3" border size="medium">连续包月</el-radio>
-          </el-form-item>
-          <el-form-item :label-width="rechargeForm.batchRechargeFormLabelWidth" label="">
-            <span v-if="rechargeForm.form.rechargeType == 1">按学期</span>
-            <span v-if="rechargeForm.form.rechargeType == 2">包季</span>
-            <span v-if="rechargeForm.form.rechargeType == 3">包月</span>
-          </el-form-item>
-          <el-form-item :label-width="rechargeForm.batchRechargeFormLabelWidth" label="应付金额">
-            <span>50</span>
-          </el-form-item>
-          <div class="title">请选择充值账号</div>
-          <div class="batchRechargeList">
-            <div class="search-container">
-              <el-form :inline="true" :model="multipleTableFormInline" size="small" class="demo-form-inline">
-                <el-form-item label="年级班级">
-                  <el-select v-model="multipleTableFormInline.gradeId" placeholder="请选择年级" style="width: 115px;" @change="getClass('multipleTable', multipleTableFormInline.gradeId)">
-                    <el-option value="">请选择年级</el-option>
-                    <el-option
-                      v-for="item in gradeOptions"
-                      :key="item.gradeId"
-                      :label="item.gradeName"
-                      :value="item.gradeId" />
-                  </el-select>
-                  <el-select v-model="multipleTableFormInline.classId" placeholder="请选择班级" style="width: 115px;">
-                    <el-option value="">请选择班级</el-option>
-                    <el-option
-                      v-for="item in classDialogOptions"
-                      :key="item.classId"
-                      :label="item.className"
-                      :value="item.classId" />
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="学生姓名">
-                  <el-input v-model="multipleTableFormInline.studentName" placeholder="请填写学生姓名" style="width: 130px;"/>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="success" @click="onSubmitBatchRecharge">搜索</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-            <el-table
-              v-loading="multipleTableListLoading"
-              ref="multipleTable"
-              :data="multipleTableList"
-              :cell-style="cellStyle"
-              :header-cell-style="headerStyle"
-              element-loading-text="Loading"
-              border
-              fit
-              highlight-current-row
-              @selection-change="handleSelectionChange">
-              <el-table-column type="selection" width="55" align="center"/>
-              <el-table-column label="学生姓名" align="center" prop="studentName"/>
-              <el-table-column label="年级" align="center" prop="gradeName"/>
-              <el-table-column label="班级" align="center" prop="className"/>
-              <el-table-column label="有效期" align="center" prop="validityDate"/>
-              <el-table-column label="状态" align="center" prop="status"/>
-            </el-table>
-          </div>
-        </el-form>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="cancel('batchRechargeForm')">取 消</el-button>
-        <el-button size="small" type="primary" @click="confirm('batchRecharge', 'batchRechargeForm')">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -569,22 +464,6 @@ export default {
           ]
         }
       },
-      rechargeForm: {
-        rechargeDialogVisible: false,
-        batchRechargeDialogVisible: false,
-        formWidth: '650px',
-        formLabelWidth: '100px',
-        batchRechargeFormLabelWidth: '70px',
-        multipleSelection: [],
-        form: {
-          rechargeType: '1'
-        },
-        rules: {
-          studentName: [
-            { required: true, message: '请填写学生姓名', trigger: 'blur' }
-          ]
-        }
-      },
       ajaxLoading: null,
       studentId: null,
       parentId: null,
@@ -615,9 +494,6 @@ export default {
       this.formInline.pageNum = 1
       this.fetchData()
     },
-    onSubmitBatchRecharge() {
-      this.getMultipleTableList()
-    },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
@@ -640,17 +516,6 @@ export default {
       }).catch(() => {
         this.listLoading = false
       })
-    },
-    getMultipleTableList() {
-      if (!this.multipleTableList) {
-        this.multipleTableListLoading = true
-        api.getSchoolList(this.multipleTableFormInline).then(response => {
-          this.multipleTableList = response.data.list
-          this.multipleTableListLoading = false
-        }).catch(() => {
-          this.multipleTableListLoading = false
-        })
-      }
     },
     getDictionary() {
       api.getDictionary('family_relation').then(response => {
@@ -785,16 +650,6 @@ export default {
         })
       }).catch(() => {
       })
-    },
-    recharge(studentId) {
-      this.rechargeForm.rechargeDialogVisible = true
-    },
-    batchRecharge() {
-      this.rechargeForm.batchRechargeDialogVisible = true
-      this.getMultipleTableList()
-    },
-    handleSelectionChange(val) {
-      this.rechargeForm.multipleSelection = val
     },
     editParent(type, studentId, parentId) {
       // this.expands = [studentId] // 添加成功后展开此项
@@ -997,10 +852,6 @@ export default {
         this.dialogForm.editParentDialogVisible = false
       } else if (type === 'addParent') {
         this.dialogForm.addParentDialogVisible = false
-      } else if (type === 'recharge') {
-        this.rechargeForm.rechargeDialogVisible = false
-      } else if (type === 'batchRechargeForm') {
-        this.rechargeForm.batchRechargeDialogVisible = false
       }
     },
     addParentDialog(type) {
@@ -1120,10 +971,6 @@ export default {
   }
   .student-container .box-card .el-card__body{
     padding: 5px;
-  }
-  .student-container .batchRechargeList{
-    max-height: 150px;
-    overflow: auto;
   }
   .student-container .upload-demo{
     display: inline-block;
