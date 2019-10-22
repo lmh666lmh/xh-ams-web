@@ -18,9 +18,9 @@
           <div v-for="(val, key) in bookcaseListData" :key="key" class="list-item">
             <span class="bookcase-layer-num"><span>{{ key }}层</span></span>
             <span v-for="(item, index) in val" :key="index" >
-              <span v-if="item.hasError === 1" :class="currentGridId === item.gridId ? 'bookcase-num abnormal current': 'bookcase-num abnormal'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
-              <span v-else-if="item.hasBook === 1" :class="currentGridId === item.gridId ? 'bookcase-num current': 'bookcase-num'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
-              <span v-else-if="item.hasBook === 0" :class="currentGridId === item.gridId ? 'bookcase-num no-books current': 'bookcase-num no-books'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+              <span v-if="item.hasError === 1" :class="currentGridId === item.gridId ? 'bookcase-num abnormal current': 'bookcase-num abnormal'" @click="getGridDetail({gridId: item.gridId, bookcaseId: item.bookcaseId, bookcaseRow: item.bookcaseRow, bookcaseColumn: item.bookcaseColumn})">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+              <span v-else-if="item.hasBook === 1" :class="currentGridId === item.gridId ? 'bookcase-num current': 'bookcase-num'" @click="getGridDetail({gridId: item.gridId, bookcaseId: item.bookcaseId, bookcaseRow: item.bookcaseRow, bookcaseColumn: item.bookcaseColumn})">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+              <span v-else-if="item.hasBook === 0" :class="currentGridId === item.gridId ? 'bookcase-num no-books current': 'bookcase-num no-books'" @click="getGridDetail({gridId: item.gridId, bookcaseId: item.bookcaseId, bookcaseRow: item.bookcaseRow, bookcaseColumn: item.bookcaseColumn})">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
             </span>
           </div>
         </div>
@@ -287,8 +287,8 @@ export default {
       defaultLighting: '#409EFF',
       lightOpen: false,
       switchOpen: false,
-      startTime: new Date(2016, 9, 10, 18, 40),
-      endTime: new Date(2016, 9, 10, 18, 40),
+      startTime: new Date(2019, 22, 10, 18, 40),
+      endTime: new Date(2019, 22, 10, 18, 40),
       isChecked1: false,
       isChecked2: false,
       isChecked3: false,
@@ -354,10 +354,12 @@ export default {
         console.log(err)
       })
     },
-    getGridDetail(gridId) {
-      this.currentGridId = gridId
+    getGridDetail(object) {
+      this.currentGridId = object.gridId
       api.getGridDetail({
-        gridId: gridId
+        bookcaseId: object.bookcaseId,
+        bookcaseRow: object.bookcaseRow,
+        bookcaseColumn: object.bookcaseColumn
       }).then(res => {
         if (res.code === 10000) {
           this.gridDetail = res.data

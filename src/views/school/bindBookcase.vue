@@ -65,7 +65,7 @@
 import { api } from '@/api/index'
 
 export default {
-  name: 'BookcaseDetail',
+  name: 'BindBookcase',
   data() {
     return {
       dialogFormVisible: false,
