@@ -5,8 +5,11 @@
         <el-form-item label="书柜编号">
           <el-input v-model="formInline.bookcaseNum" placeholder="请选择"/>
         </el-form-item>
-        <el-form-item label="绑定状态">
-          <el-select v-model="formInline.bookcaseStatus" placeholder="请选择">
+        <el-form-item label="学校名称/账号">
+          <el-input v-model="formInline.schoolAccountOrName" placeholder="请选择"/>
+        </el-form-item>
+        <el-form-item label="藏书量预警">
+          <el-select v-model="formInline.collectionNum" placeholder="请选择">
             <el-option
               v-for="item in stateOptions"
               :key="item.value"
@@ -14,8 +17,14 @@
               :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="绑定学校名称/账号">
-          <el-input v-model="formInline.schoolAccountOrName" placeholder="请选择"/>
+        <el-form-item label="定时开关机状态">
+          <el-select v-model="formInline.switchOpen" placeholder="请选择">
+            <el-option
+              v-for="item in switchOpenOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -43,14 +52,25 @@
             <el-button type="text" size="small" @click="routeTo('/school/detail?type=detail', scope.row.schoolId, 'school')" >{{ scope.row.schoolAccount }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="100" align="center">
+        <el-table-column label="书籍总量" align="center" prop="allNum"/>
+        <el-table-column label="在借书籍" align="center" prop="borrowingNum"/>
+        <el-table-column label="在柜书籍" align="center" prop="inCabinetNum"/>
+        <el-table-column label="藏书量预警" align="center">
           <template slot-scope="scope">
-            <span style="font-size: 12px;">{{ scope.row.bookcaseStatusStr }}</span>
+            <span v-if="scope.row.collectionWarning === 0 || scope.row.collectionWarning === 2" style="color: red;">{{ scope.row.collectionWarningStr }}</span>
+            <span v-else>{{ scope.row.collectionWarningStr }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="定时开关机状态" align="center" prop="switchOpenStr"/>
+        <el-table-column label="设备状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="!scope.row.isOnline" style="color: red;">{{ scope.row.isOnlineStr }}</span>
+            <span v-else>{{ scope.row.isOnlineStr }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/equipment/bookcaseDetail', scope.row.bookcaseId, 'bookcase')" >远程管理</el-button>
+            <el-button type="text" size="small" @click="routeTo('/equipment/bookcaseDetail?bookcaseId=' + scope.row.bookcaseId + '&schoolName=' + scope.row.schoolName + '&schoolAccount=' + scope.row.schoolAccount + '&bookcaseNum=' + scope.row.bookcaseNum, 'bookcase')" >远程管理</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,7 +96,8 @@ export default {
       formInline: {
         bookcaseNum: '',
         schoolAccountOrName: '',
-        bookcaseStatus: '',
+        collectionNum: '',
+        switchOpen: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -84,16 +105,28 @@ export default {
         value: '',
         label: '请选择'
       }, {
-        value: '0',
-        label: '未绑定'
+        value: '112-172',
+        label: '正常'
+      }, {
+        value: '0-110',
+        label: '低藏书'
+      }, {
+        value: '172-192',
+        label: '高藏书'
+      }],
+      switchOpenOptions: [{
+        value: '',
+        label: '请选择'
       }, {
         value: '1',
-        label: '已绑定'
+        label: '开启'
+      }, {
+        value: '0',
+        label: '关闭'
       }]
     }
   },
   created() {
-    this.formInline.bookcaseStatus = this.$route.query.bookcaseStatus ? this.$route.query.bookcaseStatus : ''
     this.fetchData()
   },
   methods: {
@@ -124,10 +157,7 @@ export default {
         })
       } else {
         this.$router.push({
-          path: path,
-          query: {
-            bookcaseId: arguments[1]
-          }
+          path: path
         })
       }
     }

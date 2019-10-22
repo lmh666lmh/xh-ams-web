@@ -2,7 +2,7 @@
   <div class="detail-container">
     <div class="header">
       <el-row :gutter="50">
-        <el-col :span="6"><span class="title">当前学校：</span>{{ schoolName }}</el-col>
+        <el-col :span="6"><span class="title">当前学校：</span>{{ schoolName }}/{{ schoolAccount }}</el-col>
         <el-col :span="6"><span class="title">书柜编号：</span>{{ bookcaseNum }}</el-col>
         <el-button type="primary" size="mini" @click="back">返回</el-button>
       </el-row>
@@ -11,156 +11,35 @@
       <div class="section-title">
         书柜状态信息
         <div class="title-icon"/>
-        <span class="clear-bookcase">清空柜内书籍</span>
+        <!--<span class="clear-bookcase">清空柜内书籍</span>-->
       </div>
       <div class="bookcase-cont">
         <div class="bookcase-layer-list">
-          <div class="list-item">
-            <span class="bookcase-layer-num"><span>5层</span></span>
-            <span class="bookcase-num">501</span>
-            <span class="bookcase-num">502</span>
-            <span class="bookcase-num">503</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">505</span>
-            <span class="bookcase-num">506</span>
-            <span class="bookcase-num">507</span>
-            <span class="bookcase-num">508</span>
-            <span class="bookcase-num">509</span>
-            <span class="bookcase-num">510</span>
-            <span class="bookcase-num">511</span>
-            <span class="bookcase-num">512</span>
-            <span class="bookcase-num">513</span>
-            <span class="bookcase-num">514</span>
-            <span class="bookcase-num">515</span>
-            <span class="bookcase-num">516</span>
-            <span class="bookcase-num">517</span>
-          </div>
-          <div class="list-item">
-            <span class="bookcase-layer-num"><span>4层</span></span>
-            <span class="bookcase-num">401</span>
-            <span class="bookcase-num">402</span>
-            <span class="bookcase-num">403</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">405</span>
-            <span class="bookcase-num">406</span>
-            <span class="bookcase-num">407</span>
-            <span class="bookcase-num">408</span>
-            <span class="bookcase-num">409</span>
-            <span class="bookcase-num">410</span>
-            <span class="bookcase-num">411</span>
-            <span class="bookcase-num">412</span>
-            <span class="bookcase-num">413</span>
-            <span class="bookcase-num">414</span>
-            <span class="bookcase-num">415</span>
-            <span class="bookcase-num">416</span>
-            <span class="bookcase-num">417</span>
-            <span class="bookcase-num">418</span>
-            <span class="bookcase-num">419</span>
-            <span class="bookcase-num">420</span>
-            <span class="bookcase-num">421</span>
-            <span class="bookcase-num">422</span>
-            <span class="bookcase-num">423</span>
-            <span class="bookcase-num">424</span>
-            <span class="bookcase-num">425</span>
-          </div>
-          <div class="list-item">
-            <span class="bookcase-layer-num"><span>3层</span></span>
-            <span class="bookcase-num">501</span>
-            <span class="bookcase-num">502</span>
-            <span class="bookcase-num">503</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-          </div>
-          <div class="list-item">
-            <span class="bookcase-layer-num"><span>2层</span></span>
-            <span class="bookcase-num">401</span>
-            <span class="bookcase-num">402</span>
-            <span class="bookcase-num">403</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-            <span class="bookcase-num">404</span>
-          </div>
-          <div class="list-item">
-            <span class="bookcase-layer-num"><span>1层</span></span>
-            <span class="bookcase-num">501</span>
-            <span class="bookcase-num">502</span>
-            <span class="bookcase-num">503</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
-            <span class="bookcase-num">504</span>
+          <div v-for="(val, key) in bookcaseListData" :key="key" class="list-item">
+            <span class="bookcase-layer-num"><span>{{ key }}层</span></span>
+            <span v-for="(item, index) in val" :key="index" >
+              <span v-if="item.hasError === 1" :class="currentGridId === item.gridId ? 'bookcase-num abnormal current': 'bookcase-num abnormal'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+              <span v-else-if="item.hasBook === 1" :class="currentGridId === item.gridId ? 'bookcase-num current': 'bookcase-num'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+              <span v-else-if="item.hasBook === 0" :class="currentGridId === item.gridId ? 'bookcase-num no-books current': 'bookcase-num no-books'" @click="getGridDetail(item.gridId)">{{ item.bookcaseRow }}{{ item.bookcaseColumn &lt; 10 ? '0' + item.bookcaseColumn : item.bookcaseColumn }}</span>
+            </span>
           </div>
         </div>
         <div class="bookcase-tips">
           <span><i class="normal"/>表示柜内有书</span>
-          <span><i class="abnormal"/>表示柜内无书</span>
-          <span><i class="no-books"/>表示异常（借阅异常、书籍报修、异常锁柜）</span>
+          <span><i class="no-books"/>表示柜内无书</span>
+          <span><i class="abnormal"/>表示异常（借阅异常、书籍报修、异常锁柜）</span>
         </div>
         <div class="bookcase-detail">
-          <!--<div class="default-text">点击左边相应柜号<br><br>可查看该柜状态呢信息</div>-->
-          <div class="detail-text">
-            <div class="detail-style">当前柜号：501</div>
-            <div class="detail-style">格子状态：正常 <el-button type="text" style="margin-left: 20px;">点此查看</el-button></div>
+          <div v-if="currentGridId === ''" class="default-text">点击左边相应柜号<br><br>可查看该柜状态呢信息</div>
+          <div v-else-if="gridDetail" class="detail-text">
+            <div class="detail-style">当前柜号：{{ gridDetail.bookcaseRow }}{{ gridDetail.bookcaseColumn &lt; 10 ? '0' + gridDetail.bookcaseColumn : gridDetail.bookcaseColumn }}</div>
+            <div class="detail-style">格子状态：正常 <el-button type="text" style="margin-left: 20px;padding: 0;">点此查看</el-button></div>
             <div class="detail-style">柜门状态：关闭</div>
-            <div class="detail-style">柜内书籍：《好奇的小狮子》、《好宝贝加工厂》</div>
-            <div class="detail-style">报修书籍：《好奇的小狮子》<el-button type="text" style="margin-left: 20px;">点此查看</el-button></div>
+            <div v-if="gridDetail.list.length !== 0" class="detail-style">柜内书籍：<span v-for="(item, index) in gridDetail.list" :key="index">《{{ item.bookName }}》</span></div>
+            <div v-else class="detail-style">柜内书籍：无书</div>
+            <!--<div class="detail-style">报修书籍：《好奇的小狮子》<el-button type="text" style="margin-left: 20px;padding: 0;">点此查看</el-button></div>-->
             <div class="operation-btn">
-              <el-button type="primary" size="mini" class="btn">远程开门</el-button>
+              <!--<el-button type="primary" size="mini" class="btn">远程开门</el-button>-->
               <el-button type="success" size="mini" class="btn">异常锁柜</el-button>
             </div>
           </div>
@@ -187,38 +66,40 @@
                   <div>
                     <span class="title-label">是否定时开启紫色灯</span>
                     <el-switch
-                      v-model="timingSwitch"
+                      v-model="lightOpen"
                       active-color="#13ce66"
                       inactive-color="#dce0e9"
                       @click.native="switchLighting"
                       @change="lightingChange"/>
                   </div>
-                  <div class="time-picker">
-                    <span class="title-label">开始时间</span>
-                    <el-time-picker
-                      v-model="startTime"
-                      format="HH:mm"
-                      size="mini"
-                      placeholder="选择时间"/>
-                  </div>
-                  <div class="time-picker">
-                    <span class="title-label">结束时间</span>
-                    <el-time-picker
-                      v-model="endTime"
-                      format="HH:mm"
-                      size="mini"
-                      placeholder="选择时间"/>
-                  </div>
-                  <div>
-                    <span class="title-label">重复时间</span>
-                    <span :class="[isChecked1?'active':'']" class="week" @click="switchWeek(1)">一</span>
-                    <span :class="[isChecked2?'active':'']" class="week" @click="switchWeek(2)">二</span>
-                    <span :class="[isChecked3?'active':'']" class="week" @click="switchWeek(3)">三</span>
-                    <span :class="[isChecked4?'active':'']" class="week" @click="switchWeek(4)">四</span>
-                    <span :class="[isChecked5?'active':'']" class="week" @click="switchWeek(5)">五</span>
-                    <span :class="[isChecked6?'active':'']" class="week" @click="switchWeek(6)">六</span>
-                    <span :class="[isChecked7?'active':'']" class="week" @click="switchWeek(7)">日</span>
-                    <el-button type="primary" size="mini" style="margin-left: 50px;">设置</el-button>
+                  <div v-show="lightOpen">
+                    <div class="time-picker">
+                      <span class="title-label">开始时间</span>
+                      <el-time-picker
+                        v-model="startTime"
+                        format="HH:mm"
+                        size="mini"
+                        placeholder="选择时间"/>
+                    </div>
+                    <div class="time-picker">
+                      <span class="title-label">结束时间</span>
+                      <el-time-picker
+                        v-model="endTime"
+                        format="HH:mm"
+                        size="mini"
+                        placeholder="选择时间"/>
+                    </div>
+                    <div>
+                      <span class="title-label">重复时间</span>
+                      <span :class="[isChecked1?'active':'']" class="week" @click="switchWeek(1)">一</span>
+                      <span :class="[isChecked2?'active':'']" class="week" @click="switchWeek(2)">二</span>
+                      <span :class="[isChecked3?'active':'']" class="week" @click="switchWeek(3)">三</span>
+                      <span :class="[isChecked4?'active':'']" class="week" @click="switchWeek(4)">四</span>
+                      <span :class="[isChecked5?'active':'']" class="week" @click="switchWeek(5)">五</span>
+                      <span :class="[isChecked6?'active':'']" class="week" @click="switchWeek(6)">六</span>
+                      <span :class="[isChecked7?'active':'']" class="week" @click="switchWeek(7)">日</span>
+                      <el-button type="primary" size="mini" style="margin-left: 50px;">设置</el-button>
+                    </div>
                   </div>
                 </div>
               </el-col>
@@ -236,34 +117,36 @@
             <div>
               <span class="title-label">是否开启</span>
               <el-switch
-                v-model="timingSwitch"
+                v-model="switchOpen"
                 active-color="#13ce66"
                 inactive-color="#dce0e9"
-                @click.native="switchLighting"
-                @change="lightingChange"/>
+                @click.native="switchSwitchgear"
+                @change="switchgearChange"/>
             </div>
-            <div class="time-picker">
-              <span class="title-label">开机时间</span>
-              <el-time-picker
-                v-model="startTime"
-                format="HH:mm"
-                size="mini"
-                placeholder="选择时间"/>
+            <div v-show="switchOpen">
+              <div class="time-picker">
+                <span class="title-label">开机时间</span>
+                <el-time-picker
+                  v-model="startTime"
+                  format="HH:mm"
+                  size="mini"
+                  placeholder="选择时间"/>
+              </div>
+              <div class="time-picker">
+                <span class="title-label">关机时间</span>
+                <el-time-picker
+                  v-model="endTime"
+                  format="HH:mm"
+                  size="mini"
+                  placeholder="选择时间"/>
+              </div>
+              <el-button type="primary" size="mini" class="btn">设置</el-button>
             </div>
-            <div class="time-picker">
-              <span class="title-label">关机时间</span>
-              <el-time-picker
-                v-model="endTime"
-                format="HH:mm"
-                size="mini"
-                placeholder="选择时间"/>
-            </div>
-            <el-button type="primary" size="mini" class="btn">设置</el-button>
           </div>
         </div>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
+    <!--<el-row :gutter="20">
       <el-col :span="15">
         <div class="section">
           <div class="section-title">
@@ -339,8 +222,8 @@
           </div>
         </div>
       </el-col>
-    </el-row>
-    <div class="section">
+    </el-row>-->
+    <!--<div class="section">
       <div class="section-title">
         单个柜门天线/开门检测
         <div class="title-icon"/>
@@ -386,7 +269,7 @@
           </el-col>
         </el-row>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -398,10 +281,12 @@ export default {
   data() {
     return {
       bookcaseId: '',
-      schoolName: '幼儿园',
-      bookcaseNum: 'CK2134543',
+      schoolName: '',
+      schoolAccount: '',
+      bookcaseNum: '',
       defaultLighting: '#409EFF',
-      timingSwitch: false,
+      lightOpen: false,
+      switchOpen: false,
       startTime: new Date(2016, 9, 10, 18, 40),
       endTime: new Date(2016, 9, 10, 18, 40),
       isChecked1: false,
@@ -428,31 +313,19 @@ export default {
         date: '2016-05-02',
         name: '王小虎',
         address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      }],
+      bookcaseListData: null,
+      currentGridId: '',
+      gridDetail: null
     }
   },
   created() {
     this.bookcaseId = this.$route.query.bookcaseId
+    this.schoolName = this.$route.query.schoolName
+    this.schoolAccount = this.$route.query.schoolAccount
+    this.bookcaseNum = this.$route.query.bookcaseNum
+    this.getEquipmentBookcaseGridList()
+    this.getBookcaseExtendInfo()
   },
   methods: {
     back() {
@@ -461,25 +334,85 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding: 5px 0'
     },
-    getBookcaseDetail(params) {
-      this.listLoading = true
-      api.getEquipmentBookcaseDetail(params).then(response => {
-        this.list = response.items
-        this.listLoading = false
+    getEquipmentBookcaseGridList() {
+      api.getEquipmentBookcaseGridList({
+        bookcaseId: this.bookcaseId
+      }).then(res => {
+        if (res.code === 10000) {
+          this.bookcaseListData = res.data
+        }
+      }).catch(err => {
+        console.log(err)
       })
     },
+    getBookcaseExtendInfo() {
+      api.getBookcaseExtendInfo({
+        bookcaseId: this.bookcaseId
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getGridDetail(gridId) {
+      this.currentGridId = gridId
+      api.getGridDetail({
+        gridId: gridId
+      }).then(res => {
+        if (res.code === 10000) {
+          this.gridDetail = res.data
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    // 保持未点击确认之前的状态
     lightingChange() {
-      this.timingSwitch = false
+      if (this.lightOpen) {
+        this.lightOpen = false
+      } else {
+        this.lightOpen = true
+      }
     },
     switchLighting() {
-      this.$confirm('确认开启？', '提示', {
+      let str = ''
+      if (this.lightOpen) {
+        str = '您是否要关闭紫色灯？'
+      } else {
+        str = '您是否要定时开启紫色灯？'
+      }
+      this.$confirm(str, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.timingSwitch = true
+        this.lightOpen = !this.lightOpen
       }).catch(() => {
-        this.timingSwitch = false
+        console.log('取消了')
+      })
+    },
+    switchSwitchgear() {
+      if (this.switchOpen) {
+        this.switchOpen = false
+      } else {
+        this.switchOpen = true
+      }
+    },
+    switchgearChange() {
+      let str = ''
+      if (this.switchOpen) {
+        str = '您是否要关定时开关机？'
+      } else {
+        str = '您是否要开启定时开关机？'
+      }
+      this.$confirm(str, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.switchOpen = !this.switchOpen
+      }).catch(() => {
+        console.log('取消了')
       })
     },
     switchWeek(num) {
@@ -645,6 +578,9 @@ export default {
     text-align: center;
     line-height: 40px;
     font-size: 12px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 2px solid transparent;
   }
   .bookcase-cont .bookcase-tips{
     margin: 10px 0 0 20px;
@@ -803,5 +739,8 @@ export default {
     display: inline-block;
     font-size: 14px;
     margin-left: 20px;
+  }
+  .current{
+    border: 2px solid #266bde !important;
   }
 </style>

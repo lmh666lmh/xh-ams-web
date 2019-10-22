@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.97:8080'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
@@ -87,9 +87,13 @@ export const SYSTEM = {
     // 书柜管理
     BOOKCASEMANAGE: {
       // 书柜列表
-      LIST: path('/bookcase/agent/list'),
-      // 书柜详情
-      DETAIL: path('/school/list')
+      LIST: path('/bookcaseExtend/getAgentBookcaseList'),
+      // 书柜格子列表
+      BOOKCASEGRIDLIST: path('/bookcaseExtend/getBookcaseGridList'),
+      // 书柜格子详情
+      GRIDDETAIL: path('/bookcaseExtend/getBookcaseGridInfo'),
+      // 获取柜子的灯光和定时开关机信息
+      EXTENDINFO: path('/bookcaseExtend/getBookcaseExtendInfo')
     },
     // 借阅卡管理
     BORROWCARD: {
