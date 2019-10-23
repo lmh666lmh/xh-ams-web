@@ -352,7 +352,7 @@
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-table
           v-loading="confirmAddStudentDataLoading"
-          :data="confirmAddStudentData"
+          :data="confirmAddStudentData ? confirmAddStudentData.list : confirmAddStudentData"
           :cell-style="cellStyle"
           element-loading-text="Loading"
           border
@@ -368,12 +368,13 @@
               <el-table
                 :data="scope.row.parentInfoList"
                 :show-header="false"
-                :cell-style="repeatStyle">
+                :cell-style="repeatStyle"
+                :header-cell-style="headerStyle">
                 <el-table-column
                   align="center"
                   label="家长姓名">
                   <template slot-scope="innerScope">
-                    <span class="">{{ innerScope.row.accountName }}</span>
+                    <span :class="innerScope.row.repeatFlag ? 'red': ''">{{ innerScope.row.accountName }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -384,12 +385,13 @@
               <el-table
                 :data="scope.row.parentInfoList"
                 :show-header="false"
-                :cell-style="repeatStyle">
+                :cell-style="repeatStyle"
+                :header-cell-style="headerStyle">
                 <el-table-column
                   align="center"
                   label="手机号码">
                   <template slot-scope="innerScope">
-                    <span class="">{{ innerScope.row.accountNum }}</span>
+                    <span :class="innerScope.row.repeatFlag ? 'red': ''">{{ innerScope.row.accountNum }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -400,12 +402,13 @@
               <el-table
                 :data="scope.row.parentInfoList"
                 :show-header="false"
-                :cell-style="repeatStyle">
+                :cell-style="repeatStyle"
+                :header-cell-style="headerStyle">
                 <el-table-column
                   align="center"
                   label="关系">
                   <template slot-scope="innerScope">
-                    <span class="">{{ innerScope.row.familyRelationName }}</span>
+                    <span :class="innerScope.row.repeatFlag ? 'red': ''">{{ innerScope.row.familyRelationName }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -413,13 +416,15 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="joinFamily(scope.row.studentId)" >加入成员</el-button>
+              <el-button v-if="scope.row.canJoin" type="text" size="small" @click="joinFamily(scope.row.studentId)" >加入成员</el-button>
+              <el-button v-else type="text" size="small" disabled>加入成员</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="goOnAddStudent">新增学生</el-button>
+        <el-button v-if="confirmAddStudentData && confirmAddStudentData.addStudent" size="small" @click="goOnAddStudent">新增学生</el-button>
+        <el-button v-else size="small" disabled>新增学生</el-button>
         <el-button size="small" type="success" @click="cancel('confirmAddStudent')">取消新增</el-button>
       </div>
     </el-dialog>
@@ -870,7 +875,7 @@ export default {
                 if (response.data.code === 40002) {
                   this.confirmAddStudentDialog = true
                   this.confirmAddStudentDataLoading = false
-                  this.confirmAddStudentData = response.data.list
+                  this.confirmAddStudentData = response.data
                 } else {
                   this.dialogForm.addStudentDialogVisible = false
                   this.fetchData()
@@ -987,23 +992,49 @@ export default {
             type: 'success'
           })
         } else {
-          this.$message.error('新增失败')
+          this.$message.error(response.message)
         }
       }).catch(() => {
         loading.close()
       })
     },
     joinFamily(studentId) {
-      api.joinFamily({
-        ...this.dialogForm.form.parent,
-        ...{
-          studentId: studentId,
-          schoolId: this.formInline.schoolId
-        }
-      }).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
+      this.$confirm('您是否确定加入该学生的家庭成员', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+        api.joinFamily({
+          ...{
+            parent: this.dialogForm.form.parent,
+            studentId: studentId,
+            schoolId: this.formInline.schoolId
+          }
+        }).then(res => {
+          loading.close()
+          if (res.code === 10000) {
+            this.confirmAddStudentDialog = false
+            this.dialogForm.addStudentDialogVisible = false
+            this.fetchData()
+            this.$message({
+              message: '加入成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.message)
+          }
+          console.log(res)
+        }).catch(err => {
+          loading.close()
+          console.log(err)
+        })
+      }).catch(() => {
       })
     },
     cancel(type) {
@@ -1103,6 +1134,9 @@ export default {
   .student-container .operation-container{
    margin-bottom: 20px;
   }
+  .red {
+    color: red !important;
+  }
   .student-container .el-table__expanded-cell{
     padding: 15px;
   }
@@ -1125,6 +1159,12 @@ export default {
   }
   .student-container .confirmStudentDialog .el-dialog__header .el-dialog__close{
     color: #fff;
+  }
+  .student-container td .cell{
+    padding: 0 !important;
+  }
+  .student-container td tbody td{
+    border-right: 0 !important;
   }
   .student-container .title{
     position: relative;
