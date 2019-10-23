@@ -33,11 +33,16 @@
           <div v-if="currentGridId === ''" class="default-text">点击左边相应柜号<br><br>可查看该柜状态呢信息</div>
           <div v-else-if="gridDetail" class="detail-text">
             <div class="detail-style">当前柜号：{{ gridDetail.bookcaseRow }}{{ gridDetail.bookcaseColumn &lt; 10 ? '0' + gridDetail.bookcaseColumn : gridDetail.bookcaseColumn }}</div>
-            <div class="detail-style">格子状态：正常 <el-button type="text" style="margin-left: 20px;padding: 0;">点此查看</el-button></div>
-            <div class="detail-style">柜门状态：关闭</div>
-            <div v-if="gridDetail.list.length !== 0" class="detail-style">柜内书籍：<span v-for="(item, index) in gridDetail.list" :key="index">《{{ item.bookName }}》</span></div>
+            <div class="detail-style">格子状态：<span :class="[gridDetail.gridStatusStr === '正常' ? '' : 'red']">{{ gridDetail.gridStatusStr }}</span>
+              <el-button v-if="gridDetail.gridStatusStr === '换书异常'" type="text" style="margin-left: 20px;padding: 0;" @click="routeTo('/anomalous/borrowingAnomalous')">点此查看</el-button>
+            </div>
+            <div class="detail-style">柜门状态：<span :class="[gridDetail.hasOpen === 0 ? '':'red']">{{ gridDetail.hasOpen === 0 ? '关门' : '开门' }}</span></div>
+            <div v-if="gridDetail.inCabinetList.length !== 0" class="detail-style">柜内书籍：<span v-for="(item, index) in gridDetail.inCabinetList" :key="index">《{{ item.bookName }}》</span></div>
             <div v-else class="detail-style">柜内书籍：无书</div>
-            <!--<div class="detail-style">报修书籍：《好奇的小狮子》<el-button type="text" style="margin-left: 20px;padding: 0;">点此查看</el-button></div>-->
+            <div v-if="gridDetail.repairBookList.length !== 0" class="detail-style">报修书籍：
+              <span v-for="(item, index) in gridDetail.repairBookList" :key="index">《{{ item.bookName }}》</span>
+              <el-button type="text" style="margin-left: 20px;padding: 0;" @click="routeTo('/anomalous/booksRepair')">点此查看</el-button>
+            </div>
             <div class="operation-btn">
               <!--<el-button type="primary" size="mini" class="btn">远程开门</el-button>-->
               <el-button type="success" size="mini" class="btn">异常锁柜</el-button>
@@ -441,6 +446,11 @@ export default {
           this.isChecked7 = !this.isChecked7
           break
       }
+    },
+    routeTo(path) {
+      this.$router.push({
+        path: path
+      })
     }
   }
 }
@@ -450,6 +460,9 @@ export default {
   .detail-container{
     background-color: #ebeef4;
     padding: 10px;
+  }
+  .red{
+    color: red !important;
   }
   .title{
     font-size: 16px;
