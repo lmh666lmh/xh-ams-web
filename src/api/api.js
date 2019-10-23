@@ -510,6 +510,28 @@ export default {
     return API.post(SYSTEM.SCHOOLMANAGE.STUDENTPARENT.ADDSTUDENT, params, callback)
   },
   /**
+   * @method: addStudentTestRepeat
+   * @description: 学校管理 => 学校管理 => 学生家长管理 => 新增学生（先验证重复性）
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} params
+   * @return{Object} 成功与否
+   */
+  addStudentTestRepeat(params, callback) {
+    return API.post(SYSTEM.SCHOOLMANAGE.STUDENTPARENT.ADDSTUDENTTESTREPEAT, params, callback)
+  },
+  /**
+   * @method: joinFamily
+   * @description: 学校管理 => 学校管理 => 学生家长管理 => 新增学生（重复性加入家庭组）
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} params
+   * @return{Object} 成功与否
+   */
+  joinFamily(params, callback) {
+    return API.post(SYSTEM.SCHOOLMANAGE.STUDENTPARENT.JOINFAMILY, params, callback)
+  },
+  /**
    * @method: editStudent
    * @description: 学校管理 => 学校管理 => 学生家长管理 => 修改学生
    * @author: ProudBin

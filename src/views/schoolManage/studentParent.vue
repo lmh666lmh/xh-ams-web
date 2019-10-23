@@ -348,39 +348,78 @@
         <el-button size="small" type="primary" @click="confirm('editParent', 'editParentForm')">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="confirmAddStudentDialog" :width="dialogForm.formWidth" :close-on-click-modal="false" custom-class="confirmStudentDialog" title="当前新增存在重名的学生" @close="closeDialog('addStudent')">
+    <el-dialog :visible.sync="confirmAddStudentDialog" :close-on-click-modal="false" width="800px" custom-class="confirmStudentDialog" title="当前新增存在重名的学生">
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-table
-          v-loading="listLoading"
-          :data="list"
+          v-loading="confirmAddStudentDataLoading"
+          :data="confirmAddStudentData"
           :cell-style="cellStyle"
-          :row-key="getRowKeys"
-          :expand-row-keys="expands"
-          :default-expand-all="false"
           element-loading-text="Loading"
           border
-          fit
-          highlight-current-row
-          @current-change="currentChange"
-          @expand-change="expandParent">
+          fit>
           <el-table-column align="center" label="序号" width="55px">
             <template slot-scope="scope">
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
           <el-table-column label="学生姓名" align="center" prop="studentName"/>
-          <el-table-column label="家长姓名" align="center" prop="gradeName"/>
-          <el-table-column label="手机号码" align="center" prop="className"/>
-          <el-table-column label="关系" align="center" prop="expireTime"/>
+          <el-table-column label="家长姓名" align="center" prop="gradeName">
+            <template slot-scope="scope">
+              <el-table
+                :data="scope.row.parentInfoList"
+                :show-header="false"
+                :cell-style="repeatStyle">
+                <el-table-column
+                  align="center"
+                  label="家长姓名">
+                  <template slot-scope="innerScope">
+                    <span class="">{{ innerScope.row.accountName }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column label="手机号码" align="center" prop="className">
+            <template slot-scope="scope">
+              <el-table
+                :data="scope.row.parentInfoList"
+                :show-header="false"
+                :cell-style="repeatStyle">
+                <el-table-column
+                  align="center"
+                  label="手机号码">
+                  <template slot-scope="innerScope">
+                    <span class="">{{ innerScope.row.accountNum }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column label="家长信息" align="center">
+            <template slot-scope="scope">
+              <el-table
+                :data="scope.row.parentInfoList"
+                :show-header="false"
+                :cell-style="repeatStyle">
+                <el-table-column
+                  align="center"
+                  label="关系">
+                  <template slot-scope="innerScope">
+                    <span class="">{{ innerScope.row.familyRelationName }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="editParent('add', scope.row.studentId)" >加入成员</el-button>
+              <el-button type="text" size="small" @click="joinFamily(scope.row.studentId)" >加入成员</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="confirm('editParent', 'addStudentForm')">新增学生</el-button>
+        <el-button size="small" @click="goOnAddStudent">新增学生</el-button>
         <el-button size="small" type="success" @click="cancel('confirmAddStudent')">取消新增</el-button>
       </div>
     </el-dialog>
@@ -388,18 +427,13 @@
       <div style="margin-bottom: 15px;color: #7ccd4c;">重复学生名单（已过滤）：</div>
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-table
-          v-loading="listLoading"
-          :data="list"
+          v-loading="confirmAddStudentDataLoading"
+          :data="confirmAddStudentData"
           :cell-style="cellStyle"
-          :row-key="getRowKeys"
-          :expand-row-keys="expands"
-          :default-expand-all="false"
           element-loading-text="Loading"
           border
           fit
-          highlight-current-row
-          @current-change="currentChange"
-          @expand-change="expandParent">
+          highlight-current-row>
           <el-table-column align="center" label="序号" width="55px">
             <template slot-scope="scope">
               {{ scope.$index + 1 }}
@@ -537,7 +571,9 @@ export default {
       currentRow: null,
       expandedRows: [],
       confirmAddStudentDialog: false,
-      repeatStudentDialog: true
+      confirmAddStudentData: null,
+      confirmAddStudentDataLoading: true,
+      repeatStudentDialog: false
     }
   },
   computed: {
@@ -566,8 +602,11 @@ export default {
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding:0'
     },
+    repeatStyle({ row, column, rowIndex, columnIndex }) {
+      return 'padding: 5px 0'
+    },
     headerStyle({ row, column, rowIndex, columnIndex }) {
-      return 'padding: 5px 0;'
+      return 'padding: 0;'
     },
     headerCellStyle({ row, column, rowIndex, columnIndex }) {
       return 'color:#fff;background-color:#a0b5f1;'
@@ -819,15 +858,27 @@ export default {
             background: 'rgba(0, 0, 0, 0.7)'
           })
           if (type === 'addStudent') {
-            api.addStudent({ ...this.dialogForm.form, ...{ agentId: this.agentId, schoolId: this.formInline.schoolId }}).then(response => {
+            api.addStudentTestRepeat({
+              ...this.dialogForm.form,
+              ...{
+                agentId: this.agentId,
+                schoolId: this.formInline.schoolId
+              }
+            }).then(response => {
               loading.close()
               if (response.code === 10000) {
-                this.dialogForm.addStudentDialogVisible = false
-                this.fetchData()
-                this.$message({
-                  message: '新增成功',
-                  type: 'success'
-                })
+                if (response.data.code === 40002) {
+                  this.confirmAddStudentDialog = true
+                  this.confirmAddStudentDataLoading = false
+                  this.confirmAddStudentData = response.data.list
+                } else {
+                  this.dialogForm.addStudentDialogVisible = false
+                  this.fetchData()
+                  this.$message({
+                    message: '新增成功',
+                    type: 'success'
+                  })
+                }
               } else {
                 this.$message.error('新增失败')
               }
@@ -912,6 +963,49 @@ export default {
         }
       })
     },
+    goOnAddStudent() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      api.addStudent({
+        ...this.dialogForm.form,
+        ...{
+          agentId: this.agentId,
+          schoolId: this.formInline.schoolId
+        }
+      }).then(response => {
+        loading.close()
+        if (response.code === 10000) {
+          this.confirmAddStudentDialog = false
+          this.dialogForm.addStudentDialogVisible = false
+          this.fetchData()
+          this.$message({
+            message: '新增成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error('新增失败')
+        }
+      }).catch(() => {
+        loading.close()
+      })
+    },
+    joinFamily(studentId) {
+      api.joinFamily({
+        ...this.dialogForm.form.parent,
+        ...{
+          studentId: studentId,
+          schoolId: this.formInline.schoolId
+        }
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     cancel(type) {
       if (type === 'addStudent') {
         this.dialogForm.addStudentDialogVisible = false
@@ -923,6 +1017,7 @@ export default {
         this.dialogForm.addParentDialogVisible = false
       } else if (type === 'confirmAddStudent') {
         this.confirmAddStudentDialog = false
+        this.dialogForm.addStudentDialogVisible = false
       } else if (type === 'repeatStudent') {
         this.repeatStudentDialog = false
       }
