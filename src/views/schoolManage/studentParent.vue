@@ -1098,7 +1098,6 @@ export default {
     },
     onSuccess(response, file, fileList) {
       this.ajaxLoading.close()
-      this.fetchData()
       if (response.code === 0 && response.data && response.data.length >= 0) {
         let html = ''
         response.data.forEach(function(value, index) {
@@ -1118,10 +1117,19 @@ export default {
       } else if (response.code === 40002) {
         this.repeatStudentDialog = true
         this.repeatStudentDataLoading = false
-        this.repeatStudentData = response.data
+        this.repeatStudentData = response.data.list
+        if (response.data.count !== 0) {
+          setTimeout(() => {
+            this.$message({
+              message: '成功导入' + response.data.count + '条记录',
+              type: 'success'
+            })
+          }, 300)
+        }
       } else if (response.code === 0) {
         this.$message.error(response.message)
       }
+      this.fetchData()
     },
     onError(err, file, fileList) {
       console.log(err)
