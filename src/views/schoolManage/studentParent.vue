@@ -432,22 +432,21 @@
       <div style="margin-bottom: 15px;color: #7ccd4c;">重复学生名单（已过滤）：</div>
       <div style="max-height: 300px;overflow-y: auto;overflow-x: hidden;">
         <el-table
-          v-loading="confirmAddStudentDataLoading"
-          :data="confirmAddStudentData"
-          :cell-style="cellStyle"
+          v-loading="repeatStudentDataLoading"
+          :data="repeatStudentData"
+          :cell-style="repeatStyle"
           element-loading-text="Loading"
           border
-          fit
-          highlight-current-row>
+          fit>
           <el-table-column align="center" label="序号" width="55px">
             <template slot-scope="scope">
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
           <el-table-column label="学生姓名" align="center" prop="studentName"/>
-          <el-table-column label="家长姓名" align="center" prop="gradeName"/>
-          <el-table-column label="手机号码" align="center" prop="className"/>
-          <el-table-column label="关系" align="center" prop="expireTime"/>
+          <el-table-column label="家长姓名" align="center" prop="parentName"/>
+          <el-table-column label="手机号码" align="center" prop="parentPhone"/>
+          <el-table-column label="关系" align="center" prop="familyRelationName"/>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -578,7 +577,9 @@ export default {
       confirmAddStudentDialog: false,
       confirmAddStudentData: null,
       confirmAddStudentDataLoading: true,
-      repeatStudentDialog: false
+      repeatStudentDialog: false,
+      repeatStudentData: null,
+      repeatStudentDataLoading: true
     }
   },
   computed: {
@@ -1097,6 +1098,7 @@ export default {
     },
     onSuccess(response, file, fileList) {
       this.ajaxLoading.close()
+      this.fetchData()
       if (response.code === 0 && response.data && response.data.length >= 0) {
         let html = ''
         response.data.forEach(function(value, index) {
@@ -1113,7 +1115,10 @@ export default {
           message: '上传成功',
           type: 'success'
         })
-        this.fetchData()
+      } else if (response.code === 40002) {
+        this.repeatStudentDialog = true
+        this.repeatStudentDataLoading = false
+        this.repeatStudentData = response.data
       } else if (response.code === 0) {
         this.$message.error(response.message)
       }
