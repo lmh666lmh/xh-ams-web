@@ -54,6 +54,7 @@
         <el-table-column label="职位" align="center" prop="teacherTypeStr"/>
         <el-table-column label="任教班级" align="center" prop="teacherClassListStr"/>
         <el-table-column label="状态" align="center" prop="teacherStatusStr"/>
+        <el-table-column label="状态" align="center" prop="remark"/>
         <el-table-column label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="editTeacher('edit', scope.row.teacherId)" >修改</el-button>
@@ -103,7 +104,7 @@
           <el-radio v-model="form.teacherStatus" :label="0">离职</el-radio>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="备注">
-          <el-input v-model="form.remake" style="width: 200px;" maxlength="255"/>
+          <el-input v-model="form.remark" style="width: 200px;" maxlength="255"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -186,7 +187,7 @@ export default {
         phone: '',
         gender: 'man',
         teacherStatus: 1,
-        remake: ''
+        remark: ''
       },
       allClassOptions: [],
       defaultCheckedKeys: [],
@@ -241,6 +242,8 @@ export default {
     },
     editTeacher(type, teacherId) {
       this.dialogFormVisible = true
+      this.defaultCheckedKeys = []
+      this.defaultExpandedKeys = []
       if (type === 'add') {
         this.title = '新增老师'
         this.form.gender = 'man'
