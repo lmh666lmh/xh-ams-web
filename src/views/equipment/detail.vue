@@ -289,7 +289,7 @@ export default {
       schoolName: '',
       schoolAccount: '',
       bookcaseNum: '',
-      defaultLighting: '#409EFF',
+      defaultLighting: '#fff',
       lightOpen: false,
       switchOpen: false,
       startTime: new Date(2019, 22, 10, 18, 40),
@@ -354,7 +354,11 @@ export default {
       api.getBookcaseExtendInfo({
         bookcaseId: this.bookcaseId
       }).then(res => {
-        console.log(res)
+        if (res.code === 10000) {
+          this.defaultLighting = res.data.lightColor
+          this.lightOpen = !!res.data.lightOpen
+          this.switchOpen = !!res.data.switchOpen
+        }
       }).catch(err => {
         console.log(err)
       })
