@@ -873,7 +873,7 @@ export default {
             }).then(response => {
               loading.close()
               if (response.code === 10000) {
-                if (response.data.code === 40002) {
+                if (response.data && response.data.code === 40002) {
                   this.confirmAddStudentDialog = true
                   this.confirmAddStudentDataLoading = false
                   this.confirmAddStudentData = response.data
