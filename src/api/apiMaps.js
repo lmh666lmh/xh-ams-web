@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.229:8080'
+    BASE_API = 'http://192.168.3.3:8180'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
@@ -150,6 +150,10 @@ export const SYSTEM = {
       LISTSTUDENT: path('/student/page'),
       // 添加学生
       ADDSTUDENT: path('/student'),
+      // 添加学生（验证学生重复性）
+      ADDSTUDENTTESTREPEAT: path('/student/v2'),
+      // 加入家庭组
+      JOINFAMILY: path('/student/joinFamily'),
       // 修改学生
       EDITSTUDENT: path('/student'),
       // 删除学生
