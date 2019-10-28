@@ -443,6 +443,8 @@
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
+          <el-table-column label="年级" align="center" prop="gradeName"/>
+          <el-table-column label="班级" align="center" prop="className"/>
           <el-table-column label="学生姓名" align="center" prop="studentName"/>
           <el-table-column label="家长姓名" align="center" prop="parentName"/>
           <el-table-column label="手机号码" align="center" prop="parentPhone"/>
