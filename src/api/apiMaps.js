@@ -1,6 +1,6 @@
 const currentHost = window.location.host
 // 测试环境，联调环境，测试环境域名
-const hosts = ['192.168.3.5', '192.168.3.2', '192.168.3.3:8180', '192.168.3.3:8980', 'agent.xiaohebook.com', '47.110.223.200']
+const hosts = ['192.168.3.3:8180', '192.168.3.3:8980', 'agent.xiaohebook.com', '47.110.223.200']
 let prefix = hosts.find(host => {
   return currentHost.indexOf(host) > -1
 })
