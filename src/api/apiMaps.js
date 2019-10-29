@@ -1,13 +1,13 @@
 const currentHost = window.location.host
 // 测试环境，联调环境，测试环境域名
-const hosts = ['192.168.3.5', '192.168.3.2', '192.168.3.3', 'agent.xiaohebook.com', '47.110.223.200']
+const hosts = ['192.168.3.5', '192.168.3.2', '192.168.3.3:8180', '192.168.3.3:8980', 'agent.xiaohebook.com', '47.110.223.200']
 let prefix = hosts.find(host => {
   return currentHost.indexOf(host) > -1
 })
 // 如果是IP地址，并且是192.168.3开头，则默认为开发环境，否则为线上环境
-if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
+if (!!prefix && currentHost.indexOf('192.168.3.3:8180') > -1) {
   prefix = 'test'
-} else if (!!prefix && currentHost.indexOf('192.168.3') > -1) {
+} else if (!!prefix && currentHost.indexOf('192.168.3.3:8980') > -1) {
   prefix = 'dev'
 } else if (!!prefix && (currentHost.indexOf('agent.xiaohebook.com') > -1 || currentHost.indexOf('47.110.223.200') > -1)) {
   prefix = 'pro'
@@ -15,7 +15,7 @@ if (!!prefix && currentHost.indexOf('192.168.3.3') > -1) {
 let BASE_API = ''
 switch (prefix) {
   case 'dev':
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.3:8980'
     break
   case 'test':
     BASE_API = 'http://192.168.3.3:8180'
@@ -24,7 +24,7 @@ switch (prefix) {
     BASE_API = 'https://agent.xiaohebook.com/server'
     break
   default:
-    BASE_API = 'http://192.168.3.2:8080'
+    BASE_API = 'http://192.168.3.3:8180'
     break
 }
 
