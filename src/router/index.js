@@ -397,6 +397,27 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/operateActivity',
+    component: Layout,
+    name: 'OperateActivity',
+    meta: { title: '运营活动', icon: 'example' },
+    children: [
+      {
+        path: 'inviteGift',
+        name: 'InviteGift',
+        component: () => import('@/views/operateActivityManage/inviteGift'),
+        meta: { title: '邀请有礼' }
+      },
+      {
+        path: 'prizesList',
+        name: 'PrizesList',
+        component: () => import('@/views/operateActivityManage/prizesList'),
+        hidden: true,
+        meta: { title: '奖品统计' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
