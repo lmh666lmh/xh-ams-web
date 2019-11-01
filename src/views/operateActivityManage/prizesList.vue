@@ -80,6 +80,7 @@ export default {
       schoolName: null,
       schoolAccount: null,
       formInline: {
+        schoolId: '',
         schoolAccountOrName: '',
         pageNum: 1,
         pageSize: 10
@@ -98,6 +99,7 @@ export default {
   },
   created() {
     this.fetchData()
+    this.formInline.schoolId = this.$route.query.schoolName
     this.schoolName = this.$route.query.schoolName
     this.schoolAccount = this.$route.query.schoolAccount
   },
@@ -111,7 +113,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getInviteGiftPrizesList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false

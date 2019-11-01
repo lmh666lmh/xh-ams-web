@@ -1130,5 +1130,50 @@ export default {
    */
   customerUNBindSchool(params, callback) {
     return API.post(SYSTEM.SYSTEMSETTING.CUSTOMER.UNBINDSCHOOL, params, callback)
+  },
+  /** ==============================================   运营活动管理 ====================================================*/
+  /**
+   * @method: getInviteGiftList
+   * @description: 系统设置 => 运营活动管理 => 邀请有礼列表
+   * @author: ProudBin
+   * @update: 2019-11-01
+   * @param {Object}
+   * @return{Object}
+   */
+  getInviteGiftList(params, callback) {
+    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.LIST, params, callback)
+  },
+  /**
+   * @method: inviteGiftSwitch
+   * @description: 系统设置 => 运营活动管理 => 邀请有礼列表活动开关
+   * @author: ProudBin
+   * @update: 2019-11-01
+   * @param {Object}
+   * @return{Object}
+   */
+  inviteGiftSwitch(params, callback) {
+    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SWITCH, params, callback)
+  },
+  /**
+   * @method: getInviteGiftPrizesList
+   * @description: 系统设置 => 运营活动管理 => 邀请有礼列表 => 奖品列表
+   * @author: ProudBin
+   * @update: 2019-11-01
+   * @param {Object}
+   * @return{Object}
+   */
+  getInviteGiftPrizesList(params, callback) {
+    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.PRIZESLIST, params, callback)
+  },
+  /**
+   * @method: sentInviteGiftPrizes
+   * @description: 系统设置 => 运营活动管理 => 邀请有礼列表
+   * @author: ProudBin
+   * @update: 2019-11-01
+   * @param {Object}
+   * @return{Object}
+   */
+  sentInviteGiftPrizes(params, callback) {
+    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SENTGIFT, params, callback)
   }
 }

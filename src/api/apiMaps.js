@@ -24,7 +24,7 @@ switch (prefix) {
     BASE_API = 'https://agent.xiaohebook.com/server'
     break
   default:
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.229:8080'
     break
 }
 
@@ -288,6 +288,19 @@ export const SYSTEM = {
       // 客服解绑/批量解绑学校
       UNBINDSCHOOL: path('/support/batchUnbind')
     }
+  },
+  // 运营活动管理
+  OPERATEACTIVITY: {
+    // 邀请有礼
+    INVITEGIFT: {
+      // 邀请有礼列表
+      LIST: path('/invite/school/page'),
+      // 是否开启
+      SWITCH: path('/invite/adjust'),
+      // 礼物详情列表
+      PRIZESLIST: path('/invite/student/page'),
+      // 发放礼品
+      SENTGIFT: path('/invite/rewardStatus')
+    }
   }
-
 }

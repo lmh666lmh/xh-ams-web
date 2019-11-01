@@ -3,12 +3,12 @@
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="学校名称/账号">
-          <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
+          <el-input v-model="formInline.schoolId" placeholder="请填写"/>
         </el-form-item>
         <el-form-item label="活动状态">
-          <el-select v-model="formInline.packageType" placeholder="请选择">
+          <el-select v-model="formInline.openInvitedGift" placeholder="请选择">
             <el-option
-              v-for="item in orderTypeOptions"
+              v-for="item in status"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
@@ -34,22 +34,22 @@
           </template>
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
-        <el-table-column label="分享人数" align="center" prop="schoolAccount" width="120"/>
+        <el-table-column label="分享人数" align="center" prop="sharePersonTotal"/>
         <el-table-column label="奖品总数" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount)" >{{ scope.row.bookcaseTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount, scope.row.schoolId)" >{{ scope.row.awardTotal }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="待发奖品" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount)" >{{ scope.row.bookcaseTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount, scope.row.schoolId)" >{{ scope.row.pendingAwardTotal }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="活动状态" align="center" prop="createTime"/>
+        <el-table-column label="活动状态" align="center" prop="openInvitedGiftStr"/>
         <el-table-column label="是否开启活动" width="200" align="center">
           <template slot-scope="scope">
             <el-switch
-              v-model="scope.row.fixedTimeStatus"
+              :value="!!scope.row.openInvitedGift"
               active-color="#13ce66"
               inactive-color="#DBDFE6"/>
           </template>
@@ -75,11 +75,12 @@ export default {
       listLoading: true,
       total: 0,
       formInline: {
-        schoolAccountOrName: '',
+        schoolId: '',
+        openInvitedGift: '',
         pageNum: 1,
         pageSize: 10
       },
-      orderTypeOptions: [{
+      status: [{
         value: '',
         label: '请选择'
       }, {
@@ -104,7 +105,7 @@ export default {
     },
     fetchData() {
       this.listLoading = true
-      api.getSchoolList(this.formInline).then(response => {
+      api.getInviteGiftList(this.formInline).then(response => {
         this.total = response.data.total
         this.list = response.data.list
         this.listLoading = false
@@ -113,11 +114,13 @@ export default {
       })
     },
     routeTo(path) {
+      console.log(arguments)
       this.$router.push({
         path: path,
         query: {
           schoolName: arguments[1],
-          schoolAccount: arguments[2]
+          schoolAccount: arguments[2],
+          schoolId: arguments[3]
         }
       })
     }
