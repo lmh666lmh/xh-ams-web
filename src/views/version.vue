@@ -17,6 +17,9 @@ export default {
   data() {
     return {
       version: [{
+        num: 'V1.1.3',
+        cont: ['1.邀请有礼（BrandBin-2019/11/04）']
+      }, {
         num: 'V1.1.2',
         cont: ['1.学生导入优化（BrandBin-2019/10/24）']
       }, {

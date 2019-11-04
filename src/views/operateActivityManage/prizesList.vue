@@ -2,7 +2,7 @@
   <div class="prizes-list-container">
     <div class="info-container">
       <span><span class="info-title">当前学校：</span>{{ schoolName }}/{{ schoolAccount }}</span>
-      <el-button type="primary" size="small" @click="back">返回</el-button>
+      <el-button type="primary" size="mini" @click="back">返回</el-button>
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
@@ -63,13 +63,31 @@
         <el-table-column label="收货地址" align="center" prop="address"/>
         <el-table-column label="操作" width="150" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.rewardType === 7 && scope.row.rewardStatus === 3" type="text" size="small">发货信息</el-button>
-            <el-button v-else-if="scope.row.rewardType === 7 && scope.row.rewardStatus !== 3" type="text" size="small">填写发货</el-button>
+            <el-button v-if="scope.row.rewardType === 7 && scope.row.rewardStatus === 3" type="text" size="small" @click="detailPrizesInfo(scope.row.shipWay, scope.row.trackNum)">发货信息</el-button>
+            <el-button v-else-if="scope.row.rewardType === 7 && scope.row.rewardStatus !== 3" type="text" size="small" @click="editPrizesInfo(scope.row.invitedId)">填写发货</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
+    <el-dialog :visible.sync="dialogFormVisible" :close-on-click-modal="false" title="发货信息" width="400px" @close="closeDialog">
+      <el-form :model="form" :disabled="dialogFormDisabled">
+        <el-form-item :label-width="formLabelWidth" label="发货方式" >
+          <el-select v-model="form.shipWay" placeholder="请选择" size="mini">
+            <el-option label="请选择" value=""/>
+            <el-option label="快递发货" value="1"/>
+            <el-option label="线下发货" value="2"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="快递单号" >
+          <el-input v-model="form.trackNum" size="mini" style="width: 200px;"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="closeDialog">取 消</el-button>
+        <el-button type="primary" size="mini" @click="submitForm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -96,6 +114,14 @@ export default {
         rewardStatus: '',
         pageNum: 1,
         pageSize: 10
+      },
+      dialogFormVisible: false,
+      formLabelWidth: '80px',
+      dialogFormDisabled: false,
+      form: {
+        invitedId: '',
+        shipWay: '',
+        trackNum: ''
       },
       rewardTypeOptions: [{
         value: '',
@@ -163,12 +189,65 @@ export default {
     },
     back() {
       history.go(-1)
+    },
+    editPrizesInfo(invitedId) {
+      this.dialogFormVisible = true
+      this.dialogFormDisabled = false
+      this.form.invitedId = invitedId
+    },
+    closeDialog() {
+      this.dialogFormVisible = false
+      this.form = {
+        invitedId: '',
+        shipWay: '',
+        trackNum: ''
+      }
+    },
+    detailPrizesInfo(shipWay, trackNum) {
+      this.dialogFormDisabled = true
+      this.form.shipWay = shipWay + ''
+      if (shipWay === 1) {
+        this.form.trackNum = trackNum
+      }
+      this.dialogFormVisible = true
+    },
+    submitForm() {
+      if (this.dialogFormDisabled) {
+        this.dialogFormVisible = false
+        return
+      }
+      if (this.form.shipWay === '') {
+        this.$message('请选择发货方式')
+        return
+      } else if (this.form.shipWay === '1' && this.form.trackNum === '') {
+        this.$message('请填写快递单号')
+        return
+      }
+      api.sentInviteGiftPrizes(this.form).then(res => {
+        if (res.code === 10000) {
+          this.dialogFormVisible = false
+          this.form = {
+            invitedId: '',
+            shipWay: '',
+            trackNum: ''
+          }
+          this.$message({
+            message: '状态更新成功',
+            type: 'success'
+          })
+          this.fetchData()
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
   .prizes-list-container{
     margin: 20px;
   }
@@ -180,5 +259,14 @@ export default {
   }
   .prizes-list-container .info-container .info-title{
     color: #92c439;
+  }
+  .prizes-list-container .search-container{
+    margin-bottom: 20px;
+  }
+  .prizes-list-container .el-dialog__body{
+    padding: 10px 20px;
+  }
+  .prizes-list-container .el-form-item{
+    margin: 0;
   }
 </style>
