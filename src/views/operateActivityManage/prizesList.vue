@@ -79,7 +79,7 @@
             <el-option label="线下发货" value="2"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="快递单号" >
+        <el-form-item v-show="form.shipWay === '1'" :label-width="formLabelWidth" label="快递单号" >
           <el-input v-model="form.trackNum" size="mini" style="width: 200px;"/>
         </el-form-item>
       </el-form>
