@@ -51,7 +51,8 @@
             <el-switch
               :value="!!scope.row.openInvitedGift"
               active-color="#13ce66"
-              inactive-color="#DBDFE6"/>
+              inactive-color="#DBDFE6"
+              @change="openInvitedGift(scope.$index, scope.row.openInvitedGift, scope.row.schoolId)"/>
           </template>
         </el-table-column>
       </el-table>
@@ -114,7 +115,6 @@ export default {
       })
     },
     routeTo(path) {
-      console.log(arguments)
       this.$router.push({
         path: path,
         query: {
@@ -122,6 +122,45 @@ export default {
           schoolAccount: arguments[2],
           schoolId: arguments[3]
         }
+      })
+    },
+    openInvitedGift(index, value, schoolId) {
+      let str = ''
+      if (value) {
+        str = '您是否确定要关闭邀请有礼活动！'
+      } else {
+        str = '您是否确定要开启邀请有礼活动！'
+      }
+      this.$confirm(str, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.inviteGiftSwitch({
+          schoolId: schoolId,
+          openInvitedGift: value ? 0 : 1
+        }).then(res => {
+          if (res.code === 10000) {
+            if (value) {
+              this.$message({
+                message: '关闭成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: '开启成功',
+                type: 'success'
+              })
+            }
+            this.fetchData()
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(() => {
+
       })
     }
   }

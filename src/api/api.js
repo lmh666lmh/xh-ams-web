@@ -1152,7 +1152,7 @@ export default {
    * @return{Object}
    */
   inviteGiftSwitch(params, callback) {
-    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SWITCH, params, callback)
+    return API.put(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SWITCH, params, callback)
   },
   /**
    * @method: getInviteGiftPrizesList
@@ -1174,6 +1174,6 @@ export default {
    * @return{Object}
    */
   sentInviteGiftPrizes(params, callback) {
-    return API.get(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SENTGIFT, params, callback)
+    return API.put(SYSTEM.OPERATEACTIVITY.INVITEGIFT.SENTGIFT, params, callback)
   }
 }

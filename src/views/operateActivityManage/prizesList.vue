@@ -7,21 +7,21 @@
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="学生姓名">
-          <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
+          <el-input v-model="formInline.studentName" placeholder="请填写"/>
         </el-form-item>
         <el-form-item label="奖品名称">
-          <el-select v-model="formInline.packageType" placeholder="请选择">
+          <el-select v-model="formInline.rewardType" placeholder="请选择">
             <el-option
-              v-for="item in orderTypeOptions"
+              v-for="item in rewardTypeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="奖品状态">
-          <el-select v-model="formInline.packageType" placeholder="请选择">
+          <el-select v-model="formInline.rewardStatus" placeholder="请选择">
             <el-option
-              v-for="item in orderTypeOptions"
+              v-for="item in rewardStatusOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value" />
@@ -46,15 +46,25 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="班级" align="center" prop="schoolName"/>
-        <el-table-column label="学生姓名" align="center" prop="schoolAccount" width="120"/>
-        <el-table-column label="邀请的学生" align="center" prop="createTime"/>
-        <el-table-column label="奖品名称" align="center" prop="createTime"/>
-        <el-table-column label="奖品状态" align="center" prop="createTime"/>
-        <el-table-column label="收货地址" align="center" prop="createTime"/>
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="班级" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/schoolManage', scope.row.schoolId)">填写发货</el-button>
+            <span>{{ scope.row.gradeName }}-{{ scope.row.className }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="学生姓名" align="center" prop="studentName"/>
+        <el-table-column label="邀请的学生" align="center" prop="acceptStudentName"/>
+        <el-table-column label="奖品名称" align="center" prop="rewardTypeStr"/>
+        <el-table-column label="奖品状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.rewardStatus === 2 || scope.row.rewardStatus === 1" style="color: red;">待发放</span>
+            <span v-else>{{ scope.row.rewardStatusStr }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="收货地址" align="center" prop="address"/>
+        <el-table-column label="操作" width="150" align="center">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.rewardType === 7 && scope.row.rewardStatus === 3" type="text" size="small">发货信息</el-button>
+            <el-button v-else-if="scope.row.rewardType === 7 && scope.row.rewardStatus !== 3" type="text" size="small">填写发货</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,25 +91,55 @@ export default {
       schoolAccount: null,
       formInline: {
         schoolId: '',
-        schoolAccountOrName: '',
+        studentName: '',
+        rewardType: '',
+        rewardStatus: '',
         pageNum: 1,
         pageSize: 10
       },
-      orderTypeOptions: [{
+      rewardTypeOptions: [{
         value: '',
         label: '请选择'
       }, {
         value: '1',
-        label: '开启'
+        label: '5天'
       }, {
-        value: '0',
-        label: '关闭'
+        value: '2',
+        label: '10天'
+      }, {
+        value: '3',
+        label: '15天'
+      }, {
+        value: '4',
+        label: '20天'
+      }, {
+        value: '5',
+        label: '25天'
+      }, {
+        value: '6',
+        label: '30天'
+      }, {
+        value: '7',
+        label: '阅读器+30天'
+      }, {
+        value: '8',
+        label: '90天'
+      }],
+      rewardStatusOptions: [{
+        value: '',
+        label: '请选择'
+      }, {
+        value: '3',
+        label: '已发放'
+      }, {
+        value: '2',
+        label: '待发放'
       }]
     }
   },
   created() {
     this.fetchData()
-    this.formInline.schoolId = this.$route.query.schoolName
+    this.formInline.schoolId = this.$route.query.schoolId
     this.schoolName = this.$route.query.schoolName
     this.schoolAccount = this.$route.query.schoolAccount
   },
