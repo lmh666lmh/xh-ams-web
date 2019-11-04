@@ -1,11 +1,11 @@
 const currentHost = window.location.host
 // 测试环境，联调环境，测试环境域名
-const hosts = ['192.168.3.3:8180', '192.168.3.3:8990', 'agent.xiaohebook.com', '47.110.223.200']
+const hosts = ['192.168.3.3:8087', '192.168.3.3:8990', 'agent.xiaohebook.com', '47.110.223.200']
 let prefix = hosts.find(host => {
   return currentHost.indexOf(host) > -1
 })
 // 如果是IP地址，并且是192.168.3开头，则默认为开发环境，否则为线上环境
-if (!!prefix && currentHost.indexOf('192.168.3.3:8180') > -1) {
+if (!!prefix && currentHost.indexOf('192.168.3.3:8087') > -1) {
   prefix = 'test'
 } else if (!!prefix && currentHost.indexOf('192.168.3.3:8990') > -1) {
   prefix = 'dev'
