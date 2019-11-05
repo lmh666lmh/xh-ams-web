@@ -289,6 +289,7 @@ export default {
       schoolName: '',
       schoolAccount: '',
       bookcaseNum: '',
+      isOnline: false,
       defaultLighting: '#fff',
       lightOpen: false,
       switchOpen: false,
@@ -329,6 +330,7 @@ export default {
     this.schoolName = this.$route.query.schoolName
     this.schoolAccount = this.$route.query.schoolAccount
     this.bookcaseNum = this.$route.query.bookcaseNum
+    this.isOnline = this.$route.query.isOnline
     this.getEquipmentBookcaseGridList()
     this.getBookcaseExtendInfo()
   },
