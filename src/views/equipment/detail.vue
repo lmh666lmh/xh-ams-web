@@ -63,7 +63,7 @@
               <el-col :span="6">
                 <div class="lighting">
                   <div class="demonstration">默认灯光颜色</div>
-                  <el-color-picker v-model="defaultLighting" :predefine="predefineColors" class="color-picker"/>
+                  <el-color-picker v-model="defaultLighting" :predefine="predefineColors" class="color-picker" @change="setLightColor"/>
                 </div>
               </el-col>
               <el-col :span="18">
@@ -81,7 +81,7 @@
                     <div class="time-picker">
                       <span class="title-label">开始时间</span>
                       <el-time-picker
-                        v-model="startTime"
+                        v-model="lightBeginTimeTime"
                         format="HH:mm"
                         size="mini"
                         placeholder="选择时间"/>
@@ -89,7 +89,7 @@
                     <div class="time-picker">
                       <span class="title-label">结束时间</span>
                       <el-time-picker
-                        v-model="endTime"
+                        v-model="lightEndTime"
                         format="HH:mm"
                         size="mini"
                         placeholder="选择时间"/>
@@ -132,7 +132,7 @@
               <div class="time-picker">
                 <span class="title-label">开机时间</span>
                 <el-time-picker
-                  v-model="startTime"
+                  v-model="switchBeginTime"
                   format="HH:mm"
                   size="mini"
                   placeholder="选择时间"/>
@@ -140,7 +140,7 @@
               <div class="time-picker">
                 <span class="title-label">关机时间</span>
                 <el-time-picker
-                  v-model="endTime"
+                  v-model="switchEndTime"
                   format="HH:mm"
                   size="mini"
                   placeholder="选择时间"/>
@@ -293,8 +293,10 @@ export default {
       defaultLighting: '#fff',
       lightOpen: false,
       switchOpen: false,
-      startTime: new Date(2019, 22, 10, 18, 40),
-      endTime: new Date(2019, 22, 10, 18, 40),
+      lightBeginTimeTime: new Date(),
+      lightEndTime: new Date(),
+      switchBeginTime: new Date(),
+      switchEndTime: new Date(),
       isChecked1: false,
       isChecked2: false,
       isChecked3: false,
@@ -311,15 +313,15 @@ export default {
         '#1e90ff',
         '#c71585'
       ],
-      antennaForm: {
-        name: ''
-      },
-      antennaDisabled: true,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      // antennaForm: {
+      //   name: ''
+      // },
+      // antennaDisabled: true,
+      // tableData: [{
+      //   date: '2016-05-02',
+      //   name: '王小虎',
+      //   address: '上海市普陀区金沙江路 1518 弄'
+      // }],
       bookcaseListData: null,
       currentGridId: '',
       gridDetail: null
@@ -357,9 +359,16 @@ export default {
         bookcaseId: this.bookcaseId
       }).then(res => {
         if (res.code === 10000) {
+          const switchTime = JSON.parse(res.data.switchOnOffTime)
+          const lightTime = JSON.parse(res.data.lightOnOffTime)
+          const time = '2019-01-01 '
           this.defaultLighting = res.data.lightColor
           this.lightOpen = !!res.data.lightOpen
           this.switchOpen = !!res.data.switchOpen
+          this.lightBeginTimeTime = new Date(time + lightTime.beginTime)
+          this.lightEndTime = new Date(time + lightTime.endTime)
+          this.switchBeginTime = new Date(time + switchTime.beginTime)
+          this.switchEndTime = new Date(time + switchTime.endTime)
         }
       }).catch(err => {
         console.log(err)
@@ -413,8 +422,8 @@ export default {
     },
     switchgearChange() {
       let str = ''
-      if (this.switchOpen) {
-        str = '您是否要关定时开关机？'
+      if (!this.switchOpen) { // 插件此时已经更改此值
+        str = '您是否要关闭定时开关机？'
       } else {
         str = '您是否要开启定时开关机？'
       }
@@ -426,6 +435,24 @@ export default {
         this.switchOpen = !this.switchOpen
       }).catch(() => {
         console.log('取消了')
+      })
+    },
+    setLightColor() {
+      api.setBookcaseLightColor({
+        bookcaseId: this.bookcaseId,
+        lightSettingType: 1,
+        lightColor: this.defaultLighting
+      }).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: '灯光颜色设置成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
       })
     },
     switchWeek(num) {
