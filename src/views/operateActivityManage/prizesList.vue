@@ -168,6 +168,9 @@ export default {
     this.formInline.schoolId = this.$route.query.schoolId
     this.schoolName = this.$route.query.schoolName
     this.schoolAccount = this.$route.query.schoolAccount
+    if (this.$route.query.rewardStatus) {
+      this.formInline.rewardStatus = this.$route.query.rewardStatus
+    }
   },
   methods: {
     onSubmit() {

@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column label="待发奖品" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount, scope.row.schoolId)" >{{ scope.row.pendingAwardTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount, scope.row.schoolId, '2')" >{{ scope.row.pendingAwardTotal }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="活动状态" align="center" prop="openInvitedGiftStr"/>
@@ -115,14 +115,26 @@ export default {
       })
     },
     routeTo(path) {
-      this.$router.push({
-        path: path,
-        query: {
-          schoolName: arguments[1],
-          schoolAccount: arguments[2],
-          schoolId: arguments[3]
-        }
-      })
+      if (arguments[4]) {
+        this.$router.push({
+          path: path,
+          query: {
+            schoolName: arguments[1],
+            schoolAccount: arguments[2],
+            schoolId: arguments[3],
+            rewardStatus: arguments[4]
+          }
+        })
+      } else {
+        this.$router.push({
+          path: path,
+          query: {
+            schoolName: arguments[1],
+            schoolAccount: arguments[2],
+            schoolId: arguments[3]
+          }
+        })
+      }
     },
     openInvitedGift(index, value, schoolId) {
       let str = ''
