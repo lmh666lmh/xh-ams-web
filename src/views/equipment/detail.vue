@@ -418,7 +418,7 @@ export default {
         bookcaseId: this.gridDetail.bookcaseId,
         bookcaseRow: this.gridDetail.bookcaseRow,
         bookcaseColumn: this.gridDetail.bookcaseColumn,
-        hasError: this.gridDetail.hasError === 0 ? 0 : 1
+        hasError: 1
       }).then(res => {
         if (res.code === 10000) {
           this.getEquipmentBookcaseGridList()
