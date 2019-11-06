@@ -45,7 +45,7 @@
             </div>
             <div class="operation-btn">
               <!--<el-button type="primary" size="mini" class="btn">远程开门</el-button>-->
-              <el-button v-if="gridDetail.hasError === 0" type="success" size="mini" class="btn">异常锁柜</el-button>
+              <el-button v-if="gridDetail.hasError === 0" type="success" size="mini" class="btn" @click="abnormalLockGrid">异常锁柜</el-button>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
                       <span :class="[isChecked5?'active':'']" class="week" @click="switchWeek(5)">五</span>
                       <span :class="[isChecked6?'active':'']" class="week" @click="switchWeek(6)">六</span>
                       <span :class="[isChecked7?'active':'']" class="week" @click="switchWeek(7)">日</span>
-                      <el-button type="primary" size="mini" style="margin-left: 50px;">设置</el-button>
+                      <el-button type="primary" size="mini" style="margin-left: 50px;" @click="setLightTime">设置</el-button>
                     </div>
                   </div>
                 </div>
@@ -145,7 +145,7 @@
                   size="mini"
                   placeholder="选择时间"/>
               </div>
-              <el-button type="primary" size="mini" class="btn">设置</el-button>
+              <el-button type="primary" size="mini" class="btn" @click="setSwitchTime">设置</el-button>
             </div>
           </div>
         </div>
@@ -361,14 +361,39 @@ export default {
         if (res.code === 10000) {
           const switchTime = JSON.parse(res.data.switchOnOffTime)
           const lightTime = JSON.parse(res.data.lightOnOffTime)
-          const time = '2019-01-01 '
-          this.defaultLighting = res.data.lightColor
+          const time = '2019-01-01 ' // 无用，只是为了保持时间的正确性
+          this.defaultLighting = '#' + res.data.lightColor.slice(3)
           this.lightOpen = !!res.data.lightOpen
           this.switchOpen = !!res.data.switchOpen
           this.lightBeginTimeTime = new Date(time + lightTime.beginTime)
           this.lightEndTime = new Date(time + lightTime.endTime)
           this.switchBeginTime = new Date(time + switchTime.beginTime)
           this.switchEndTime = new Date(time + switchTime.endTime)
+          lightTime.repeatTime.forEach((value, index) => {
+            switch (value) {
+              case 'Monday':
+                this.isChecked1 = true
+                break
+              case 'Tuesday':
+                this.isChecked2 = true
+                break
+              case 'Wednesday':
+                this.isChecked3 = true
+                break
+              case 'Thursday':
+                this.isChecked4 = true
+                break
+              case 'Friday':
+                this.isChecked5 = true
+                break
+              case 'Saturday':
+                this.isChecked6 = true
+                break
+              case 'Sunday':
+                this.isChecked7 = true
+                break
+            }
+          })
         }
       }).catch(err => {
         console.log(err)
@@ -388,6 +413,26 @@ export default {
         console.log(err)
       })
     },
+    abnormalLockGrid() {
+      api.setBookcaseLockGrid({
+        bookcaseId: this.gridDetail.bookcaseId,
+        bookcaseRow: this.gridDetail.bookcaseRow,
+        bookcaseColumn: this.gridDetail.bookcaseColumn,
+        hasError: this.gridDetail.hasError === 0 ? 0 : 1
+      }).then(res => {
+        if (res.code === 10000) {
+          this.getEquipmentBookcaseGridList()
+          this.$message({
+            message: '锁柜成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     // 保持未点击确认之前的状态
     lightingChange() {
       if (this.lightOpen) {
@@ -399,18 +444,96 @@ export default {
     switchLighting() {
       let str = ''
       if (this.lightOpen) {
-        str = '您是否要关闭紫色灯？'
+        str = '您是否要关闭定时开启紫色灯？'
       } else {
-        str = '您是否要定时开启紫色灯？'
+        str = '您是否要开启定时开启紫色灯？'
       }
       this.$confirm(str, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.lightOpen = !this.lightOpen
+        api.setBookcaseLightColor({
+          bookcaseId: this.bookcaseId,
+          lightSettingType: 2,
+          lightOpen: this.lightOpen ? 0 : 1
+        }).then(res => {
+          if (res.code === 10000) {
+            this.lightOpen = !this.lightOpen
+            this.$message({
+              message: '定时开启紫色灯设置成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }).catch(() => {
         console.log('取消了')
+      })
+    },
+    setLightTime() {
+      const repeatTime = []
+      if (this.isChecked1) {
+        repeatTime.push('Monday')
+      }
+      if (this.isChecked2) {
+        repeatTime.push('Tuesday')
+      }
+      if (this.isChecked3) {
+        repeatTime.push('Wednesday')
+      }
+      if (this.isChecked4) {
+        repeatTime.push('Thursday')
+      }
+      if (this.isChecked5) {
+        repeatTime.push('Friday')
+      }
+      if (this.isChecked6) {
+        repeatTime.push('Saturday')
+      }
+      if (this.isChecked7) {
+        repeatTime.push('Sunday')
+      }
+      api.setBookcaseLightColor({
+        bookcaseId: this.bookcaseId,
+        lightSettingType: 3,
+        lightOnOffTime: JSON.stringify({
+          beginTime: this.formatDateTime(this.lightBeginTimeTime),
+          endTime: this.formatDateTime(this.lightEndTime),
+          repeatTime: repeatTime
+        })
+      }).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: '定时开启紫色灯时间设置成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    setLightColor() {
+      api.setBookcaseLightColor({
+        bookcaseId: this.bookcaseId,
+        lightSettingType: 1,
+        lightColor: '#00' + this.defaultLighting.split('#')[1]
+      }).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: '灯光颜色设置成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
       })
     },
     switchSwitchgear() {
@@ -432,20 +555,39 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.switchOpen = !this.switchOpen
+        api.setBookcaseSwitchgear({
+          bookcaseId: this.bookcaseId,
+          switchSettingType: 1,
+          switchOpen: this.switchOpen ? 0 : 1
+        }).then(res => {
+          if (res.code === 10000) {
+            this.switchOpen = !this.switchOpen
+            this.$message({
+              message: '定时开关机设置成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }).catch(() => {
         console.log('取消了')
       })
     },
-    setLightColor() {
-      api.setBookcaseLightColor({
+    setSwitchTime() {
+      api.setBookcaseSwitchgear({
         bookcaseId: this.bookcaseId,
-        lightSettingType: 1,
-        lightColor: this.defaultLighting
+        switchSettingType: 2,
+        switchOnOffTime: JSON.stringify({
+          beginTime: this.formatDateTime(this.switchBeginTime),
+          endTime: this.formatDateTime(this.switchEndTime)
+        })
       }).then(res => {
         if (res.code === 10000) {
           this.$message({
-            message: '灯光颜色设置成功',
+            message: '开关机时间设置成功',
             type: 'success'
           })
         } else {
@@ -454,6 +596,21 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    /**
+     * @method: formatDateTime
+     * @description: 时间转换
+     * @author: ProudBin
+     * @update: 2019-11-05
+     * @param {Object} new Date
+     * @return{Object} HH:MM
+     */
+    formatDateTime(date) {
+      let h = date.getHours()
+      h = h < 10 ? ('0' + h) : h
+      let minute = date.getMinutes()
+      minute = minute < 10 ? ('0' + minute) : minute
+      return h + ':' + minute
     },
     switchWeek(num) {
       switch (num) {

@@ -322,7 +322,7 @@ export default {
   },
   /**
    * @method: setBookcaseLockGrid
-   * @description: 设备管理 => 书柜管理 => 远程操作 => 异常锁柜
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 定时开关机
    * @author: ProudBin
    * @update: 2019-11-05
    * @param {Object} params
