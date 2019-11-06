@@ -34,7 +34,7 @@
           </template>
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
-        <el-table-column label="分享人数" align="center" prop="sharePersonTotal"/>
+        <el-table-column label="成功分享人数" align="center" prop="sharePersonTotal"/>
         <el-table-column label="奖品总数" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/operateActivity/prizesList', scope.row.schoolName, scope.row.schoolAccount, scope.row.schoolId)" >{{ scope.row.awardTotal }}</el-button>
