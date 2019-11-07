@@ -115,6 +115,7 @@
         <el-table-column label="柜号-还" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.returnBookcaseRow != 0" type="text" size="small" @click="routeTo('/borrowingRecords/bookcaseNumDetail?row=' + scope.row.returnBookcaseRow + '&colum=' + scope.row.returnBookcaseColumn + '&bookcaseId=' + scope.row.bookcaseId + '&schoolId=' + scope.row.schoolId )" >{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn >= 10 ? scope.row.returnBookcaseColumn : '0' + scope.row.returnBookcaseColumn }}</el-button>
+            <span v-else-if="scope.row.returnBookcaseRow === 0 && scope.row.bookStatus === 1" >已归还管理员</span>
           </template>
         </el-table-column>
         <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
