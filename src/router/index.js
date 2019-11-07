@@ -137,11 +137,11 @@ export const asyncRouterMap = [
         meta: { title: '学校信息' }
       },
       {
-        path: 'bookcaseDetail',
-        name: 'BookcaseDetail',
-        component: () => import('@/views/school/bookcaseDetail'),
+        path: 'bindBookcase',
+        name: 'BindBookcase',
+        component: () => import('@/views/school/bindBookcase'),
         hidden: true,
-        meta: { title: '书柜详情' }
+        meta: { title: '绑定书柜' }
       }
     ]
   },
@@ -202,7 +202,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'bookcaseDetail',
-        name: 'bookcaseDetail',
+        name: 'BookcaseDetail',
         component: () => import('@/views/equipment/detail'),
         hidden: true,
         meta: { title: '书柜详情' }

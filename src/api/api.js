@@ -266,15 +266,70 @@ export default {
     return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.LIST, params, callback)
   },
   /**
-   * @method: getEquipmentBookcaseDetail
-   * @description: 设备管理 => 书柜管理 => 书柜详情（该页面暂无开发）
+   * @method: getEquipmentBookcaseGridList
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 获取柜子格子列表
    * @author: ProudBin
-   * @update: 2019-06-04
+   * @update: 2019-10-22
    * @param {Object} params
-   * @return{Object} 书柜详情
+   * @return{Object} 柜子格子列表
    */
-  getEquipmentBookcaseDetail(params, callback) {
-    return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.DETAIL, params, callback)
+  getEquipmentBookcaseGridList(params, callback) {
+    return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.BOOKCASEGRIDLIST, params, callback)
+  },
+  /**
+   * @method: getGridDetail
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 获取柜子格子详情
+   * @author: ProudBin
+   * @update: 2019-10-22
+   * @param {Object} params
+   * @return{Object} 柜子格子详情
+   */
+  getGridDetail(params, callback) {
+    return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.GRIDDETAIL, params, callback)
+  },
+  /**
+   * @method: getBookcaseExtendInfo
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 获取柜子的灯光和定时开关机信息
+   * @author: ProudBin
+   * @update: 2019-10-22
+   * @param {Object} params
+   * @return{Object} 柜子的灯光和定时开关机信息
+   */
+  getBookcaseExtendInfo(params, callback) {
+    return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.EXTENDINFO, params, callback)
+  },
+  /**
+   * @method: setBookcaseLockGrid
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 异常锁柜
+   * @author: ProudBin
+   * @update: 2019-11-05
+   * @param {Object} params
+   * @return{Object}
+   */
+  setBookcaseLockGrid(params, callback) {
+    return API.put(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.LOCKGRID, params, callback)
+  },
+  /**
+   * @method: setBookcaseLightColor
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 设置灯光颜色
+   * @author: ProudBin
+   * @update: 2019-11-05
+   * @param {Object} params
+   * @return{Object}
+   */
+  setBookcaseLightColor(params, callback) {
+    return API.put(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.LIGHTSETTING, params, callback)
+  },
+  /**
+   * @method: setBookcaseLockGrid
+   * @description: 设备管理 => 书柜管理 => 远程操作 => 定时开关机
+   * @author: ProudBin
+   * @update: 2019-11-05
+   * @param {Object} params
+   * @return{Object}
+   */
+  setBookcaseSwitchgear(params, callback) {
+    return API.put(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.SWITCHGEAR, params, callback)
   },
   /**
    * @method: getEquipmentBorrowCardList

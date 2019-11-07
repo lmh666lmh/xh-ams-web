@@ -87,9 +87,19 @@ export const SYSTEM = {
     // 书柜管理
     BOOKCASEMANAGE: {
       // 书柜列表
-      LIST: path('/bookcase/agent/list'),
-      // 书柜详情
-      DETAIL: path('/school/list')
+      LIST: path('/bookcaseExtend/getAgentBookcaseList'),
+      // 书柜格子列表
+      BOOKCASEGRIDLIST: path('/bookcaseExtend/getBookcaseGridList'),
+      // 书柜格子详情
+      GRIDDETAIL: path('/bookcaseExtend/getBookcaseGridInfo'),
+      // 获取柜子的灯光和定时开关机信息
+      EXTENDINFO: path('/bookcaseExtend/getBookcaseExtendInfo'),
+      // 异常锁柜
+      LOCKGRID: path('/bookcaseExtend/lock'),
+      // 设置灯光颜色
+      LIGHTSETTING: path('/bookcaseExtend/lightSetting'),
+      // 设置定时开关机
+      SWITCHGEAR: path('/bookcaseExtend/bookcaseSwitchSetting')
     },
     // 借阅卡管理
     BORROWCARD: {
@@ -303,4 +313,5 @@ export const SYSTEM = {
       SENTGIFT: path('/invite/rewardStatus')
     }
   }
+
 }

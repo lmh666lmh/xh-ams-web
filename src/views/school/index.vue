@@ -80,7 +80,7 @@
         </el-table-column>
         <el-table-column label="书柜数量" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="routeTo('/school/bookcaseDetail', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
+            <el-button type="text" size="small" @click="routeTo('/school/bindBookcase', scope.row.schoolId)" >{{ scope.row.bookcaseTotal }}</el-button>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime"/>
@@ -360,7 +360,7 @@ export default {
       } else if (command.type === '启用') {
         this.prohibit(command.schoolId, 1)
       } else if (command.type === '绑定书柜') {
-        this.routeTo('/school/bookcaseDetail', command.schoolId)
+        this.routeTo('/school/bindBookcase', command.schoolId)
       } else if (command.type === '书籍管理') {
         this.routeTo('/books/index', command.schoolId)
       }
