@@ -23,6 +23,9 @@ export default {
         num: 'V1.1.2',
         cont: ['1.学生导入优化（BrandBin-2019/10/24）']
       }, {
+        num: 'V1.1.1',
+        cont: ['1.书柜管理调整（BrandBin-2019/11/07）']
+      }, {
         num: 'V1.1.0',
         cont: ['1.新增教师管理（BrandBin-2019/10/15）']
       }, {
