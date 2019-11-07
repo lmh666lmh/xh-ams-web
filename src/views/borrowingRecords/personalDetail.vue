@@ -74,6 +74,7 @@
         <el-table-column label="柜号-还" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.returnBookcaseRow != 0">{{ scope.row.returnBookcaseRow }}{{ scope.row.returnBookcaseColumn >= 10 ? scope.row.returnBookcaseColumn : '0' + scope.row.returnBookcaseColumn }}</span>
+            <span v-else-if="scope.row.returnBookcaseRow === 0 && scope.row.bookStatus === 1" >已归还管理员</span>
           </template>
         </el-table-column>
         <el-table-column label="借书时间" align="center" prop="createTime" width="180"/>
