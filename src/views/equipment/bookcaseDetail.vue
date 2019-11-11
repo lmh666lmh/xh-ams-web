@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-container">
+  <div class="bookcase-detail-container">
     <div class="header">
       <el-row :gutter="50">
         <el-col :span="6"><span class="title">当前学校：</span>{{ schoolName }}/{{ schoolAccount }}</el-col>
@@ -647,7 +647,7 @@ export default {
 </script>
 
 <style scoped>
-  .detail-container{
+  .bookcase-detail-container{
     background-color: #ebeef4;
     padding: 10px;
   }

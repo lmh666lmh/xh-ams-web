@@ -203,7 +203,7 @@ export const asyncRouterMap = [
       {
         path: 'bookcaseDetail',
         name: 'BookcaseDetail',
-        component: () => import('@/views/equipment/detail'),
+        component: () => import('@/views/equipment/bookcaseDetail'),
         hidden: true,
         meta: { title: '书柜详情' }
       }

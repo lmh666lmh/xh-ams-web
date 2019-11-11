@@ -1,5 +1,5 @@
 <template>
-  <div class="school-container">
+  <div class="bookcase-container">
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="书柜编号">
@@ -166,7 +166,7 @@ export default {
 </script>
 
 <style scoped>
-  .school-container{
+  .bookcase-container{
     margin: 20px;
   }
 </style>
