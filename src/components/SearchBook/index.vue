@@ -1,6 +1,6 @@
 <template>
   <div class="search-book">
-    <el-form-item label="借阅书籍">
+    <el-form-item label="书籍名称">
       <el-autocomplete
         v-model="bookName"
         :fetch-suggestions="searchBooks"
