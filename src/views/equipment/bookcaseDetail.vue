@@ -448,6 +448,28 @@ export default {
       } else {
         str = '您是否要开启定时开启紫色灯？'
       }
+      const repeatTime = []
+      if (this.isChecked1) {
+        repeatTime.push('Monday')
+      }
+      if (this.isChecked2) {
+        repeatTime.push('Tuesday')
+      }
+      if (this.isChecked3) {
+        repeatTime.push('Wednesday')
+      }
+      if (this.isChecked4) {
+        repeatTime.push('Thursday')
+      }
+      if (this.isChecked5) {
+        repeatTime.push('Friday')
+      }
+      if (this.isChecked6) {
+        repeatTime.push('Saturday')
+      }
+      if (this.isChecked7) {
+        repeatTime.push('Sunday')
+      }
       this.$confirm(str, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -456,7 +478,12 @@ export default {
         api.setBookcaseLightColor({
           bookcaseId: this.bookcaseId,
           lightSettingType: 2,
-          lightOpen: this.lightOpen ? 0 : 1
+          lightOpen: this.lightOpen ? 0 : 1,
+          lightOnOffTime: JSON.stringify({
+            beginTime: this.formatDateTime(this.lightBeginTimeTime),
+            endTime: this.formatDateTime(this.lightEndTime),
+            repeatTime: repeatTime
+          })
         }).then(res => {
           if (res.code === 10000) {
             this.lightOpen = !this.lightOpen
@@ -558,7 +585,11 @@ export default {
         api.setBookcaseSwitchgear({
           bookcaseId: this.bookcaseId,
           switchSettingType: 1,
-          switchOpen: this.switchOpen ? 0 : 1
+          switchOpen: this.switchOpen ? 0 : 1,
+          switchOnOffTime: JSON.stringify({
+            beginTime: this.formatDateTime(this.switchBeginTime),
+            endTime: this.formatDateTime(this.switchEndTime)
+          })
         }).then(res => {
           if (res.code === 10000) {
             this.switchOpen = !this.switchOpen
