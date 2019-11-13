@@ -5,24 +5,7 @@
         <el-form-item label="订单编号">
           <el-input v-model="formInline.orderNum" placeholder="请输入订单编号"/>
         </el-form-item>
-        <el-form-item label="学校名称/账户">
-          <el-autocomplete
-            v-model="schoolName"
-            :fetch-suggestions="searchSchool"
-            :debounce="700"
-            :clearable="true"
-            :trigger-on-focus="false"
-            popper-class="my-autocomplete"
-            placeholder="请填写"
-            @select="searchSchoolSelect">
-            <i slot="suffix" class="el-icon-search el-input__icon"/>
-            <template slot-scope="{ item }">
-              <div class="name">{{ item.value }}</div>
-              <span class="addr">账号：{{ item.schoolAccount }}</span>
-              <span class="addr">编码：{{ item.schoolNum }}</span>
-            </template>
-          </el-autocomplete>
-        </el-form-item>
+        <SearchSchool :school-id.sync="formInline.schoolId"/>
         <el-form-item label="订单状态">
           <el-select v-model="formInline.orderStatus" placeholder="请选择">
             <el-option
@@ -88,12 +71,14 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import SearchSchool from '@/components/SearchSchool'
 import { api } from '@/api/index'
 
 export default {
   name: 'WebRecharge',
   components: {
-    Pagination
+    Pagination,
+    SearchSchool
   },
   data() {
     return {
@@ -101,7 +86,6 @@ export default {
       listLoading: true,
       total: 0,
       date: '',
-      schoolName: '',
       formInline: {
         orderNum: '',
         schoolId: '',
@@ -136,40 +120,6 @@ export default {
         this.formInline.endTime = ''
       }
     },
-    searchSchool(queryString, callback) {
-      this.formInline.schoolId = ''
-      const searchKey = queryString.trim()
-      if (!searchKey) {
-        callback([])
-      } else {
-        api.getSearchSchool({
-          searchKey: searchKey
-        }).then(res => {
-          if (res.code === 10000) {
-            const array = []
-            res.data.forEach((value, index) => {
-              array.push({
-                value: value.schoolName,
-                schoolId: value.schoolId,
-                schoolNum: value.schoolNum,
-                schoolAccount: value.schoolAccount
-              })
-            })
-            // 调用 callback 返回建议列表的数据
-            callback(array)
-          } else {
-            callback([])
-          }
-        }).catch(err => {
-          callback([])
-          console.log(err)
-        })
-      }
-    },
-    searchSchoolSelect(item) {
-      console.log(item)
-      this.formInline.schoolId = item.schoolId
-    },
     fetchData() {
       this.listLoading = true
       api.getOrderQueryList(this.formInline).then(response => {
@@ -182,9 +132,6 @@ export default {
     },
     onSubmit() {
       this.formInline.pageNum = 1
-      if (!this.schoolName) {
-        this.formInline.schoolId = ''
-      }
       this.fetchData()
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {

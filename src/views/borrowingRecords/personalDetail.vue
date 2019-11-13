@@ -7,19 +7,7 @@
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
-        <el-form-item label="借阅书籍">
-          <el-autocomplete
-            v-model="bookName"
-            :fetch-suggestions="searchBooks"
-            :debounce="700"
-            :clearable="true"
-            :trigger-on-focus="false"
-            popper-class="my-autocomplete"
-            placeholder="请填写"
-            @select="searchBooksSelect">
-            <i slot="suffix" class="el-icon-search el-input__icon"/>
-          </el-autocomplete>
-        </el-form-item>
+        <SearchBook :book-template-id.sync="formInline.bookTemplateId"/>
         <el-form-item label="借阅状态">
           <el-select v-model="formInline.bookStatus" placeholder="请选择">
             <el-option
@@ -91,12 +79,14 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import SearchBook from '@/components/SearchBook'
 import { api } from '@/api/index'
 
 export default {
   name: 'PersonalDetail',
   components: {
-    Pagination
+    Pagination,
+    SearchBook
   },
   data() {
     return {
@@ -106,7 +96,6 @@ export default {
       time: '',
       student: '',
       school: '',
-      bookName: '',
       formInline: {
         studentId: '',
         bookTemplateId: '',
@@ -173,36 +162,6 @@ export default {
           schoolId: arguments[1]
         }
       })
-    },
-    searchBooks(queryString, callback) {
-      this.formInline.bookTemplateId = ''
-      if (!queryString) {
-        callback([])
-      } else {
-        api.getSearchBooks({
-          searchKey: queryString
-        }).then(res => {
-          if (res.code === 10000) {
-            const array = []
-            res.data.forEach((value, index) => {
-              array.push({
-                value: value.bookName,
-                bookTemplateId: value.bookTemplateId
-              })
-            })
-            // 调用 callback 返回建议列表的数据
-            callback(array)
-          } else {
-            callback([])
-          }
-        }).catch(err => {
-          callback([])
-          console.log(err)
-        })
-      }
-    },
-    searchBooksSelect(item) {
-      this.formInline.bookTemplateId = item.bookTemplateId
     },
     back() {
       history.go(-1)

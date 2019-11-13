@@ -8,23 +8,7 @@
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
-        <el-form-item label="学生姓名">
-          <el-autocomplete
-            v-model="studentName"
-            :fetch-suggestions="searchStudent"
-            :debounce="700"
-            :clearable="true"
-            :trigger-on-focus="false"
-            popper-class="my-autocomplete"
-            placeholder="请填写"
-            @select="searchStudentSelect">
-            <i slot="suffix" class="el-icon-search el-input__icon"/>
-            <template slot-scope="{ item }">
-              <div class="name">{{ item.value }}</div>
-              <span class="addr">所在学校：{{ item.schoolName }}</span>
-            </template>
-          </el-autocomplete>
-        </el-form-item>
+        <SearchStudent :student-id.sync="formInline.studentId"/>
         <el-form-item label="借还操作时间">
           <el-date-picker
             v-model="time"
@@ -90,12 +74,14 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import SearchStudent from '@/components/SearchStudent'
 import { api } from '@/api/index'
 
 export default {
   name: 'BookcaseNumDetail',
   components: {
-    Pagination
+    Pagination,
+    SearchStudent
   },
   data() {
     return {
@@ -105,7 +91,6 @@ export default {
       school: null,
       bookcase: null,
       bookcaseNum: null,
-      studentName: '',
       time: '',
       formInline: {
         bookcaseId: '',
@@ -170,38 +155,6 @@ export default {
         this.formInline.createTime = ''
         this.formInline.returnTime = ''
       }
-    },
-    searchStudent(queryString, callback) {
-      this.formInline.studentId = ''
-      if (!queryString) {
-        callback([])
-      } else {
-        api.getSearchStudent({
-          searchKey: queryString
-        }).then(res => {
-          if (res.code === 10000) {
-            const array = []
-            res.data.forEach((value, index) => {
-              array.push({
-                value: value.studentName,
-                studentId: value.studentId,
-                schoolName: value.schoolName
-              })
-            })
-            // 调用 callback 返回建议列表的数据
-            callback(array)
-          } else {
-            callback([])
-          }
-        }).catch(err => {
-          callback([])
-          console.log(err)
-        })
-      }
-    },
-    searchStudentSelect(item) {
-      console.log(item)
-      this.formInline.studentId = item.studentId
     },
     back() {
       history.go(-1)
