@@ -1,5 +1,5 @@
 <template>
-  <div class="school-container">
+  <div class="teacher-container">
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="老师名称">
@@ -154,8 +154,6 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      gradeOptions: [],
-      classOptions: [],
       teacherTypeOptions: [{
         value: '',
         label: '请选择'

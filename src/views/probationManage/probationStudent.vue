@@ -6,24 +6,7 @@
     </div>
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
-        <el-form-item label="年级班级">
-          <el-select v-model="formInline.gradeId" placeholder="请选择年级" style="width: 150px;" @change="getClass('search', formInline.gradeId)">
-            <el-option value="">请选择年级</el-option>
-            <el-option
-              v-for="item in gradeOptions"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId" />
-          </el-select>
-          <el-select v-model="formInline.classId" placeholder="请选择班级" style="width: 150px;">
-            <el-option value="">请选择班级</el-option>
-            <el-option
-              v-for="item in classOptions"
-              :key="item.classId"
-              :label="item.className"
-              :value="item.classId" />
-          </el-select>
-        </el-form-item>
+        <GradeClass :school-id="formInline.schoolId" :grade-id.sync="formInline.gradeId" :class-id.sync="formInline.classId"/>
         <el-form-item label="学生姓名">
           <el-input v-model="formInline.studentName" placeholder="请选择"/>
         </el-form-item>
@@ -82,12 +65,14 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import GradeClass from '@/components/GradeClass'
 import { api } from '@/api/index'
 
 export default {
   name: 'ProbationStudent',
   components: {
-    Pagination
+    Pagination,
+    GradeClass
   },
   data() {
     return {
@@ -128,38 +113,15 @@ export default {
       }, {
         value: '1',
         label: '付费'
-      }],
-      gradeOptions: [],
-      classOptions: []
+      }]
     }
   },
   created() {
     this.formInline.schoolId = this.$route.query.schoolId
     this.formInline.payStatus = this.$route.query.payStatus ? this.$route.query.payStatus : ''
     this.fetchData()
-    this.getGradeAll()
   },
   methods: {
-    getGradeAll() {
-      api.getAllGrade(this.formInline.schoolId).then(response => {
-        if (response.code === 10000) {
-          this.gradeOptions = response.data
-        }
-      })
-    },
-    getClass(type, gradeId) {
-      this.classOptions = []
-      if (type === 'search') {
-        this.formInline.classId = ''
-      }
-      api.getAllClass({ gradeId: gradeId }).then(response => {
-        if (response.code === 10000) {
-          if (type === 'search') {
-            this.classOptions = response.data
-          }
-        }
-      })
-    },
     fetchData() {
       this.listLoading = true
       api.getProbationNumList(this.formInline).then(response => {

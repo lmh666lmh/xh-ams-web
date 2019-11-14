@@ -1,5 +1,5 @@
 <template>
-  <div class="school-container">
+  <div class="grade-container">
     <div class="search-container">
       <el-form :inline="true" :model="formInline" size="small" class="demo-form-inline">
         <el-form-item label="年级名称">
