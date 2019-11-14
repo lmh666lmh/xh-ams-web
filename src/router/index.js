@@ -186,6 +186,7 @@ export const asyncRouterMap = [
     path: '/equipment',
     component: Layout,
     name: 'Equipment',
+    redirect: '/equipment/bookcaseManage',
     meta: { title: '设备管理', icon: 'example' },
     children: [
       {
@@ -248,6 +249,7 @@ export const asyncRouterMap = [
     path: '/payManage',
     component: Layout,
     name: 'PayManage',
+    redirect: '/payManage/rechargeManage',
     meta: { title: '付费管理', icon: 'example' },
     children: [
       {
@@ -274,6 +276,7 @@ export const asyncRouterMap = [
         path: 'orderQuery',
         name: 'OrderQuery',
         meta: { title: '订单查询' },
+        redirect: '/payManage/orderQuery/detail',
         component: () => import('@/views/payManage/orderQuery'),
         children: [
           {
@@ -295,14 +298,12 @@ export const asyncRouterMap = [
   {
     path: '/probation',
     component: Layout,
-    name: 'Probation',
-    meta: { title: '试用管理', icon: 'example' },
     children: [
       {
         path: 'index',
         name: 'ProbationManageIndex',
         component: () => import('@/views/probationManage/index'),
-        meta: { title: '试用管理' }
+        meta: { title: '试用管理', icon: 'example' }
       },
       {
         path: 'add',
@@ -324,6 +325,7 @@ export const asyncRouterMap = [
     path: '/anomalous',
     component: Layout,
     name: 'Anomalous',
+    redirect: '/anomalous/borrowingAnomalous',
     meta: { title: '异常维护', icon: 'example' },
     children: [
       {
@@ -358,6 +360,7 @@ export const asyncRouterMap = [
     path: '/system',
     component: Layout,
     name: 'System',
+    redirect: '/system/customerService',
     meta: { title: '系统设置', icon: 'example' },
     children: [
       {
@@ -401,6 +404,7 @@ export const asyncRouterMap = [
     path: '/operateActivity',
     component: Layout,
     name: 'OperateActivity',
+    redirect: '/operateActivity/inviteGift',
     meta: { title: '运营活动', icon: 'example' },
     children: [
       {
