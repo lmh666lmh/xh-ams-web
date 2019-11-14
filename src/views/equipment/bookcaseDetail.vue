@@ -448,55 +448,12 @@ export default {
       } else {
         str = '您是否要开启定时开启紫色灯？'
       }
-      const repeatTime = []
-      if (this.isChecked1) {
-        repeatTime.push('Monday')
-      }
-      if (this.isChecked2) {
-        repeatTime.push('Tuesday')
-      }
-      if (this.isChecked3) {
-        repeatTime.push('Wednesday')
-      }
-      if (this.isChecked4) {
-        repeatTime.push('Thursday')
-      }
-      if (this.isChecked5) {
-        repeatTime.push('Friday')
-      }
-      if (this.isChecked6) {
-        repeatTime.push('Saturday')
-      }
-      if (this.isChecked7) {
-        repeatTime.push('Sunday')
-      }
       this.$confirm(str, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        api.setBookcaseLightColor({
-          bookcaseId: this.bookcaseId,
-          lightSettingType: 2,
-          lightOpen: this.lightOpen ? 0 : 1,
-          lightOnOffTime: JSON.stringify({
-            beginTime: this.formatDateTime(this.lightBeginTimeTime),
-            endTime: this.formatDateTime(this.lightEndTime),
-            repeatTime: repeatTime
-          })
-        }).then(res => {
-          if (res.code === 10000) {
-            this.lightOpen = !this.lightOpen
-            this.$message({
-              message: '定时开启紫色灯设置成功',
-              type: 'success'
-            })
-          } else {
-            this.$message.error(res.message)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
+        this.setLightTime()
       }).catch(() => {
         console.log('取消了')
       })
@@ -526,7 +483,8 @@ export default {
       }
       api.setBookcaseLightColor({
         bookcaseId: this.bookcaseId,
-        lightSettingType: 3,
+        lightSettingType: 2,
+        lightOpen: this.lightOpen ? 0 : 1,
         lightOnOffTime: JSON.stringify({
           beginTime: this.formatDateTime(this.lightBeginTimeTime),
           endTime: this.formatDateTime(this.lightEndTime),
@@ -535,7 +493,7 @@ export default {
       }).then(res => {
         if (res.code === 10000) {
           this.$message({
-            message: '定时开启紫色灯时间设置成功',
+            message: '紫色灯设置成功',
             type: 'success'
           })
         } else {
