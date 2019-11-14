@@ -592,7 +592,8 @@ export default {
     setSwitchTime() {
       api.setBookcaseSwitchgear({
         bookcaseId: this.bookcaseId,
-        switchSettingType: 2,
+        switchSettingType: 1,
+        switchOpen: 1,
         switchOnOffTime: JSON.stringify({
           beginTime: this.formatDateTime(this.switchBeginTime),
           endTime: this.formatDateTime(this.switchEndTime)
