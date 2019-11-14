@@ -453,12 +453,56 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.setLightTime()
+        api.setBookcaseLightColor({
+          bookcaseId: this.bookcaseId,
+          lightSettingType: 2,
+          lightOpen: this.lightOpen ? 0 : 1,
+          lightOnOffTime: JSON.stringify({
+            beginTime: this.formatDateTime(this.lightBeginTimeTime),
+            endTime: this.formatDateTime(this.lightEndTime),
+            repeatTime: this.repeatWeekTime()
+          })
+        }).then(res => {
+          if (res.code === 10000) {
+            this.lightOpen = !this.lightOpen
+            this.$message({
+              message: '定时开启紫色灯设置成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }).catch(() => {
         console.log('取消了')
       })
     },
     setLightTime() {
+      api.setBookcaseLightColor({
+        bookcaseId: this.bookcaseId,
+        lightSettingType: 2,
+        lightOpen: 1,
+        lightOnOffTime: JSON.stringify({
+          beginTime: this.formatDateTime(this.lightBeginTimeTime),
+          endTime: this.formatDateTime(this.lightEndTime),
+          repeatTime: this.repeatWeekTime()
+        })
+      }).then(res => {
+        if (res.code === 10000) {
+          this.$message({
+            message: '定时开启紫色灯时间设置成功',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    repeatWeekTime() {
       const repeatTime = []
       if (this.isChecked1) {
         repeatTime.push('Monday')
@@ -481,27 +525,7 @@ export default {
       if (this.isChecked7) {
         repeatTime.push('Sunday')
       }
-      api.setBookcaseLightColor({
-        bookcaseId: this.bookcaseId,
-        lightSettingType: 2,
-        lightOpen: this.lightOpen ? 0 : 1,
-        lightOnOffTime: JSON.stringify({
-          beginTime: this.formatDateTime(this.lightBeginTimeTime),
-          endTime: this.formatDateTime(this.lightEndTime),
-          repeatTime: repeatTime
-        })
-      }).then(res => {
-        if (res.code === 10000) {
-          this.$message({
-            message: '紫色灯设置成功',
-            type: 'success'
-          })
-        } else {
-          this.$message.error(res.message)
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      return repeatTime
     },
     setLightColor() {
       api.setBookcaseLightColor({
