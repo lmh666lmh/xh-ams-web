@@ -36,7 +36,7 @@
             <div class="detail-style">格子状态：<span :class="[gridDetail.gridStatusStr === '正常' ? '' : 'red']">{{ gridDetail.gridStatusStr }}</span>
               <el-button v-if="gridDetail.hasError === 1" type="text" style="margin-left: 20px;padding: 0;" @click="routeTo('/anomalous/borrowingAnomalous')">点此查看</el-button>
             </div>
-            <div class="detail-style">柜门状态：<span :class="[gridDetail.hasOpen === 0 ? '':'red']">{{ gridDetail.hasOpen === 0 ? '关门' : '开门' }}</span></div>
+            <!--<div class="detail-style">柜门状态：<span :class="[gridDetail.hasOpen === 0 ? '':'red']">{{ gridDetail.hasOpen === 0 ? '关门' : '开门' }}</span></div>-->
             <div v-if="gridDetail.inCabinetList.length !== 0" class="detail-style">柜内书籍：<span v-for="(item, index) in gridDetail.inCabinetList" :key="index">《{{ item.bookName }}》</span></div>
             <div v-else class="detail-style">柜内书籍：无书</div>
             <div v-if="gridDetail.repairBookList.length !== 0" class="detail-style">报修书籍：
