@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <el-row :gutter="20">
+    <el-row v-if="false" :gutter="20">
       <el-col :span="15">
         <div class="section">
           <div class="section-title">
@@ -94,17 +94,17 @@
                         size="mini"
                         placeholder="选择时间"/>
                     </div>
-                    <div>
-                      <span class="title-label">重复时间</span>
-                      <span :class="[isChecked1?'active':'']" class="week" @click="switchWeek(1)">一</span>
-                      <span :class="[isChecked2?'active':'']" class="week" @click="switchWeek(2)">二</span>
-                      <span :class="[isChecked3?'active':'']" class="week" @click="switchWeek(3)">三</span>
-                      <span :class="[isChecked4?'active':'']" class="week" @click="switchWeek(4)">四</span>
-                      <span :class="[isChecked5?'active':'']" class="week" @click="switchWeek(5)">五</span>
-                      <span :class="[isChecked6?'active':'']" class="week" @click="switchWeek(6)">六</span>
-                      <span :class="[isChecked7?'active':'']" class="week" @click="switchWeek(7)">日</span>
-                      <el-button type="primary" size="mini" style="margin-left: 50px;" @click="setLightTime">设置</el-button>
-                    </div>
+                    <el-button type="primary" size="mini" @click="setLightTime">设置</el-button>
+                    <!--<div>-->
+                    <!--<span class="title-label">重复时间</span>-->
+                    <!--<span :class="[isChecked1?'active':'']" class="week" @click="switchWeek(1)">一</span>-->
+                    <!--<span :class="[isChecked2?'active':'']" class="week" @click="switchWeek(2)">二</span>-->
+                    <!--<span :class="[isChecked3?'active':'']" class="week" @click="switchWeek(3)">三</span>-->
+                    <!--<span :class="[isChecked4?'active':'']" class="week" @click="switchWeek(4)">四</span>-->
+                    <!--<span :class="[isChecked5?'active':'']" class="week" @click="switchWeek(5)">五</span>-->
+                    <!--<span :class="[isChecked6?'active':'']" class="week" @click="switchWeek(6)">六</span>-->
+                    <!--<span :class="[isChecked7?'active':'']" class="week" @click="switchWeek(7)">日</span>-->
+                    <!--</div>-->
                   </div>
                 </div>
               </el-col>
@@ -297,13 +297,13 @@ export default {
       lightEndTime: new Date(),
       switchBeginTime: new Date(),
       switchEndTime: new Date(),
-      isChecked1: false,
-      isChecked2: false,
-      isChecked3: false,
-      isChecked4: false,
-      isChecked5: false,
-      isChecked6: false,
-      isChecked7: false,
+      // isChecked1: false,
+      // isChecked2: false,
+      // isChecked3: false,
+      // isChecked4: false,
+      // isChecked5: false,
+      // isChecked6: false,
+      // isChecked7: false,
       predefineColors: [
         '#ff4500',
         '#ff8c00',
@@ -369,31 +369,31 @@ export default {
           this.lightEndTime = new Date(time + lightTime.endTime)
           this.switchBeginTime = new Date(time + switchTime.beginTime)
           this.switchEndTime = new Date(time + switchTime.endTime)
-          lightTime.repeatTime.forEach((value, index) => {
-            switch (value) {
-              case 'Monday':
-                this.isChecked1 = true
-                break
-              case 'Tuesday':
-                this.isChecked2 = true
-                break
-              case 'Wednesday':
-                this.isChecked3 = true
-                break
-              case 'Thursday':
-                this.isChecked4 = true
-                break
-              case 'Friday':
-                this.isChecked5 = true
-                break
-              case 'Saturday':
-                this.isChecked6 = true
-                break
-              case 'Sunday':
-                this.isChecked7 = true
-                break
-            }
-          })
+          // lightTime.repeatTime.forEach((value, index) => {
+          //   switch (value) {
+          //     case 'Monday':
+          //       this.isChecked1 = true
+          //       break
+          //     case 'Tuesday':
+          //       this.isChecked2 = true
+          //       break
+          //     case 'Wednesday':
+          //       this.isChecked3 = true
+          //       break
+          //     case 'Thursday':
+          //       this.isChecked4 = true
+          //       break
+          //     case 'Friday':
+          //       this.isChecked5 = true
+          //       break
+          //     case 'Saturday':
+          //       this.isChecked6 = true
+          //       break
+          //     case 'Sunday':
+          //       this.isChecked7 = true
+          //       break
+          //   }
+          // })
         }
       }).catch(err => {
         console.log(err)
@@ -459,8 +459,7 @@ export default {
           lightOpen: this.lightOpen ? 0 : 1,
           lightOnOffTime: JSON.stringify({
             beginTime: this.formatDateTime(this.lightBeginTimeTime),
-            endTime: this.formatDateTime(this.lightEndTime),
-            repeatTime: this.repeatWeekTime()
+            endTime: this.formatDateTime(this.lightEndTime)
           })
         }).then(res => {
           if (res.code === 10000) {
@@ -486,8 +485,7 @@ export default {
         lightOpen: 1,
         lightOnOffTime: JSON.stringify({
           beginTime: this.formatDateTime(this.lightBeginTimeTime),
-          endTime: this.formatDateTime(this.lightEndTime),
-          repeatTime: this.repeatWeekTime()
+          endTime: this.formatDateTime(this.lightEndTime)
         })
       }).then(res => {
         if (res.code === 10000) {
