@@ -414,23 +414,31 @@ export default {
       })
     },
     abnormalLockGrid() {
-      api.setBookcaseLockGrid({
-        bookcaseId: this.gridDetail.bookcaseId,
-        bookcaseRow: this.gridDetail.bookcaseRow,
-        bookcaseColumn: this.gridDetail.bookcaseColumn,
-        hasError: 1
-      }).then(res => {
-        if (res.code === 10000) {
-          this.getEquipmentBookcaseGridList()
-          this.$message({
-            message: '锁柜成功',
-            type: 'success'
-          })
-        } else {
-          this.$message.error(res.message)
-        }
-      }).catch(err => {
-        console.log(err)
+      this.$confirm('您确定要锁定该柜号吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        api.setBookcaseLockGrid({
+          bookcaseId: this.gridDetail.bookcaseId,
+          bookcaseRow: this.gridDetail.bookcaseRow,
+          bookcaseColumn: this.gridDetail.bookcaseColumn,
+          hasError: 1
+        }).then(res => {
+          if (res.code === 10000) {
+            this.getEquipmentBookcaseGridList()
+            this.$message({
+              message: '锁柜成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.error(res.message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(() => {
+        console.log('取消了')
       })
     },
     // 保持未点击确认之前的状态
