@@ -57,7 +57,7 @@
         <el-table-column label="在柜书籍" align="center" prop="inCabinetNum"/>
         <el-table-column label="藏书量预警" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.collectionWarning === 0 || scope.row.collectionWarning === 2" style="color: red;">{{ scope.row.collectionWarningStr }}</span>
+            <span v-if="scope.row.collectionWarning === 0" style="color: red;">{{ scope.row.collectionWarningStr }}</span>
             <span v-else>{{ scope.row.collectionWarningStr }}</span>
           </template>
         </el-table-column>
