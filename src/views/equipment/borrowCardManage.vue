@@ -39,6 +39,10 @@
         </el-table-column>
         <el-table-column label="借阅卡卡号" align="center" prop="cardNum"/>
         <el-table-column label="绑定学校名称" align="center" prop="schoolName"/>
+        <el-table-column label="绑定学生姓名" align="center" prop="studentName"/>
+        <el-table-column label="绑定家长姓名" align="center" prop="parentName"/>
+        <el-table-column label="绑定年级" align="center" prop="gradeName"/>
+        <el-table-column label="绑定班级" align="center" prop="className"/>
         <el-table-column label="绑定学校账号" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="routeTo('/school/detail?type=detail', scope.row.schoolId)" >{{ scope.row.schoolAccount }}</el-button>
