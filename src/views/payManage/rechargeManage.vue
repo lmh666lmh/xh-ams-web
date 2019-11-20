@@ -102,6 +102,16 @@
                       <span>{{ scope.row.discountPrice + scope.row.agentAddPrice - scope.row.companyDividePrice }}</span>
                     </template>
                   </el-table-column>
+                  <el-table-column label="头部信息" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectHeadHint }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="项目描述" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectDesc }}</span>
+                    </template>
+                  </el-table-column>
                   <el-table-column :render-header="renderHeader" label="是否开启" align="center">
                     <template slot-scope="scope">
                       <el-switch
@@ -160,6 +170,16 @@
                   <el-table-column label="立省价格(￥)" align="center">
                     <template slot-scope="scope">
                       <span>{{ scope.row.projectPrice - scope.row.discountPrice - scope.row.agentAddPrice }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="头部信息" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectHeadHint }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="项目描述" align="center">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.projectDesc }}</span>
                     </template>
                   </el-table-column>
                   <el-table-column :render-header="renderHeader" label="是否开启" width="150" align="center">
@@ -251,7 +271,7 @@ export default {
       activeName: 'self',
       rechargeSetForm: {
         rechargeDialogVisible: false,
-        formWidth: '1100px',
+        formWidth: '1300px',
         formLabelWidth: '70px',
         schoolName: '',
         schoolId: ''

@@ -24,7 +24,7 @@ switch (prefix) {
     BASE_API = 'https://agent.xiaohebook.com/server'
     break
   default:
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.229:8999'
     break
 }
 
