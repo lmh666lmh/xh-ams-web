@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <el-row v-if="false" :gutter="20">
+    <el-row :gutter="20">
       <el-col :span="15">
         <div class="section">
           <div class="section-title">
