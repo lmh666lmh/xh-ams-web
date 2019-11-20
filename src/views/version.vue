@@ -17,6 +17,9 @@ export default {
   data() {
     return {
       version: [{
+        num: 'V1.1.4',
+        cont: ['1.书柜管理开放灯光和定时设置（BrandBin-2019/11/20）']
+      }, {
         num: 'V1.1.3',
         cont: ['1.邀请有礼（BrandBin-2019/11/04）']
       }, {
