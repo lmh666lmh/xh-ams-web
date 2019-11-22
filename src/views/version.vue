@@ -17,6 +17,9 @@ export default {
   data() {
     return {
       version: [{
+        num: 'V1.1.5',
+        cont: ['1.借阅卡增加显示字段（BrandBin-2019/11/20）', '2.增加预充款和可提现金额展示（BrandBin-2019/11/20）', '3.充值配置增加可配字段（BrandBin-2019/11/20）']
+      }, {
         num: 'V1.1.4',
         cont: ['1.书柜管理开放灯光和定时设置（BrandBin-2019/11/20）']
       }, {

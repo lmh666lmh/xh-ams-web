@@ -67,42 +67,52 @@
                   fit
                   highlight-current-row>
                   <el-table-column prop="projectName" label="套餐名称" align="center" width="80"/>
-                  <el-table-column label="最低价(￥)" align="center" width="100">
+                  <el-table-column label="最低价(￥)" align="center" width="80">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="代理商加价(￥)" align="center">
+                  <el-table-column label="代理商加价(￥)" align="center" width="130">
                     <template slot-scope="scope">
                       <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价" @change="computeAutoAddPrice(scope.row.agentAddPrice, scope.row.projectId)"/>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderCashPledgeFee" label="书本押金(￥)" align="center">
+                  <el-table-column :render-header="renderCashPledgeFee" label="书本押金(￥)" align="center" width="130">
                     <template slot-scope="scope">
                       <el-input-number v-model="cashPledgeFee" :step="1" :precision="0" :min="0" :max="100" controls-position="right" size="mini" label="书本押金" @change="computeCashPledgeFee(cashPledgeFee)"/>
                     </template>
                   </el-table-column>
-                  <el-table-column label="家长销售价(￥)" align="center" width="100">
+                  <el-table-column label="家长销售价(￥)" align="center" width="80">
                     <template slot-scope="scope">
                       <span style="color: red;">{{ scope.row.discountPrice + scope.row.agentAddPrice + cashPledgeFee }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="月平均价(￥)" align="center" width="100">
+                  <el-table-column label="月平均价(￥)" align="center" width="80">
                     <template slot-scope="scope">
                       <span>{{ ((scope.row.discountPrice + scope.row.agentAddPrice) / scope.row.months).toFixed(2) }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="亲禾分成(￥)" align="center" width="100">
+                  <el-table-column label="亲禾分成(￥)" align="center" width="80">
                     <template slot-scope="scope">
                       <span>{{ scope.row.companyDividePrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="代理收益(￥)" align="center" width="100">
+                  <el-table-column label="代理收益(￥)" align="center" width="80">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice + scope.row.agentAddPrice - scope.row.companyDividePrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderHeader" label="是否开启" align="center">
+                  <el-table-column :render-header="renderTopTips" label="顶部提示" align="center">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.projectHeadHint" type="text" size="mini" placeholder="请输入内容" maxlength="5" class="info-msg"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderTopDesc" label="项目描述" align="center">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="7" class="info-msg"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderHeader" label="是否开启" align="center" width="100">
                     <template slot-scope="scope">
                       <el-switch
                         v-model="scope.row.display"
@@ -130,39 +140,49 @@
                   border
                   fit
                   highlight-current-row>
-                  <el-table-column prop="projectName" label="套餐名称" align="center"/>
-                  <el-table-column label="阅读机器人市场价(￥)" align="center">
+                  <el-table-column prop="projectName" label="套餐名称" align="center" width="80"/>
+                  <el-table-column label="阅读机器人市场价(￥)" align="center" width="100">
                     <template slot-scope="scope">
                       <span>{{ scope.row.projectPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="阅读机器人最低价(￥)" align="center">
+                  <el-table-column label="阅读机器人最低价(￥)" align="center" width="100">
                     <template slot-scope="scope">
                       <span>{{ scope.row.discountPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderPlus" label="代理商加价(￥)" align="center">
+                  <el-table-column :render-header="renderPlus" label="代理商加价(￥)" align="center" width="130">
                     <template slot-scope="scope">
                       <el-input-number v-model="scope.row.agentAddPrice" :step="1" :precision="0" :min="0" :max="scope.row.agentAddMaxPrice" controls-position="right" size="mini" label="代理加价" @change="computeReadRobotAddPrice(scope.row.agentAddPrice, scope.row.projectId)"/>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderMember" label="会员卡价格(￥)" align="center">
+                  <el-table-column :render-header="renderMember" label="会员卡价格(￥)" align="center" width="130">
                     <template slot-scope="scope">
                       <span v-if="scope.row.combinedProjectPrice">{{ scope.row.combinedProjectPrice }}元/{{ scope.row.combinedProjectUnit }}</span>
                       <span v-else>无</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="家长销售价(￥)" align="center">
+                  <el-table-column label="家长销售价(￥)" align="center" width="120">
                     <template slot-scope="scope">
                       <span style="color: red;">{{ scope.row.discountPrice + scope.row.agentAddPrice + (scope.row.combinedProjectPrice ? scope.row.combinedProjectPrice : 0) }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="立省价格(￥)" align="center">
+                  <el-table-column label="立省价格(￥)" align="center" width="120">
                     <template slot-scope="scope">
                       <span>{{ scope.row.projectPrice - scope.row.discountPrice - scope.row.agentAddPrice }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column :render-header="renderHeader" label="是否开启" width="150" align="center">
+                  <el-table-column :render-header="renderTopTips" label="顶部提示" align="center">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.projectHeadHint" type="text" size="mini" placeholder="请输入内容" maxlength="5" class="info-msg"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderTopDesc" label="项目描述" align="center">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="7" class="info-msg"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column :render-header="renderHeader" label="是否开启" width="100" align="center">
                     <template slot-scope="scope">
                       <el-switch
                         v-model="scope.row.display"
@@ -251,7 +271,7 @@ export default {
       activeName: 'self',
       rechargeSetForm: {
         rechargeDialogVisible: false,
-        formWidth: '1100px',
+        formWidth: '1300px',
         formLabelWidth: '70px',
         schoolName: '',
         schoolId: ''
@@ -431,7 +451,9 @@ export default {
         autoPayList.push({
           projectId: item.projectId,
           agentAddPrice: this.toCents(item.agentAddPrice) - 0,
-          display: item.display ? 1 : 0
+          display: item.display ? 1 : 0,
+          projectHeadHint: item.projectHeadHint,
+          projectDesc: item.projectDesc
         })
       })
       this.allPayData.forEach((item, index) => {
@@ -445,7 +467,9 @@ export default {
         readRobotPackageList.push({
           projectId: item.projectId,
           agentAddPrice: this.toCents(item.agentAddPrice) - 0,
-          display: item.display ? 1 : 0
+          display: item.display ? 1 : 0,
+          projectHeadHint: item.projectHeadHint,
+          projectDesc: item.projectDesc
         })
       })
       api.updateRechargeSet({
@@ -617,6 +641,48 @@ export default {
           ]
         )
       ]
+    },
+    renderTopTips(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '小程序会员套餐顶部信息展示',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
+    },
+    renderTopDesc(h, { column }) {
+      return [
+        column.label,
+        h(
+          'el-tooltip',
+          {
+            props: {
+              content: '小程序会员套餐卡片底部信息展示',
+              placement: 'top'
+            }
+          },
+          [
+            h('span', {
+              class: {
+                'el-icon-question': true
+              }
+            })
+          ]
+        )
+      ]
     }
   }
 }
@@ -647,5 +713,8 @@ export default {
   }
   .recharge-manage-container .el-input-number{
     width: 100px;
+  }
+  .recharge-manage-container .info-msg{
+    width: 120px;
   }
 </style>
