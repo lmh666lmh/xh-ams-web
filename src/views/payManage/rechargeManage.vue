@@ -109,7 +109,7 @@
                   </el-table-column>
                   <el-table-column :render-header="renderTopDesc" label="项目描述" align="center">
                     <template slot-scope="scope">
-                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="7" class="info-msg"/>
+                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="10" class="info-msg"/>
                     </template>
                   </el-table-column>
                   <el-table-column :render-header="renderHeader" label="是否开启" align="center" width="100">
@@ -179,7 +179,7 @@
                   </el-table-column>
                   <el-table-column :render-header="renderTopDesc" label="项目描述" align="center">
                     <template slot-scope="scope">
-                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="7" class="info-msg"/>
+                      <el-input v-model="scope.row.projectDesc" type="text" size="mini" placeholder="请输入内容" maxlength="10" class="info-msg"/>
                     </template>
                   </el-table-column>
                   <el-table-column :render-header="renderHeader" label="是否开启" width="100" align="center">
