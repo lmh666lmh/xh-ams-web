@@ -165,7 +165,7 @@ export default {
       form: {
         startTime: '',
         endTime: '',
-        fixedTimeStatus: false,
+        fixedTimeStatus: true,
         probationDays: 0,
         trialMinDays: 0,
         trialMaxDays: 0
