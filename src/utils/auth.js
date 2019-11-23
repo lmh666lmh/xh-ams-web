@@ -11,6 +11,10 @@ export function setToken(token) {
 }
 
 export function removeToken() {
-  document.cookie = 'AGENT_SESSION_ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;' // 用于快速登录删除cookies
+  try {
+    Cookies.remove(TokenKey, { path: '/', domain: 'xiaohebook.com' })// 用于快速登录删除cookies
+  } catch (e) {
+    console.log(e)
+  }
   return Cookies.remove(TokenKey)
 }
