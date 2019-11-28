@@ -24,7 +24,7 @@ switch (prefix) {
     BASE_API = 'https://agent.xiaohebook.com/server'
     break
   default:
-    BASE_API = 'http://192.168.3.3:8180'
+    BASE_API = 'http://192.168.3.229:8080'
     break
 }
 
@@ -99,7 +99,9 @@ export const SYSTEM = {
       // 设置灯光颜色
       LIGHTSETTING: path('/bookcaseExtend/lightSetting'),
       // 设置定时开关机
-      SWITCHGEAR: path('/bookcaseExtend/bookcaseSwitchSetting')
+      SWITCHGEAR: path('/bookcaseExtend/bookcaseSwitchSetting'),
+      // 书柜描述
+      DESC: path('/bookcase/bookcaseDesc')
     },
     // 借阅卡管理
     BORROWCARD: {

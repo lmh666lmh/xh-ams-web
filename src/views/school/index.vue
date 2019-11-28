@@ -5,6 +5,16 @@
         <el-form-item label="学校名称/账号">
           <el-input v-model="formInline.schoolAccountOrName" placeholder="请填写"/>
         </el-form-item>
+        <el-form-item label="学校类型">
+          <el-select v-model="formInline.schoolType" style="width: 150px;">
+            <el-option value="">请选择</el-option>
+            <el-option
+              v-for="item in schoolTypeOptions"
+              :key="item.typeCode"
+              :label="item.typeName"
+              :value="item.typeCode" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="城市区域">
           <el-select v-model="formInline.provinceId" style="width: 150px;" @change="getCity(formInline.provinceId)">
             <el-option value="">请选择</el-option>
@@ -67,6 +77,7 @@
           </template>
         </el-table-column>
         <el-table-column label="学校名称" align="center" prop="schoolName"/>
+        <el-table-column label="学校类型" align="center" prop="schoolTypeStr"/>
         <el-table-column label="学校账号" align="center" prop="schoolAccount" width="120"/>
         <el-table-column label="学校邀请码" align="center" prop="schoolNum"/>
         <el-table-column label="园长姓名" align="center" prop="leaderName"/>
@@ -136,12 +147,20 @@ export default {
       activeName: 'self',
       formInline: {
         schoolAccountOrName: '',
+        schoolType: '',
         provinceId: '',
         cityId: '',
         countryId: '',
         pageNum: 1,
         pageSize: 10
       },
+      schoolTypeOptions: [{
+        typeCode: 1,
+        typeName: '幼儿园'
+      }, {
+        typeCode: 2,
+        typeName: '小学'
+      }],
       provinceOptions: [],
       cityOptions: [],
       countryOptions: [],

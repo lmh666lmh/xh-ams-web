@@ -266,6 +266,17 @@ export default {
     return API.get(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.LIST, params, callback)
   },
   /**
+   * @method: setEquipmentBookcaseDesc
+   * @description: 设备管理 => 书柜管理 => 书柜描述修改
+   * @author: ProudBin
+   * @update: 2019-06-04
+   * @param {Object} params
+   * @return{Object} 书柜管理列表
+   */
+  setEquipmentBookcaseDesc(params, callback) {
+    return API.put(SYSTEM.EQUIPMENT.BOOKCASEMANAGE.DESC, params, callback)
+  },
+  /**
    * @method: getEquipmentBookcaseGridList
    * @description: 设备管理 => 书柜管理 => 远程操作 => 获取柜子格子列表
    * @author: ProudBin

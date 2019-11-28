@@ -46,6 +46,7 @@
           </template>
         </el-table-column>
         <el-table-column label="书柜编号" align="center" prop="bookcaseNum"/>
+        <el-table-column label="书柜描述" align="center" prop="bookcaseDesc"/>
         <el-table-column label="绑定学校名称" align="center" prop="schoolName"/>
         <el-table-column label="绑定学校账号" align="center">
           <template slot-scope="scope">
@@ -68,14 +69,26 @@
             <span v-else>{{ scope.row.isOnlineStr }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
+            <el-button v-if="scope.row.schoolId" type="text" size="small" @click="editDescribe(scope.row.bookcaseId)">编辑书柜描述</el-button>
             <el-button v-if="scope.row.schoolId" type="text" size="small" @click="routeTo('/equipment/bookcaseDetail?bookcaseId=' + scope.row.bookcaseId + '&schoolName=' + scope.row.schoolName + '&schoolAccount=' + scope.row.schoolAccount + '&bookcaseNum=' + scope.row.bookcaseNum + '&isOnline=' + scope.row.isOnline, 'bookcase')" >远程管理</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div v-show="total != 0"><Pagination :total="total" :page.sync="formInline.pageNum" :limit.sync="formInline.pageSize" @pagination="fetchData"/></div>
+    <el-dialog :visible.sync="dialogFormVisible" :width="formWidth" :close-on-click-modal="false" title="编辑书柜描述">
+      <el-form ref="form" :model="form" size="small">
+        <el-form-item :label-width="formLabelWidth" label="描述信息" >
+          <el-input v-model="form.bookcaseDesc" style="width: 200px;" maxlength="10"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="mini" @click="cancel">取 消</el-button>
+        <el-button size="mini" type="primary" @click="confirm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -123,7 +136,14 @@ export default {
       }, {
         value: '0',
         label: '关闭'
-      }]
+      }],
+      dialogFormVisible: false,
+      formWidth: '500px',
+      formLabelWidth: '80px',
+      form: {
+        bookcaseId: '',
+        bookcaseDesc: ''
+      }
     }
   },
   created() {
@@ -160,6 +180,34 @@ export default {
           path: path
         })
       }
+    },
+    editDescribe(bookcaseId) {
+      this.form.bookcaseDesc = ''
+      this.form.bookcaseId = bookcaseId
+      this.dialogFormVisible = true
+    },
+    confirm() {
+      api.setEquipmentBookcaseDesc(this.form).then(res => {
+        if (res.code === 10000) {
+          this.dialogFormVisible = false
+          this.form.bookcaseId = ''
+          this.form.bookcaseDesc = ''
+          this.fetchData()
+          this.$message({
+            message: '修改成功！',
+            type: 'success'
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    cancel() {
+      this.dialogFormVisible = false
+      this.form.bookcaseId = ''
+      this.form.bookcaseDesc = ''
     }
   }
 }

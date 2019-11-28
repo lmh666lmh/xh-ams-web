@@ -4,6 +4,15 @@
       <el-form-item label="学校名称" prop="schoolName">
         <el-input v-model="formInline.schoolName" maxlength="25"/>
       </el-form-item>
+      <el-form-item label="学校类型" prop="schoolType">
+        <el-select v-model="formInline.schoolType" style="width: 130px;">
+          <el-option
+            v-for="item in schoolTypeOptions"
+            :key="item.typeCode"
+            :label="item.typeName"
+            :value="item.typeCode" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="学校账号" prop="schoolAccount">
         <el-input v-model="formInline.schoolAccount" :disabled="isDisabled" maxlength="11"/>
       </el-form-item>
@@ -119,6 +128,7 @@ export default {
       oldPwd: null,
       formInline: {
         schoolName: '',
+        schoolType: '',
         schoolAccount: '',
         pwd: '',
         leaderName: '',
@@ -133,12 +143,22 @@ export default {
         countryName: '',
         address: ''
       },
+      schoolTypeOptions: [{
+        typeCode: 1,
+        typeName: '幼儿园'
+      }, {
+        typeCode: 2,
+        typeName: '小学'
+      }],
       provinceOptions: [],
       cityOptions: [],
       countryOptions: [],
       rules: {
         schoolName: [
           { required: true, message: '请输入学校名称', trigger: 'blur' }
+        ],
+        schoolType: [
+          { required: true, message: '请输入学校类型', trigger: 'blur' }
         ],
         schoolAccount: [
           { required: true, validator: checkPhone, trigger: 'blur' }
