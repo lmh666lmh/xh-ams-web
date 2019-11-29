@@ -117,7 +117,11 @@
             <span>《{{ scope.row.bookName }}》</span>
           </template>
         </el-table-column>
-        <el-table-column property="bookStatusNeedStr" label="借阅类型" align="center"/>
+        <el-table-column label="借阅类型" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.bookStatusNeedStr }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="书籍状态" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.bookStatusRealStr === '未取走' || scope.row.bookStatusRealStr =='未归还' " style="color: red;">{{ scope.row.bookStatusRealStr }}</span>
@@ -298,7 +302,7 @@ export default {
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
       // 这里rowspan为1是行有一行合并,colspan为3是列有3列合并,你要合并几行几列就写上相应的数字
       if (this.dialogList.length === 2) {
-        if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 3 || columnIndex === 4 || columnIndex === 6 || columnIndex === 8 || columnIndex === 9) {
+        if (columnIndex === 0 || columnIndex === 1 || columnIndex === 2 || columnIndex === 3 || columnIndex === 4 || columnIndex === 8 || columnIndex === 9) {
           if (rowIndex % 2 === 0) {
             return {
               rowspan: 2,
@@ -316,18 +320,6 @@ export default {
           if (rowIndex % 4 === 0) {
             return {
               rowspan: 4,
-              colspan: 1
-            }
-          } else {
-            return {
-              rowspan: 0,
-              colspan: 0
-            }
-          }
-        } else if (columnIndex === 6) {
-          if (rowIndex % 2 === 0) {
-            return {
-              rowspan: 2,
               colspan: 1
             }
           } else {
