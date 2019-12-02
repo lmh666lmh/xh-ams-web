@@ -135,14 +135,14 @@ export const asyncRouterMap = [
         component: () => import('@/views/school/detail'),
         hidden: true,
         meta: { title: '学校信息' }
-      },
-      {
-        path: 'bindBookcase',
-        name: 'BindBookcase',
-        component: () => import('@/views/school/bindBookcase'),
-        hidden: true,
-        meta: { title: '绑定书柜' }
       }
+      // {
+      //   path: 'bindBookcase',
+      //   name: 'BindBookcase',
+      //   component: () => import('@/views/school/bindBookcase'),
+      //   hidden: true,
+      //   meta: { title: '绑定书柜' }
+      // }
     ]
   },
   {
@@ -371,35 +371,35 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/books',
-    component: Layout,
-    hidden: true,
-    name: 'Books',
-    redirect: '/books/index',
-    meta: { title: '书籍管理', icon: 'example' },
-    children: [
-      {
-        path: 'index',
-        name: '',
-        component: () => import('@/views/books/index')
-      },
-      {
-        path: 'editBook',
-        name: 'EditBook',
-        component: () => import('@/views/books/editBook'),
-        hidden: true,
-        meta: { title: '书籍信息' }
-      },
-      {
-        path: 'booksNumber',
-        name: 'BooksNumber',
-        component: () => import('@/views/books/booksNumber'),
-        hidden: true,
-        meta: { title: '入库数量' }
-      }
-    ]
-  },
+  // {
+  //   path: '/books',
+  //   component: Layout,
+  //   hidden: true,
+  //   name: 'Books',
+  //   redirect: '/books/index',
+  //   meta: { title: '书籍管理', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: '',
+  //       component: () => import('@/views/books/index')
+  //     },
+  //     {
+  //       path: 'editBook',
+  //       name: 'EditBook',
+  //       component: () => import('@/views/books/editBook'),
+  //       hidden: true,
+  //       meta: { title: '书籍信息' }
+  //     },
+  //     {
+  //       path: 'booksNumber',
+  //       name: 'BooksNumber',
+  //       component: () => import('@/views/books/booksNumber'),
+  //       hidden: true,
+  //       meta: { title: '入库数量' }
+  //     }
+  //   ]
+  // },
   {
     path: '/operateActivity',
     component: Layout,

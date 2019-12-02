@@ -110,12 +110,6 @@
                 <el-dropdown-item v-else :command="dropdownCallback(scope.row.schoolId,'启用')">
                   <el-button type="text" size="small">启用</el-button>
                 </el-dropdown-item>
-                <el-dropdown-item :command="dropdownCallback(scope.row.schoolId,'绑定书柜')">
-                  <el-button type="text" size="small">绑定书柜</el-button>
-                </el-dropdown-item>
-                <el-dropdown-item :command="dropdownCallback(scope.row.schoolId,'书籍管理')">
-                  <el-button type="text" size="small">书籍管理</el-button>
-                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -378,10 +372,6 @@ export default {
         this.prohibit(command.schoolId, 0)
       } else if (command.type === '启用') {
         this.prohibit(command.schoolId, 1)
-      } else if (command.type === '绑定书柜') {
-        this.routeTo('/school/bindBookcase', command.schoolId)
-      } else if (command.type === '书籍管理') {
-        this.routeTo('/books/index', command.schoolId)
       }
     }
   }
