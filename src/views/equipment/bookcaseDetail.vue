@@ -1,16 +1,15 @@
 <template>
   <div class="bookcase-detail-container">
     <div class="header">
-      <el-row :gutter="50">
-        <el-col :span="6"><span class="title">当前学校：</span>{{ schoolName }}/{{ schoolAccount }}</el-col>
-        <el-col :span="6"><span class="title">书柜编号：</span>{{ bookcaseNum }}</el-col>
-        <el-button type="primary" size="mini" @click="back">返回</el-button>
-      </el-row>
+      <span style="margin-right: 30px;"><span class="title">当前学校：</span>{{ schoolName }}/{{ schoolAccount }}</span>
+      <span style="margin-right: 30px;"><span class="title">书柜编号：</span>{{ bookcaseNum }}</span>
+      <el-button type="primary" size="mini" @click="back">返回</el-button>
     </div>
     <div class="section">
       <div class="section-title">
         书柜状态信息
         <div class="title-icon"/>
+        <el-button type="primary" size="mini" style="margin-left: 100px;" @click="refresh">刷新当前书柜信息</el-button>
         <!--<span class="clear-bookcase">清空柜内书籍</span>-->
       </div>
       <div class="bookcase-cont">
@@ -342,6 +341,10 @@ export default {
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       return 'padding: 5px 0'
+    },
+    refresh() {
+      this.getEquipmentBookcaseGridList()
+      this.currentGridId = ''
     },
     getEquipmentBookcaseGridList() {
       api.getEquipmentBookcaseGridList({
@@ -681,7 +684,7 @@ export default {
   .header{
     width: 100%;
     height: 50px;
-    padding-left: 30px;
+    padding-left: 10px;
     line-height: 50px;
     border-radius: 5px;
     background-color: #fff;
