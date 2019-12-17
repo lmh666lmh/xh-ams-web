@@ -26,6 +26,12 @@
             value-format="yyyy-MM-dd"
             @change="computeDate"/>
         </el-form-item>
+        <el-form-item label="行">
+          <el-input v-model="formInline.bOrReturnBookcaseRow" placeholder="请填写借书或还书的行"/>
+        </el-form-item>
+        <el-form-item label="列">
+          <el-input v-model="formInline.bOrReturnBookcaseColumn" placeholder="请填写借书或还书的列"/>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
@@ -120,6 +126,8 @@ export default {
         bookStatus: '',
         createTime: '',
         returnTime: '',
+        bOrReturnBookcaseRow: '',
+        bOrReturnBookcaseColumn: '',
         pageNum: 1,
         pageSize: 10
       },

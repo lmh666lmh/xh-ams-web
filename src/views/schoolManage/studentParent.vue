@@ -6,6 +6,9 @@
         <el-form-item label="学生姓名">
           <el-input v-model="formInline.studentName" placeholder="请填写学生姓名"/>
         </el-form-item>
+        <el-form-item label="家长手机号">
+          <el-input v-model="formInline.parentPhone" placeholder="请填写家长手机号"/>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
         </el-form-item>
@@ -486,6 +489,7 @@ export default {
         gradeId: '',
         classId: '',
         studentName: '',
+        parentPhone: '',
         pageNum: 1,
         pageSize: 10
       },
